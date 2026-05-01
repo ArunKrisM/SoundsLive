@@ -1,0 +1,1493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>BBC Sounds — Full Prototype v7</title>
+<!-- BBC Reith fonts from BBC CDN -->
+<link rel="stylesheet" href="https://static.bbc.co.uk/fonts/reith/3.012/BBCReithSans_W_Rg.woff2" as="font" crossorigin>
+<style>
+@font-face{font-family:'BBC Reith Sans';src:url('https://static.bbc.co.uk/fonts/reith/3.012/BBCReithSans_W_Rg.woff2') format('woff2');font-weight:400;font-style:normal;font-display:swap;}
+@font-face{font-family:'BBC Reith Sans';src:url('https://static.bbc.co.uk/fonts/reith/3.012/BBCReithSans_W_Bd.woff2') format('woff2');font-weight:700;font-style:normal;font-display:swap;}
+@font-face{font-family:'BBC Reith Sans';src:url('https://static.bbc.co.uk/fonts/reith/3.012/BBCReithSans_W_ExBd.woff2') format('woff2');font-weight:800;font-style:normal;font-display:swap;}
+@font-face{font-family:'BBC Reith Serif';src:url('https://static.bbc.co.uk/fonts/reith/3.012/BBCReithSerif_W_Bd.woff2') format('woff2');font-weight:700;font-style:normal;font-display:swap;}
+@font-face{font-family:'BBC Reith Serif';src:url('https://static.bbc.co.uk/fonts/reith/3.012/BBCReithSerif_W_It.woff2') format('woff2');font-weight:400;font-style:italic;font-display:swap;}
+</style>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+<style>
+/* ─── TOKENS ───────────────────────────────────── */
+:root{
+  --black:#000;--ink:#0d0d0d;--s1:#111;--s2:#181818;--s3:#222;
+  --border:#282828;--muted:#3a3a3a;--dim:#777;--grey:#999;--silver:#bbb;--white:#fff;
+  --orange:#FF6B00;--o2:#FF8820;--odim:rgba(255,107,0,.13);--oglow:rgba(255,107,0,.3);
+  --live:#E53535;--ldim:rgba(229,53,53,.18);
+  --amber:#E8A32A;--adim:rgba(232,163,42,.15);
+  --blue:#2962CC;--green:#3a9a5a;
+  --font-d:'BBC Reith Serif','Playfair Display',Georgia,serif;
+  --font-b:'BBC Reith Sans','DM Sans',-apple-system,sans-serif;
+  --ease:cubic-bezier(.22,1,.36,1);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+button,input{font-family:var(--font-b);border:none;background:none;cursor:pointer;color:inherit}
+body{background:#060606;min-height:100vh;margin:0;padding:0;font-family:var(--font-b);overflow-x:hidden;}
+
+/* ─── CENTRING WRAPPER ─────────────────────────── */
+/* Keeps the phone dead-centre regardless of window width */
+.device-wrap{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-height:100vh;
+  padding:20px;
+}
+
+/* ─── DEVICE ───────────────────────────────────── */
+.device{width:390px;height:844px;background:var(--black);border-radius:50px;overflow:hidden;position:relative;flex-shrink:0;box-shadow:0 0 0 1px #1c1c1c,0 0 0 3px #0d0d0d,0 32px 90px rgba(0,0,0,.93);}
+
+/* ─── STATUS BAR ───────────────────────────────── */
+.sbar{position:absolute;top:0;left:0;right:0;z-index:500;height:48px;display:flex;align-items:flex-end;justify-content:space-between;padding:0 26px 10px;pointer-events:none;}
+.sbar-t{font-size:15px;font-weight:700;color:var(--white);letter-spacing:-.2px;}
+.sbar-i{display:flex;gap:5px;align-items:center;}
+
+/* ─── APPBAR ───────────────────────────────────── */
+.appbar{position:absolute;top:0;left:0;right:0;z-index:400;height:48px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;transition:background .25s;}
+.appbar.solid{background:var(--ink);border-bottom:1px solid var(--border);}
+.bbc-logo{position:absolute;left:50%;transform:translateX(-50%);display:flex;gap:3px;}
+.bbc-sq{width:26px;height:26px;border-radius:3px;background:var(--orange);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;color:#fff;}
+.av{width:30px;height:30px;border-radius:50%;background:var(--blue);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff;margin-left:auto;}
+
+/* ─── BOTTOM NAV ───────────────────────────────── */
+.bnav{position:absolute;bottom:0;left:0;right:0;z-index:400;height:78px;background:var(--black);border-top:1px solid var(--border);display:flex;align-items:flex-start;padding-top:7px;}
+.bn{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:3px 0;color:var(--dim);transition:color .15s;position:relative;}
+.bn svg{width:24px;height:24px;}
+.bn span{font-size:10px;font-weight:600;}
+.bn.on{color:var(--orange);}
+.bn-pill{display:flex;flex-direction:column;align-items:center;gap:3px;background:var(--orange);border-radius:22px;padding:5px 14px 4px;color:#fff;}
+.bn-pill svg{width:22px;height:22px;}
+.bn-pill span{font-size:10px;font-weight:800;}
+.live-dot-nav{position:absolute;top:4px;right:calc(50% - 15px);width:7px;height:7px;border-radius:50%;background:var(--live);border:1.5px solid var(--black);animation:blink 1.2s infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.1}}
+
+/* ─── SCREENS ──────────────────────────────────── */
+.screen{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;scrollbar-width:none;background:var(--black);opacity:0;pointer-events:none;transition:opacity .2s var(--ease);}
+.screen.on{opacity:1;pointer-events:all;}
+.screen::-webkit-scrollbar{display:none;}
+
+/* ─── TOAST ────────────────────────────────────── */
+.toast{position:absolute;bottom:86px;left:14px;right:14px;background:var(--s3);border:1px solid var(--border);border-radius:14px;padding:11px 14px;display:flex;align-items:center;gap:10px;z-index:600;opacity:0;transform:translateY(10px);transition:all .22s var(--ease);pointer-events:none;box-shadow:0 8px 28px rgba(0,0,0,.7);}
+.toast.show{opacity:1;transform:translateY(0);}
+.t-i{font-size:18px;flex-shrink:0;}
+.t-t{font-size:13px;font-weight:700;color:var(--white);}
+.t-s{font-size:11px;color:var(--dim);margin-top:1px;}
+
+/* ═══════════════════════════════════════════════
+   SHARED COMPONENTS
+   ═══════════════════════════════════════════════ */
+.page-title{font-size:20px;font-weight:700;color:var(--white);text-align:center;padding:14px 18px 6px;letter-spacing:-.2px;}
+.sh{display:flex;align-items:baseline;justify-content:space-between;padding:18px 18px 10px;}
+.sh h2{font-size:20px;font-weight:800;color:var(--white);letter-spacing:-.3px;}
+.sh .a{font-size:13px;font-weight:600;color:var(--white);cursor:pointer;}
+.sh .ao{font-size:13px;font-weight:600;color:var(--orange);cursor:pointer;}
+.div{height:1px;background:var(--border);margin:0 18px;}
+/* live pill */
+.lp{display:inline-flex;align-items:center;gap:4px;background:var(--live);color:#fff;font-size:9px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;padding:3px 7px;border-radius:3px;}
+.lp .d{width:5px;height:5px;border-radius:50%;background:#fff;animation:blink 1.1s infinite;}
+/* up pill */
+.up{display:inline-flex;align-items:center;background:var(--s2);color:var(--grey);font-size:10px;font-weight:600;padding:2px 7px;border-radius:3px;}
+/* chip */
+.chip{font-size:10px;font-weight:600;padding:2px 7px;border-radius:3px;background:var(--s2);color:var(--grey);}
+.chip.lv{background:var(--ldim);color:#ff7070;}
+.chip.or{background:var(--odim);color:var(--orange);}
+/* hscroll */
+.hscroll{display:flex;gap:10px;padding:0 18px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;}
+.hscroll::-webkit-scrollbar{display:none;}
+/* remind btn */
+.remind{background:transparent;color:var(--grey);font-size:12px;font-weight:600;padding:5px 11px;border-radius:18px;border:1.5px solid var(--border);cursor:pointer;white-space:nowrap;flex-shrink:0;transition:all .15s;font-family:var(--font-b);}
+.remind:hover{border-color:var(--grey);color:var(--white);}
+.remind.saved{border-color:var(--orange);color:var(--orange);background:var(--odim);}
+
+/* ── Live stream card (home + elsewhere) */
+.ls-card{flex-shrink:0;width:144px;cursor:pointer;transition:transform .15s;}
+.ls-card:hover{transform:translateY(-2px);}
+.ls-art{width:144px;height:84px;border-radius:8px;overflow:hidden;position:relative;display:flex;align-items:center;justify-content:center;font-size:26px;background:var(--s2);box-shadow:0 0 0 1.5px var(--orange);}
+.ls-art.dim{box-shadow:none;border:1.5px dashed var(--border);}
+.ls-badge{position:absolute;top:5px;left:5px;background:var(--live);color:#fff;font-size:8px;font-weight:800;letter-spacing:.6px;padding:2px 5px;border-radius:3px;text-transform:uppercase;display:flex;align-items:center;gap:3px;}
+.ls-badge .d{width:4px;height:4px;border-radius:50%;background:#fff;animation:blink 1.1s infinite;}
+.ls-badge.amber{background:var(--amber);}
+.ls-badge.grey{background:var(--muted);}
+.ls-count{position:absolute;bottom:4px;right:5px;font-size:9px;font-weight:600;color:rgba(255,255,255,.65);background:rgba(0,0,0,.5);padding:2px 5px;border-radius:3px;}
+.ls-info{padding:6px 2px 0;}
+.ls-stage{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--orange);margin-bottom:2px;}
+.ls-act{font-size:13px;font-weight:700;color:var(--white);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.ls-stn{font-size:11px;color:var(--dim);}
+
+/* ── Continue listening / flat row */
+.row{display:flex;align-items:flex-start;gap:13px;padding:10px 18px;cursor:pointer;transition:background .12s;position:relative;}
+.row:hover{background:var(--s1);}
+.row-art{width:106px;height:106px;border-radius:6px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:26px;background:var(--s2);}
+.row-art.sm{width:80px;height:80px;font-size:22px;}
+.row-art.xs{width:68px;height:68px;font-size:20px;}
+.row-info{flex:1;padding-top:2px;min-width:0;}
+.row-title{font-size:16px;font-weight:800;color:var(--white);margin-bottom:4px;letter-spacing:-.2px;line-height:1.2;}
+.row-sub{font-size:13px;color:var(--grey);line-height:1.4;margin-bottom:4px;}
+.row-dur{font-size:12px;color:var(--dim);}
+.row-play{position:absolute;right:18px;top:14px;width:32px;height:32px;border-radius:50%;border:2px solid var(--dim);display:flex;align-items:center;justify-content:center;color:var(--white);}
+.row:hover .row-play{border-color:var(--white);}
+.row-play svg{width:13px;height:13px;margin-left:2px;}
+.prog-track{height:3px;background:var(--border);border-radius:2px;margin-top:6px;}
+.prog-fill{height:100%;background:var(--orange);border-radius:2px;}
+.prog-lbl{font-size:11px;color:var(--dim);text-align:right;margin-top:2px;}
+
+/* ── Playlist card (Explore) */
+.pl-card{flex-shrink:0;width:260px;border-radius:6px;overflow:hidden;cursor:pointer;transition:opacity .15s;position:relative;}
+.pl-card:hover{opacity:.88;}
+.pl-art{width:100%;height:200px;position:relative;display:flex;align-items:center;justify-content:center;font-size:40px;background:var(--s2);}
+.pl-ov{position:absolute;inset:0;background:linear-gradient(to bottom,transparent 30%,rgba(0,0,0,.88) 100%);padding:14px;display:flex;flex-direction:column;justify-content:flex-end;}
+.pl-count{font-size:12px;font-weight:600;color:rgba(255,255,255,.65);}
+.pl-title{font-size:18px;font-weight:800;color:#fff;line-height:1.2;margin:2px 0;}
+.pl-desc{font-size:12px;color:rgba(255,255,255,.55);margin-top:2px;}
+.pl-play{position:absolute;bottom:12px;right:12px;width:36px;height:36px;border-radius:50%;background:var(--orange);display:flex;align-items:center;justify-content:center;}
+.pl-play svg{width:16px;height:16px;color:#fff;margin-left:2px;}
+
+/* ── News card (portrait) */
+.nc{flex-shrink:0;width:178px;border-radius:4px;overflow:hidden;cursor:pointer;transition:opacity .15s;background:var(--s2);}
+.nc:hover{opacity:.88;}
+.nc-art{width:100%;height:160px;position:relative;display:flex;align-items:center;justify-content:center;font-size:32px;}
+.nc-bdg{position:absolute;top:0;right:0;background:var(--s2);padding:4px 8px;font-size:11px;font-weight:800;color:var(--white);letter-spacing:.4px;}
+.nc-play{position:absolute;bottom:10px;left:10px;width:30px;height:30px;border-radius:50%;border:2px solid var(--white);display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.3);}
+.nc-play svg{width:12px;height:12px;color:#fff;margin-left:2px;}
+.nc-meta{padding:8px 10px 10px;}
+.nc-title{font-size:14px;font-weight:700;color:var(--white);line-height:1.3;margin-bottom:4px;}
+.nc-dur{font-size:12px;color:var(--dim);}
+
+/* ── Tab strip (Explore) */
+.tab-strip{display:flex;padding:0 16px;border-bottom:1px solid var(--border);overflow-x:auto;scrollbar-width:none;}
+.tab-strip::-webkit-scrollbar{display:none;}
+.ti{padding:10px 14px;font-size:14px;font-weight:600;color:var(--dim);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap;transition:all .15s;flex-shrink:0;}
+.ti.on{color:var(--orange);border-bottom-color:var(--orange);}
+
+/* ── Browse grid (Search / Music) */
+.bg{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:0 18px;}
+.bg-tile{border-radius:6px;overflow:hidden;height:96px;display:flex;align-items:flex-end;padding:10px;position:relative;background:var(--s2);cursor:pointer;transition:opacity .15s;}
+.bg-tile:hover{opacity:.88;}
+.bg-tile .bgi{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:28px;filter:grayscale(1);}
+.bg-tile .bgl{font-size:14px;font-weight:700;color:var(--white);position:relative;z-index:1;text-shadow:0 1px 4px rgba(0,0,0,.8);}
+
+/* ── Search bar */
+.search-bar{margin:10px 18px;background:var(--s2);border-radius:10px;padding:12px 16px;display:flex;align-items:center;gap:10px;}
+.search-bar svg{width:18px;height:18px;color:var(--dim);flex-shrink:0;}
+.search-bar input{flex:1;font-size:15px;color:var(--white);background:transparent;outline:none;}
+.search-bar input::placeholder{color:var(--muted);}
+
+/* ── Notification bar */
+.notif{margin:8px 18px;background:rgba(232,163,42,.07);border:1px solid rgba(232,163,42,.18);border-radius:8px;padding:11px 13px;display:flex;align-items:center;gap:10px;cursor:pointer;}
+.notif:hover{background:rgba(232,163,42,.11);}
+.nb-icon{font-size:17px;flex-shrink:0;}
+.nb-b{flex:1;}
+.nb-t{font-size:13px;font-weight:700;color:var(--white);}
+.nb-s{font-size:11px;color:var(--dim);margin-top:1px;}
+.nb-cta{font-size:12px;font-weight:700;color:var(--orange);white-space:nowrap;}
+
+/* ── Poll */
+.poll-card{margin:0 18px;background:var(--s1);border-radius:10px;padding:14px;border:1px solid var(--border);}
+.poll-t{font-size:14px;font-weight:700;color:var(--white);margin-bottom:10px;}
+.po{position:relative;overflow:hidden;padding:10px 12px;border-radius:6px;background:var(--s2);border:1px solid var(--border);cursor:pointer;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center;transition:border-color .15s;}
+.po:hover{border-color:var(--orange);}
+.po-bar{position:absolute;left:0;top:0;bottom:0;background:var(--odim);transition:width .4s var(--ease);}
+.po-t{font-size:13px;font-weight:600;color:var(--grey);position:relative;z-index:1;}
+.po-p{font-size:12px;font-weight:700;color:var(--orange);position:relative;z-index:1;}
+.poll-foot{font-size:11px;color:var(--muted);text-align:right;margin-top:4px;}
+
+/* ═══════════════════════════════════════════════
+   HOME SCREEN
+   ═══════════════════════════════════════════════ */
+.live-hero{position:relative;height:340px;overflow:hidden;cursor:pointer;margin-top:48px;}
+.lh-bg{position:absolute;inset:0;background:linear-gradient(165deg,#1e1604 0%,#0f1c08 50%,#080808 100%);}
+.beams{position:absolute;inset:0;overflow:hidden;pointer-events:none;}
+.beam{position:absolute;bottom:0;width:1.5px;background:linear-gradient(to top,rgba(232,163,42,.58),transparent);transform-origin:bottom;animation:sw 4s ease-in-out infinite;}
+.b1{left:18%;height:230px;animation-delay:0s;}.b2{left:35%;height:280px;animation-delay:.7s;}
+.b3{left:55%;height:200px;animation-delay:1.5s;}.b4{left:72%;height:250px;animation-delay:2.3s;}
+.b5{left:86%;height:175px;animation-delay:3s;}.b6{left:28%;height:195px;animation-delay:3.6s;}
+@keyframes sw{0%,100%{opacity:.28;transform:rotate(-13deg)}50%{opacity:.78;transform:rotate(13deg)}}
+.crowd{position:absolute;bottom:6px;left:0;right:0;text-align:center;font-size:18px;letter-spacing:5px;opacity:.38;}
+.lh-grad{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.12) 0%,transparent 28%,transparent 40%,rgba(0,0,0,.62) 68%,#000 100%);}
+.lh-content{position:absolute;bottom:0;left:0;right:0;padding:0 20px 20px;}
+.lh-title{font-family:var(--font-d);font-size:34px;font-weight:900;color:#fff;letter-spacing:-.6px;line-height:1;margin:6px 0 4px;}
+.lh-act{font-size:14px;color:rgba(255,255,255,.65);margin-bottom:14px;}
+.lh-btns{display:flex;gap:8px;align-items:center;}
+.btn-p{background:var(--orange);color:#fff;font-size:13px;font-weight:800;padding:10px 20px;border-radius:5px;font-family:var(--font-b);transition:opacity .15s;border:none;}
+.btn-p:hover{opacity:.88;}
+.btn-g{background:transparent;color:#fff;font-size:12px;font-weight:600;padding:9px 14px;border-radius:5px;font-family:var(--font-b);border:1.5px solid rgba(255,255,255,.32);transition:border-color .15s;}
+.btn-g:hover{border-color:rgba(255,255,255,.65);}
+.btn-g.saved{border-color:var(--orange);color:var(--orange);}
+
+/* ═══════════════════════════════════════════════
+   LIVE SCREEN — editorial canvas
+   ═══════════════════════════════════════════════ */
+/* Stage */
+.stage{position:relative;height:300px;overflow:hidden;cursor:pointer;}
+.st-bg{position:absolute;inset:0;background:linear-gradient(165deg,#1e1604 0%,#0f1c08 50%,#080808 100%);}
+.st-grad{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.1) 0%,transparent 28%,transparent 40%,rgba(0,0,0,.65) 70%,#000 100%);pointer-events:none;}
+.viewers{position:absolute;top:60px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:5px;background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:4px 10px;font-size:11px;font-weight:600;color:rgba(255,255,255,.75);white-space:nowrap;}
+.vd{width:6px;height:6px;border-radius:50%;background:var(--live);animation:blink 1.1s infinite;}
+.st-chrome{position:absolute;top:48px;left:0;right:0;display:flex;align-items:center;justify-content:space-between;padding:10px 16px;pointer-events:all;}
+.bk-btn{width:34px;height:34px;border-radius:50%;background:rgba(0,0,0,.4);border:1px solid rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;color:var(--white);}
+.bk-btn svg{width:18px;height:18px;}
+.top-acts{display:flex;gap:7px;}
+.ta{width:34px;height:34px;border-radius:50%;background:rgba(0,0,0,.4);border:1px solid rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;color:var(--white);transition:background .15s;}
+.ta:hover{background:rgba(0,0,0,.7);}
+.ta svg{width:16px;height:16px;}
+.st-content{position:absolute;bottom:0;left:0;right:0;padding:0 18px 18px;}
+.st-event{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:3px;}
+.st-artist{font-family:var(--font-d);font-size:32px;font-weight:900;color:#fff;letter-spacing:-.5px;line-height:1;margin-bottom:3px;}
+.st-detail{font-size:13px;color:rgba(255,255,255,.55);margin-bottom:13px;}
+.pb-row{display:flex;align-items:center;gap:10px;}
+.pb-btn{width:46px;height:46px;border-radius:50%;background:var(--orange);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:opacity .15s;}
+.pb-btn:hover{opacity:.88;}
+.pb-btn svg{width:20px;height:20px;color:#fff;margin-left:2px;}
+.pb-info{flex:1;}
+.pb-prog{height:3px;background:rgba(255,255,255,.18);border-radius:2px;margin-bottom:5px;}
+.pb-fill{height:100%;background:var(--orange);border-radius:2px;width:24%;}
+.pb-lbl{display:flex;justify-content:space-between;font-size:11px;}
+.pb-live{color:var(--orange);font-weight:800;}
+.pb-stn{color:rgba(255,255,255,.4);}
+.pb-side{display:flex;gap:7px;}
+.pb-act{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.55);transition:all .15s;}
+.pb-act:hover{background:rgba(255,255,255,.15);color:var(--white);}
+.pb-act svg{width:15px;height:15px;}
+/* stream switcher */
+.sw-row{display:flex;gap:7px;padding:10px 16px;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--border);background:var(--ink);}
+.sw-row::-webkit-scrollbar{display:none;}
+.sp{flex-shrink:0;display:flex;align-items:center;gap:5px;padding:6px 12px;border-radius:20px;font-size:12px;font-weight:700;border:1.5px solid var(--border);color:var(--grey);cursor:pointer;transition:all .15s;white-space:nowrap;}
+.sp:hover{border-color:var(--silver);color:var(--white);}
+.sp.on{background:var(--orange);border-color:var(--orange);color:#fff;}
+.sp .sd{width:5px;height:5px;border-radius:50%;background:currentColor;}
+.sp.on .sd{animation:blink 1.1s infinite;}
+/* setlist card */
+.setlist-card{margin:14px 18px 0;background:var(--s1);border-radius:12px;overflow:hidden;border:1px solid var(--border);}
+.slc-hd{display:flex;align-items:center;justify-content:space-between;padding:11px 14px;border-bottom:1px solid var(--border);}
+.slc-lbl{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--orange);}
+.slc-ct{font-size:11px;color:var(--dim);}
+.sl-item{display:flex;align-items:center;gap:12px;padding:10px 14px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .12s;}
+.sl-item:last-child{border-bottom:none;}
+.sl-item:hover{background:var(--s2);}
+.sl-n{font-size:12px;font-weight:700;color:var(--muted);width:18px;text-align:center;flex-shrink:0;}
+.sl-inf{flex:1;}
+.sl-song{font-size:14px;font-weight:700;color:var(--white);}
+.sl-note{font-size:11px;color:var(--dim);margin-top:1px;}
+.sl-ts{font-size:11px;font-weight:600;color:var(--orange);flex-shrink:0;}
+.eq-wrap{display:flex;align-items:center;gap:2px;height:14px;}
+.bar{width:2.5px;background:var(--orange);border-radius:2px;animation:eq .8s ease-in-out infinite;}
+.bar1{height:10px;animation-delay:0s;}.bar2{height:6px;animation-delay:.15s;}
+.bar3{height:12px;animation-delay:.3s;}.bar4{height:8px;animation-delay:.45s;}
+@keyframes eq{0%,100%{transform:scaleY(1)}50%{transform:scaleY(.35)}}
+/* catch-up */
+.catchup{margin:16px 18px 0;background:linear-gradient(135deg,#161206,#0c1406);border:1px solid rgba(232,163,42,.2);border-radius:12px;padding:14px 16px;cursor:pointer;transition:border-color .15s;}
+.catchup:hover{border-color:rgba(232,163,42,.45);}
+.cu-ey{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--amber);margin-bottom:4px;}
+.cu-title{font-family:var(--font-d);font-size:18px;font-weight:700;color:var(--white);line-height:1.2;margin-bottom:6px;}
+.cu-sub{font-size:13px;color:var(--silver);line-height:1.5;}
+.cu-cta{display:inline-flex;align-items:center;gap:4px;margin-top:8px;font-size:12px;font-weight:700;color:var(--amber);}
+.cu-cta svg{width:12px;height:12px;}
+/* story horizontal scroll */
+.story-lbl{padding:16px 18px 8px;font-size:20px;font-weight:800;color:var(--white);letter-spacing:-.3px;}
+.clip-card{flex-shrink:0;width:196px;border-radius:10px;overflow:hidden;cursor:pointer;background:var(--s2);border:1px solid var(--border);transition:transform .15s,border-color .15s;}
+.clip-card:hover{transform:translateY(-2px);border-color:var(--orange);}
+.cc-thumb{width:100%;height:108px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;font-size:28px;}
+.cc-po{position:absolute;inset:0;background:rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .15s;}
+.clip-card:hover .cc-po{opacity:1;}
+.cc-pc{width:36px;height:36px;border-radius:50%;background:rgba(255,107,0,.9);display:flex;align-items:center;justify-content:center;}
+.cc-pc svg{width:14px;height:14px;color:#fff;margin-left:2px;}
+.cc-dur{position:absolute;bottom:5px;right:6px;background:rgba(0,0,0,.6);color:rgba(255,255,255,.8);font-size:10px;font-weight:700;padding:2px 5px;border-radius:3px;}
+.cc-bdg{position:absolute;top:5px;left:6px;background:rgba(0,0,0,.55);color:rgba(255,255,255,.7);font-size:9.5px;font-weight:700;padding:2px 6px;border-radius:3px;}
+.cc-meta{padding:9px 11px 11px;}
+.cc-title{font-size:13px;font-weight:700;color:var(--white);line-height:1.3;margin-bottom:2px;}
+.cc-sub{font-size:11px;color:var(--dim);}
+.about-card{flex-shrink:0;width:216px;border-radius:10px;cursor:pointer;background:var(--s1);border:1px solid var(--border);padding:14px;transition:transform .15s,border-color .15s;}
+.about-card:hover{transform:translateY(-2px);border-color:var(--orange);}
+.ac-ey{font-size:9.5px;font-weight:700;letter-spacing:.9px;text-transform:uppercase;color:var(--dim);margin-bottom:4px;}
+.ac-title{font-family:var(--font-d);font-size:15px;font-weight:700;color:var(--white);line-height:1.2;margin-bottom:7px;}
+.ac-body{font-size:12px;color:var(--grey);line-height:1.55;}
+.ac-more{display:block;font-size:12px;font-weight:700;color:var(--orange);margin-top:9px;}
+.trivia-card{flex-shrink:0;width:174px;border-radius:10px;background:linear-gradient(135deg,#0f1a0f,#1a2a1a);border:1px solid rgba(58,154,90,.2);padding:14px;cursor:pointer;transition:transform .15s;}
+.trivia-card:hover{transform:translateY(-2px);}
+.tc-ey{font-size:9.5px;font-weight:700;letter-spacing:.9px;text-transform:uppercase;color:#3a9a5a;margin-bottom:4px;}
+.tc-body{font-size:13px;font-weight:600;color:var(--white);line-height:1.5;}
+
+/* ── Radio stations rail */
+.radio-card{flex-shrink:0;width:128px;cursor:pointer;transition:transform .15s;}
+.radio-card:hover{transform:translateY(-2px);}
+.radio-art{width:128px;height:128px;border-radius:50%;overflow:hidden;position:relative;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:900;box-shadow:0 0 0 2px var(--orange);margin-bottom:8px;}
+.radio-art.no-live{box-shadow:0 0 0 1.5px var(--border);}
+.radio-live-ring{position:absolute;inset:-4px;border-radius:50%;border:2px solid var(--orange);animation:ring-pulse 2s infinite;pointer-events:none;}
+@keyframes ring-pulse{0%,100%{opacity:.8;transform:scale(1)}50%{opacity:.2;transform:scale(1.03)}}
+.radio-name{font-size:12px;font-weight:700;color:var(--white);text-align:center;white-space:nowrap;}
+.radio-show{font-size:10px;color:var(--dim);text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:120px;margin:0 auto;}
+
+/* ── Raw/Studio feed card */
+.raw-card{flex-shrink:0;width:220px;border-radius:10px;overflow:hidden;cursor:pointer;background:var(--s1);border:1px solid var(--border);transition:transform .15s,border-color .15s;}
+.raw-card:hover{transform:translateY(-2px);border-color:rgba(229,53,53,.4);}
+.raw-thumb{height:100px;position:relative;display:flex;align-items:center;justify-content:center;font-size:28px;}
+.raw-badge{position:absolute;top:8px;left:8px;display:flex;align-items:center;gap:4px;background:var(--live);color:#fff;font-size:8.5px;font-weight:800;letter-spacing:.7px;padding:3px 8px;border-radius:3px;text-transform:uppercase;}
+.raw-badge .d{width:5px;height:5px;border-radius:50%;background:#fff;animation:blink 1.1s infinite;}
+.raw-meta{padding:10px 12px 12px;}
+.raw-label{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--live);margin-bottom:4px;}
+.raw-title{font-size:13px;font-weight:700;color:var(--white);line-height:1.3;margin-bottom:2px;}
+.raw-sub{font-size:11px;color:var(--dim);}
+
+/* ── BBC News live section */
+.news-live-card{margin:0 18px 10px;background:linear-gradient(135deg,#1a0808,#0d0808);border:1px solid rgba(229,53,53,.2);border-radius:12px;overflow:hidden;cursor:pointer;transition:border-color .15s;}
+.news-live-card:hover{border-color:rgba(229,53,53,.5);}
+.nlc-art{height:80px;display:flex;align-items:center;gap:12px;padding:0 16px;position:relative;}
+.nlc-icon{font-size:28px;flex-shrink:0;}
+.nlc-ey{font-size:9px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--live);margin-bottom:3px;}
+.nlc-title{font-size:15px;font-weight:800;color:var(--white);line-height:1.2;}
+.nlc-sub{font-size:11px;color:var(--grey);margin-top:2px;}
+.nlc-play{position:absolute;right:14px;width:36px;height:36px;border-radius:50%;border:2px solid var(--grey);display:flex;align-items:center;justify-content:center;color:var(--white);}
+.nlc-play svg{width:14px;height:14px;margin-left:2px;}
+
+/* ── Reaction pulse */
+.react-pulse{display:flex;align-items:center;background:var(--s1);border-radius:30px;padding:5px 8px;margin:14px 18px 0;border:1px solid var(--border);}
+.rp{flex:1;display:flex;align-items:center;justify-content:center;gap:5px;padding:6px 4px;border-radius:22px;cursor:pointer;transition:background .15s;}
+.rp:hover{background:rgba(255,255,255,.05);}
+.rp.on{background:var(--odim);}
+.rp-em{font-size:14px;}
+.rp-n{font-size:11px;font-weight:700;color:var(--dim);transition:color .15s;}
+.rp.on .rp-n{color:var(--orange);}
+.rp-sep{width:1px;height:18px;background:var(--border);flex-shrink:0;}
+
+/* ── Crowd / comments */
+.crowd-zone{padding:16px 18px 0;}
+.crowd-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;}
+.crowd-title{font-size:18px;font-weight:800;color:var(--white);letter-spacing:-.2px;}
+.crowd-lv{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:800;letter-spacing:.6px;color:var(--live);background:var(--ldim);padding:3px 8px;border-radius:3px;text-transform:uppercase;}
+.crowd-ct{font-size:12px;color:var(--dim);margin-bottom:12px;}
+.comment{display:flex;gap:10px;margin-bottom:13px;animation:fuAnim .3s var(--ease);}
+@keyframes fuAnim{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
+.c-av{width:30px;height:30px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff;margin-top:1px;}
+.c-hd{display:flex;align-items:baseline;gap:6px;margin-bottom:3px;}
+.c-name{font-size:13px;font-weight:700;color:var(--white);}
+.c-badge{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.4px;background:var(--odim);color:var(--orange);padding:1px 5px;border-radius:3px;}
+.c-time{font-size:11px;color:var(--muted);}
+.c-text{font-size:14px;color:var(--silver);line-height:1.5;}
+.ci-wrap-outer{display:flex;align-items:center;gap:8px;padding:10px 18px;border-top:1px solid var(--border);background:var(--ink);position:sticky;bottom:78px;z-index:10;}
+.ci-inner{flex:1;display:flex;align-items:center;gap:8px;background:var(--s2);border:1px solid var(--border);border-radius:22px;padding:9px 14px;transition:border-color .15s;}
+.ci-inner:focus-within{border-color:var(--orange);}
+.ci-input{flex:1;font-size:14px;color:var(--white);background:transparent;outline:none;}
+.ci-input::placeholder{color:var(--muted);}
+.ci-emoji{font-size:16px;cursor:pointer;}
+.ci-send{width:34px;height:34px;border-radius:50%;background:var(--orange);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:opacity .15s;}
+.ci-send:hover{opacity:.88;}
+.ci-send svg{width:14px;height:14px;color:#fff;}
+
+/* schedule timeline */
+.day-lbl{padding:14px 18px 6px;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);}
+.si{display:flex;align-items:flex-start;padding:0 18px;cursor:pointer;transition:background .12s;}
+.si:hover{background:var(--s1);}
+.si-time{width:44px;flex-shrink:0;padding-top:14px;font-size:11px;font-weight:700;color:var(--orange);text-align:right;padding-right:10px;}
+.si-line{display:flex;flex-direction:column;align-items:center;padding-top:18px;flex-shrink:0;width:14px;}
+.si-dot{width:8px;height:8px;border-radius:50%;background:var(--border);}
+.si-dot.lv{background:var(--orange);box-shadow:0 0 0 3px var(--odim);animation:dotP 1.5s infinite;}
+@keyframes dotP{0%,100%{box-shadow:0 0 0 3px var(--odim)}50%{box-shadow:0 0 0 6px transparent}}
+.si-tail{width:1px;flex:1;background:var(--border);margin-top:3px;min-height:16px;}
+.si-body{flex:1;padding:12px 0 10px 10px;}
+.si-act{font-size:15px;font-weight:700;color:var(--white);margin-bottom:2px;}
+.si-stage{font-size:12px;color:var(--dim);margin-bottom:5px;display:flex;align-items:center;gap:5px;}
+.sdot{width:6px;height:6px;border-radius:50%;display:inline-block;}
+.si-chips{display:flex;gap:5px;flex-wrap:wrap;}
+.si-save{padding-top:13px;flex-shrink:0;}
+
+.scroll-end{height:40px;}
+/* ── Stage thumbnail switcher ─── */
+.stg-thumb{flex-shrink:0;display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:10px;cursor:pointer;transition:background .15s;border:1.5px solid transparent;background:transparent;min-width:130px;}
+.stg-thumb:hover{background:var(--s2);}
+.stg-thumb.on{background:var(--s2);border-color:var(--orange);}
+.stg-art{width:44px;height:44px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;background:var(--s2);}
+.stg-meta{flex:1;min-width:0;}
+.stg-name{font-size:12px;font-weight:700;color:var(--white);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-family:var(--font-b);}
+.stg-stage{font-size:10px;color:var(--dim);font-family:var(--font-b);}
+.stg-lv{flex-shrink:0;display:flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;background:var(--ldim);}
+
+/* ── Raw feed cards (canvas-animated) ─── */
+.raw-feed-card{flex-shrink:0;width:160px;height:130px;border-radius:10px;overflow:hidden;position:relative;cursor:pointer;border:1px solid var(--border);transition:transform .15s;}
+.raw-feed-card:hover{transform:scale(1.02);}
+.raw-canvas{position:absolute;inset:0;width:100%;height:100%;}
+.rfc-overlay{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:space-between;padding:8px 9px;}
+.rfc-top{display:flex;align-items:center;justify-content:space-between;}
+.rfc-live{display:inline-flex;align-items:center;gap:3px;background:rgba(229,53,53,.7);color:#fff;font-size:8px;font-weight:800;letter-spacing:.7px;padding:2px 6px;border-radius:3px;text-transform:uppercase;backdrop-filter:blur(4px);}
+.rfc-live .d{width:4px;height:4px;border-radius:50%;background:#fff;animation:blink 1.1s infinite;}
+.rfc-viewers{font-size:10px;font-weight:700;color:rgba(255,255,255,.8);background:rgba(0,0,0,.45);padding:2px 5px;border-radius:3px;}
+.rfc-bottom{background:linear-gradient(to top,rgba(0,0,0,.8),transparent);margin:-8px -9px -8px;padding:10px 9px 8px;}
+.rfc-name{font-size:11px;font-weight:700;color:#fff;line-height:1.3;font-family:var(--font-b);}
+.rfc-sub{font-size:10px;color:rgba(255,255,255,.6);margin-top:1px;font-family:var(--font-b);}
+
+/* ── Category rows (Also Live Now) ─── */
+.cat-row{margin-bottom:8px;background:var(--s1);border-radius:10px;border:1px solid var(--border);}
+.cat-hd{width:100%;display:flex;align-items:center;gap:8px;padding:12px 14px;background:none;border:none;cursor:pointer;text-align:left;font-family:var(--font-b);transition:background .12s;border-radius:10px;}
+.cat-hd:hover{background:var(--s2);}
+.cat-icon{font-size:16px;flex-shrink:0;}
+.cat-label{font-size:14px;font-weight:700;color:var(--white);flex:1;}
+.cat-count{font-size:11px;color:var(--dim);flex-shrink:0;}
+.cat-chevron{color:var(--dim);flex-shrink:0;transition:transform .25s var(--ease);display:flex;align-items:center;}
+.cat-chevron.open{transform:rotate(180deg);}
+.cat-body{padding:0 14px 10px;display:block;border-top:1px solid var(--border);}
+.cat-body.collapsed{display:none;}
+.cat-stream-card{display:flex;flex-direction:row;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);cursor:pointer;transition:opacity .12s;width:100%;}
+.cat-stream-card:last-child{border-bottom:none;}
+.cat-stream-card:hover{opacity:.75;}
+.csc-left{flex-shrink:0;width:46px;}
+.csc-art{width:46px;height:46px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:20px;background:var(--s2);flex-shrink:0;}
+.csc-mid{flex:1;min-width:0;overflow:hidden;}
+.csc-name{font-size:13px;font-weight:700;color:var(--white);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;}
+.csc-show{font-size:11px;color:var(--grey);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:1px;}
+.csc-stn{font-size:10px;color:var(--dim);}
+.csc-right{flex-shrink:0;display:flex;flex-direction:column;align-items:flex-end;gap:4px;}
+.csc-live{display:inline-flex;align-items:center;gap:3px;background:var(--ldim);color:var(--live);font-size:8.5px;font-weight:800;letter-spacing:.7px;padding:3px 7px;border-radius:3px;text-transform:uppercase;}
+.csc-live .d{width:4px;height:4px;border-radius:50%;background:currentColor;animation:blink 1.1s infinite;}
+.csc-soon{font-size:10px;font-weight:600;color:var(--orange);background:var(--odim);padding:3px 7px;border-radius:3px;}
+.csc-count{font-size:10px;color:var(--dim);}
+</style>
+</head>
+<body>
+<div class="device-wrap">
+<div class="device">
+
+  <!-- Status bar -->
+  <div class="sbar">
+    <span class="sbar-t">21:47</span>
+    <div class="sbar-i">
+      <svg width="15" height="11" viewBox="0 0 15 11" fill="white" opacity=".8"><rect x="0" y="2" width="2.5" height="9" rx="1"/><rect x="4" y="1" width="2.5" height="10" rx="1"/><rect x="8" y="0" width="2.5" height="11" rx="1"/><rect x="12" y="2" width="2.5" height="9" rx="1"/></svg>
+      <svg width="16" height="11" viewBox="0 0 17 11" fill="none" opacity=".8"><path d="M8.5 2C10.8 2 12.9 3 14.3 4.7L15.5 3.4C13.8 1.4 11.3.2 8.5.2S3.2 1.4 1.5 3.4l1.2 1.3C4.1 3 6.2 2 8.5 2z" fill="white"/><path d="M8.5 5.2c1.4 0 2.7.6 3.6 1.6L13.3 5.4c-1.2-1.4-3-2.3-4.8-2.3S4.9 4 3.7 5.4L5 6.8c.9-1 2.2-1.6 3.5-1.6z" fill="white"/><circle cx="8.5" cy="9.5" r="1.5" fill="white"/></svg>
+      <svg width="23" height="11" viewBox="0 0 24 11" fill="none" opacity=".8"><rect x=".5" y=".5" width="21" height="10" rx="3" stroke="white" stroke-opacity=".3"/><rect x="2" y="2" width="14" height="7" rx="2" fill="white"/><path d="M23 3.7v3.5a1.8 1.8 0 000-3.5z" fill="white" opacity=".4"/></svg>
+    </div>
+  </div>
+
+  <!-- Appbar -->
+  <div class="appbar solid" id="appbar">
+    <div style="width:30px"></div>
+    <div class="bbc-logo"><div class="bbc-sq">B</div><div class="bbc-sq">B</div><div class="bbc-sq">C</div></div>
+    <div class="av">A</div>
+  </div>
+
+  <!-- ═══ SCREEN 0: HOME ════════════════════════════════ -->
+  <div class="screen on" id="s0" onscroll="handleScroll(this)">
+
+    <!-- Full-bleed live hero — no station dials -->
+    <div class="live-hero" onclick="goNav(2)">
+      <div class="lh-bg">
+        <div class="beams"><div class="beam b1"></div><div class="beam b2"></div><div class="beam b3"></div><div class="beam b4"></div><div class="beam b5"></div><div class="beam b6"></div></div>
+        <svg style="position:absolute;bottom:0;left:50%;transform:translateX(-50%);opacity:.48;" width="200" height="100" viewBox="0 0 220 110" fill="none"><polygon points="110,5 208,105 12,105" fill="rgba(232,163,42,.05)" stroke="rgba(232,163,42,.55)" stroke-width="1.5"/><circle cx="110" cy="5" r="4" fill="rgba(232,163,42,.95)"/><circle cx="34" cy="28" r="1" fill="rgba(255,255,255,.4)"/><circle cx="186" cy="22" r="1.2" fill="rgba(255,255,255,.5)"/><circle cx="58" cy="48" r=".7" fill="rgba(255,255,255,.3)"/></svg>
+        <div class="crowd">🙋🧑‍🤝‍🧑🙋🧑‍🤝‍🧑🙋🧑‍🤝‍🧑</div>
+      </div>
+      <div class="lh-grad"></div>
+      <div class="lh-content">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;"><span class="lp"><span class="d"></span>Live Now</span><span style="font-size:11px;color:rgba(255,255,255,.45);">Pyramid Stage · Glastonbury</span></div>
+        <div class="lh-title">Billie Eilish</div>
+        <div class="lh-act">Bad Guy · Radio 2 · 21:45 – 23:15</div>
+        <div class="lh-btns">
+          <button class="btn-p" onclick="event.stopPropagation();goNav(2)">Listen Live</button>
+          <button class="btn-g saved" onclick="event.stopPropagation()">Following ✓</button>
+          <div style="display:flex;align-items:center;gap:5px;background:rgba(0,0,0,.45);border:1px solid rgba(255,255,255,.12);border-radius:4px;padding:5px 10px;font-size:12px;font-weight:600;color:rgba(255,255,255,.7);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="13" height="13" style="color:var(--orange)"><polygon points="5 3 19 12 5 21 5 3"/></svg>5 streams</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Live Now strip -->
+    <div class="sh" style="padding-bottom:8px;padding-top:14px;"><h2>Live Now</h2><a class="ao" onclick="goNav(2)">See all</a></div>
+    <div class="hscroll">
+      <div class="ls-card" onclick="goNav(2)"><div class="ls-art" style="background:linear-gradient(135deg,#1c1506,#2e1a08);">⭐<div class="ls-badge"><span class="d"></span>Live</div><div class="ls-count">41.2k</div></div><div class="ls-info"><div class="ls-stage" style="color:#E8A32A;">Glastonbury</div><div class="ls-act">Billie Eilish</div><div class="ls-stn">Radio 2 · Audio</div></div></div>
+      <div class="ls-card" onclick="toast('▶ Switching','Olivia Rodrigo — Other Stage')"><div class="ls-art" style="background:linear-gradient(135deg,#0a1520,#1a2a40);">🎸<div class="ls-badge"><span class="d"></span>Live</div><div class="ls-count">18.7k</div></div><div class="ls-info"><div class="ls-stage">Other Stage</div><div class="ls-act">Olivia Rodrigo</div><div class="ls-stn">Radio 6 · Audio</div></div></div>
+      <div class="ls-card" onclick="toast('▶ Playing','Radio 5 Live — The Ashes')"><div class="ls-art" style="background:linear-gradient(135deg,#0a1a0a,#1a4a1a);">🏏<div class="ls-badge"><span class="d"></span>Live</div><div class="ls-count">22.4k</div></div><div class="ls-info"><div class="ls-stage">The Ashes</div><div class="ls-act">Eng vs Australia</div><div class="ls-stn">Radio 5</div></div></div>
+      <div class="ls-card" onclick="toast('⏰ Coming soon','Glass Animals — 22:30')"><div class="ls-art dim" style="background:var(--s2);opacity:.65;">🌲<div class="ls-count" style="background:var(--odim);color:var(--orange);">43 min</div></div><div class="ls-info"><div class="ls-stage" style="color:#8a4a9a;">Woodsie Stage</div><div class="ls-act">Glass Animals</div><div class="ls-stn">Radio 6 · 22:30</div></div></div>
+    </div>
+
+    <!-- Notification -->
+    <div class="notif" style="margin-top:8px;" onclick="toast('🔔 Reminder set','Glass Animals — alert at 22:15')"><div class="nb-icon">🔔</div><div class="nb-b"><div class="nb-t">Glass Animals go live in 43 minutes</div><div class="nb-s">Woodsie Stage · Radio 6 Music</div></div><div class="nb-cta">Remind →</div></div>
+
+    <!-- Continue Listening — non-live content prominent -->
+    <div class="sh" style="margin-top:10px;"><h2>Continue Listening</h2><a class="a">Manage list</a></div>
+    <div class="row" onclick="toast('▶ Playing','Glastonbury Daily — resuming')"><div class="row-art" style="background:linear-gradient(135deg,#1c1506,#2e1a08);">🎪</div><div class="row-info"><div class="row-title">Glastonbury Daily 2026</div><div class="row-sub">Best of Day 2 — Lauren Laverne's picks and backstage access</div><div class="prog-track"><div class="prog-fill" style="width:62%"></div></div><div class="prog-lbl">14 mins left</div></div><div class="row-play"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
+    <div class="div"></div>
+    <div class="row" onclick="toast('▶ Playing','The Wayne Rooney Show')"><div class="row-art" style="background:linear-gradient(135deg,#1a1a2e,#2a1a4e);">🎙️</div><div class="row-info"><div class="row-title">The Wayne Rooney Show</div><div class="row-sub">Wayne's Chat With Van Dijk, McFly Duets & Gary Neville Tribute</div><div class="prog-track"><div class="prog-fill" style="width:40%"></div></div><div class="prog-lbl">30 mins left</div></div><div class="row-play"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
+    <div class="div"></div>
+    <div class="row" onclick="toast('▶ Playing','The Traitors: Uncloaked')"><div class="row-art" style="background:linear-gradient(135deg,#0a1a2a,#1a2a4a);">🎭</div><div class="row-info"><div class="row-title">The Traitors: Uncloaked</div><div class="row-sub">Celebrity Traitors Series 1: Episode 2 BONUS</div><div class="prog-track"><div class="prog-fill" style="width:82%"></div></div><div class="prog-lbl">8 mins left</div></div><div class="row-play"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
+
+    <!-- New Releases — non-live -->
+    <div class="sh"><h2>New Releases</h2><a class="ao">See all</a></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:0 18px;">
+      <div style="border-radius:6px;overflow:hidden;cursor:pointer;height:160px;position:relative;background:linear-gradient(160deg,#0e0e1e,#0a0a12);display:flex;align-items:flex-end;padding:12px;" onclick="toast('▶ Playing','Crime Next Door')"><span style="font-size:18px;font-weight:900;color:#fff;line-height:1.2;">Crime<br>Next Door</span></div>
+      <div style="border-radius:6px;overflow:hidden;cursor:pointer;height:160px;position:relative;background:linear-gradient(160deg,#0a2010,#1a3a1a);display:flex;align-items:flex-end;padding:12px;" onclick="toast('▶ Playing','Race Across the World')"><span style="font-size:16px;font-weight:900;color:#fff;line-height:1.2;">Race Across<br>the World</span></div>
+    </div>
+
+    <!-- Coming up -->
+    <div class="sh"><h2>Coming Up</h2><a class="ao" onclick="goNav(2)">Full schedule</a></div>
+    <div class="row" style="align-items:center;" onclick="goNav(2)"><div class="row-art xs" style="background:linear-gradient(135deg,#1a0a1a,#2a1a2a);">🌲</div><div class="row-info"><div style="margin-bottom:3px;"><span class="up">Tonight 22:30 · in 43 min</span></div><div class="row-title" style="font-size:14px;">Glass Animals</div><div class="row-sub" style="font-size:12px;margin-bottom:0;">Woodsie Stage · Radio 6</div></div><button class="remind" id="sv1" onclick="event.stopPropagation();toggleSave('sv1','Glass Animals')">Remind me</button></div>
+    <div class="row" style="align-items:center;" onclick="goNav(2)"><div class="row-art xs" style="background:linear-gradient(135deg,#0a1a0a,#1a4a1a);">🎵</div><div class="row-info"><div style="margin-bottom:3px;"><span class="up">Tomorrow · 20:30</span></div><div class="row-title" style="font-size:14px;">The 1975</div><div class="row-sub" style="font-size:12px;margin-bottom:0;">Pyramid Stage · Radio 2</div></div><button class="remind saved" id="sv2" onclick="event.stopPropagation();toggleSave('sv2','The 1975')">Saved ✓</button></div>
+
+    <!-- Fan Zone -->
+    <div class="sh"><h2>Fan Zone</h2></div>
+    <div class="poll-card"><div class="poll-t">🎸 Best headliner so far?</div><div class="po" onclick="votePoll(this,52)"><div class="po-bar" style="width:52%"></div><span class="po-t">Billie Eilish</span><span class="po-p">52%</span></div><div class="po" onclick="votePoll(this,30)"><div class="po-bar" style="width:30%"></div><span class="po-t">Olivia Rodrigo</span><span class="po-p">30%</span></div><div class="po" onclick="votePoll(this,18)"><div class="po-bar" style="width:18%"></div><span class="po-t">The 1975 (Fri)</span><span class="po-p">18%</span></div><div class="poll-foot">28,441 votes · Live</div></div>
+    <div class="scroll-end"></div>
+  </div>
+
+  <!-- ═══ SCREEN 1: EXPLORE ════════════════════════════ -->
+  <div class="screen" id="s1">
+    <div style="padding-top:48px;">
+      <div class="page-title">Explore</div>
+      <div class="tab-strip" id="exp-tabs">
+        <div class="ti on" onclick="setExpTab(0)">Podcasts</div>
+        <div class="ti" onclick="setExpTab(1)">Music</div>
+        <div class="ti" onclick="setExpTab(2)">Audiobooks</div>
+        <div class="ti" onclick="setExpTab(3)">Sport</div>
+        <div class="ti" onclick="setExpTab(4)">News</div>
+        <div class="ti" onclick="setExpTab(5)">Children's</div>
+      </div>
+
+      <!-- Podcasts -->
+      <div id="ep0" class="ep">
+        <div class="sh"><h2>Playlists</h2></div>
+        <div class="hscroll">
+          <div class="pl-card" onclick="toast('▶ Playing','The History Playlist')"><div class="pl-art" style="background:linear-gradient(135deg,#1a1a2e,#2a3a6e);">📚</div><div class="pl-ov"><div class="pl-count">10 Items</div><div class="pl-title">The History Playlist</div><div class="pl-desc">Dive into the best history podcasts on Sounds & explore the…</div><div class="pl-play"><svg viewBox="0 0 24 24" fill="white" width="14" height="14"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div></div>
+          <div class="pl-card" onclick="toast('▶ Playing','Latest News Playlist')"><div class="pl-art" style="background:linear-gradient(135deg,#2a0a0a,#6e1a1a);">📰</div><div class="pl-ov"><div class="pl-count">10 Items</div><div class="pl-title">Latest News Playlist</div><div class="pl-desc">Stay up to date with today's top headlines</div><div class="pl-play"><svg viewBox="0 0 24 24" fill="white" width="14" height="14"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div></div>
+          <div class="pl-card" onclick="toast('▶ Playing','True Crime Essentials')"><div class="pl-art" style="background:linear-gradient(135deg,#1a0a2e,#3a1a5a);">🔍</div><div class="pl-ov"><div class="pl-count">8 Items</div><div class="pl-title">True Crime Essentials</div><div class="pl-desc">The best investigative podcasts on BBC Sounds</div><div class="pl-play"><svg viewBox="0 0 24 24" fill="white" width="14" height="14"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div></div>
+        </div>
+        <div class="sh"><h2>New Releases</h2></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:0 18px;">
+          <div style="border-radius:6px;overflow:hidden;cursor:pointer;height:160px;background:linear-gradient(160deg,#0e0e1e,#0a0a12);display:flex;align-items:flex-end;padding:12px;" onclick="toast('▶ Playing','Crime Next Door')"><span style="font-size:18px;font-weight:900;color:#fff;line-height:1.2;">Crime<br>Next Door</span></div>
+          <div style="border-radius:6px;overflow:hidden;cursor:pointer;height:160px;background:linear-gradient(160deg,#0a2010,#1a3a1a);display:flex;align-items:flex-end;padding:12px;" onclick="toast('▶ Playing','Race Across the World')"><span style="font-size:16px;font-weight:900;color:#fff;line-height:1.2;">Race Across<br>the World</span></div>
+        </div>
+        <div class="sh"><h2>Beyond The Headlines</h2></div>
+        <div class="row" onclick="toast('▶ Playing','Newscast — 36 mins')"><div class="row-art" style="background:linear-gradient(135deg,#0a2a2a,#1a4a4a);">📣</div><div class="row-info"><div class="row-title">Newscast</div><div class="row-sub">The Morgan McSweeney Evidence</div><div class="row-dur">36 mins</div></div><div class="row-play"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
+        <div class="div"></div>
+        <div class="row" onclick="toast('▶ Playing','The Explanation')"><div class="row-art" style="background:linear-gradient(135deg,#1a1a0a,#3a3a1a);">📱</div><div class="row-info"><div class="row-title">The Explanation</div><div class="row-sub">The Media Show: Investigating Sam Altman</div><div class="row-dur">28 mins</div></div><div class="row-play"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
+      </div>
+
+      <!-- Music -->
+      <div id="ep1" class="ep" style="display:none;">
+        <div class="sh"><h2>Live Music Now</h2><a class="ao" onclick="goNav(2)">All streams</a></div>
+        <div class="hscroll">
+          <div class="ls-card" onclick="goNav(2)"><div class="ls-art" style="background:linear-gradient(135deg,#1c1506,#2e1a08);">⭐<div class="ls-badge"><span class="d"></span>Live</div></div><div class="ls-info"><div class="ls-stage" style="color:#E8A32A;">Glastonbury</div><div class="ls-act">Billie Eilish</div><div class="ls-stn">Radio 2</div></div></div>
+          <div class="ls-card" onclick="toast('▶ Playing','6 Music — Lauren Laverne')"><div class="ls-art" style="background:linear-gradient(135deg,#1a0a2e,#4a0a6e);">6<div class="ls-badge"><span class="d"></span>Live</div></div><div class="ls-info"><div class="ls-stage">6 Music</div><div class="ls-act">Lauren Laverne</div><div class="ls-stn">Radio 6</div></div></div>
+          <div class="ls-card" onclick="toast('▶ Playing','Radio 1 — Greg James')"><div class="ls-art" style="background:linear-gradient(135deg,#1a1a2e,#2a2a6e);">1<div class="ls-badge"><span class="d"></span>Live</div></div><div class="ls-info"><div class="ls-stage">Radio 1</div><div class="ls-act">Greg James</div><div class="ls-stn">Radio 1</div></div></div>
+        </div>
+        <div class="sh"><h2>Browse all Music</h2></div>
+        <div class="bg">
+          <div class="bg-tile" onclick="toast('Browse','Blues')"><div class="bgi">🎸</div><div style="position:absolute;inset:0;background:rgba(0,0,0,.45);border-radius:6px;"></div><span class="bgl">Blues</span></div>
+          <div class="bg-tile" onclick="toast('Browse','Classical')"><div class="bgi">🎻</div><div style="position:absolute;inset:0;background:rgba(0,0,0,.45);border-radius:6px;"></div><span class="bgl">Classical</span></div>
+          <div class="bg-tile" onclick="toast('Browse','Classic Pop & Rock')"><div class="bgi">🎤</div><div style="position:absolute;inset:0;background:rgba(0,0,0,.45);border-radius:6px;"></div><span class="bgl">Classic Pop & Rock</span></div>
+          <div class="bg-tile" onclick="toast('Browse','Country')"><div class="bgi">🤠</div><div style="position:absolute;inset:0;background:rgba(0,0,0,.45);border-radius:6px;"></div><span class="bgl">Country</span></div>
+          <div class="bg-tile" onclick="toast('Browse','Dance & Electronica')"><div class="bgi">🎧</div><div style="position:absolute;inset:0;background:rgba(0,0,0,.45);border-radius:6px;"></div><span class="bgl">Dance & Electronica</span></div>
+          <div class="bg-tile" onclick="toast('Browse','Desi')"><div class="bgi">🎵</div><div style="position:absolute;inset:0;background:rgba(0,0,0,.45);border-radius:6px;"></div><span class="bgl">Desi</span></div>
+          <div class="bg-tile" onclick="toast('Browse','Folk')"><div class="bgi">🪕</div><div style="position:absolute;inset:0;background:rgba(0,0,0,.45);border-radius:6px;"></div><span class="bgl">Folk</span></div>
+          <div class="bg-tile" onclick="toast('Browse','Hip Hop, RnB & Dancehall')"><div class="bgi">🎙️</div><div style="position:absolute;inset:0;background:rgba(0,0,0,.45);border-radius:6px;"></div><span class="bgl">Hip Hop, RnB & Dancehall</span></div>
+          <div class="bg-tile" onclick="toast('Browse','Jazz')"><div class="bgi">🎺</div><div style="position:absolute;inset:0;background:rgba(0,0,0,.45);border-radius:6px;"></div><span class="bgl">Jazz</span></div>
+          <div class="bg-tile" onclick="toast('Browse','Mixes')"><div class="bgi">🎚️</div><div style="position:absolute;inset:0;background:rgba(0,0,0,.45);border-radius:6px;"></div><span class="bgl">Mixes</span></div>
+        </div>
+      </div>
+
+      <!-- Audiobooks -->
+      <div id="ep2" class="ep" style="display:none;">
+        <div class="sh"><h2>Featured</h2></div>
+        <div class="hscroll">
+          <div class="pl-card" onclick="toast('▶ Playing','Summer Reading playlist')"><div class="pl-art" style="background:linear-gradient(135deg,#1a2a1a,#2a4a2a);">📖</div><div class="pl-ov"><div class="pl-count">8 Items</div><div class="pl-title">Summer Reading</div><div class="pl-desc">Bestselling audiobooks to enjoy this summer</div><div class="pl-play"><svg viewBox="0 0 24 24" fill="white" width="14" height="14"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div></div>
+          <div class="pl-card" onclick="toast('▶ Playing','Thrillers & Crime')"><div class="pl-art" style="background:linear-gradient(135deg,#2a0a0a,#4a1a1a);">🔍</div><div class="pl-ov"><div class="pl-count">12 Items</div><div class="pl-title">Thrillers & Crime</div><div class="pl-desc">From cosy crime to dark psychological thrillers</div><div class="pl-play"><svg viewBox="0 0 24 24" fill="white" width="14" height="14"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div></div>
+        </div>
+        <div class="sh"><h2>New Releases</h2></div>
+        <div class="row" onclick="toast('▶ Playing','The Traitors: Uncloaked')"><div class="row-art" style="background:linear-gradient(135deg,#0a1a2a,#1a2a4a);">🎭</div><div class="row-info"><div class="row-title">The Traitors: Uncloaked</div><div class="row-sub">Celebrity Traitors Series 1: Episode 2 BONUS</div><div class="row-dur">45 mins</div></div><div class="row-play"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
+        <div class="div"></div>
+        <div class="row" onclick="toast('▶ Playing','Crime Next Door')"><div class="row-art" style="background:linear-gradient(135deg,#0e0e1e,#1a1a2e);">🚪</div><div class="row-info"><div class="row-title">Crime Next Door</div><div class="row-sub">Episode 3 — The Investigation Deepens</div><div class="row-dur">38 mins</div></div><div class="row-play"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
+      </div>
+
+      <!-- Sport -->
+      <div id="ep3" class="ep" style="display:none;">
+        <div class="sh"><h2>Live Sport Now</h2><a class="ao" onclick="goNav(2)">All streams</a></div>
+        <div class="hscroll">
+          <div class="ls-card" onclick="toast('▶ Playing','The Ashes — Radio 5 Live')"><div class="ls-art" style="background:linear-gradient(135deg,#1a2a1a,#2a5a2a);">🏏<div class="ls-badge"><span class="d"></span>Live</div><div class="ls-count">22.4k</div></div><div class="ls-info"><div class="ls-stage">The Ashes</div><div class="ls-act">Eng vs Australia</div><div class="ls-stn">Radio 5 · Day 3</div></div></div>
+          <div class="ls-card" onclick="toast('▶ Playing','F1 British GP — Sports Extra')"><div class="ls-art" style="background:linear-gradient(135deg,#2a1a0a,#5a3a1a);">🏎️<div class="ls-badge"><span class="d"></span>Live</div><div class="ls-count">14.1k</div></div><div class="ls-info"><div class="ls-stage">F1 British GP</div><div class="ls-act">Qualifying</div><div class="ls-stn">Sports Extra</div></div></div>
+          <div class="ls-card" onclick="toast('⏰ Later','Wimbledon — starts 13:00')"><div class="ls-art dim" style="background:var(--s2);opacity:.7;">🎾<div class="ls-count" style="background:var(--odim);color:var(--orange);">2h</div></div><div class="ls-info"><div class="ls-stage">Wimbledon</div><div class="ls-act">Centre Court</div><div class="ls-stn">Radio 5 · 13:00</div></div></div>
+        </div>
+        <div class="sh"><h2>Sport Podcasts</h2></div>
+        <div class="row" onclick="toast('▶ Playing','Football Daily')"><div class="row-art" style="background:linear-gradient(135deg,#0a2a0a,#1a5a1a);">⚽</div><div class="row-info"><div class="row-title">Football Daily</div><div class="row-sub">Premier League: The Big Summer Preview</div><div class="row-dur">34 mins</div></div><div class="row-play"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
+        <div class="div"></div>
+        <div class="row" onclick="toast('▶ Playing','The Wayne Rooney Show')"><div class="row-art" style="background:linear-gradient(135deg,#1a1a2e,#2a1a4e);">🎙️</div><div class="row-info"><div class="row-title">The Wayne Rooney Show</div><div class="row-sub">Wayne's Chat With Van Dijk & McFly Duets</div><div class="row-dur">62 mins</div></div><div class="row-play"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
+      </div>
+
+      <!-- News -->
+      <div id="ep4" class="ep" style="display:none;">
+        <div class="sh"><h2>Latest News Playlist</h2></div>
+        <div class="hscroll">
+          <div class="nc" onclick="toast('▶ Playing','08:00 Headlines — 4 mins')"><div class="nc-art" style="background:linear-gradient(135deg,#2a0a0a,#6e1a1a);">📺<div class="nc-bdg">NEWS</div><div class="nc-play"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div><div class="nc-meta"><div class="nc-title">08:00 King in US, cancers, London zoo</div><div class="nc-dur">4 mins</div></div></div>
+          <div class="nc" onclick="toast('▶ Playing','Cancer study — 2 mins')"><div class="nc-art" style="background:linear-gradient(135deg,#0a1a2a,#1a3a5a);">🔬<div class="nc-bdg">NEWS</div><div class="nc-play"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div><div class="nc-meta"><div class="nc-title">Some cancers more common in people aged under 50 — study</div><div class="nc-dur">2 mins</div></div></div>
+          <div class="nc" onclick="toast('▶ Playing','King speaks at banquet — 5 mins')"><div class="nc-art" style="background:linear-gradient(135deg,#1a1a0a,#3a3a1a);">👑<div class="nc-bdg">NEWS</div><div class="nc-play"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div><div class="nc-meta"><div class="nc-title">King Charles speaks at banquet with Donald Trump</div><div class="nc-dur">5 mins</div></div></div>
+        </div>
+        <div class="sh"><h2>Live News</h2></div>
+        <div class="row" style="align-items:center;" onclick="toast('▶ Playing','Radio 4 — live now')"><div class="row-art sm" style="background:linear-gradient(135deg,#1a0a0a,#3a1a1a);">📻</div><div class="row-info"><div style="margin-bottom:3px;"><span class="lp" style="font-size:9px;padding:2px 6px;"><span class="d"></span>LIVE</span></div><div class="row-title" style="font-size:14px;">BBC Radio 4</div><div class="row-sub" style="font-size:12px;margin-bottom:0;">Today Programme · News & Talk</div></div><div class="row-play"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
+        <div class="div"></div>
+        <div class="row" style="align-items:center;" onclick="toast('▶ Playing','BBC World Service')"><div class="row-art sm" style="background:linear-gradient(135deg,#0a1a2a,#1a3a5a);">🌍</div><div class="row-info"><div style="margin-bottom:3px;"><span class="lp" style="font-size:9px;padding:2px 6px;"><span class="d"></span>LIVE</span></div><div class="row-title" style="font-size:14px;">BBC World Service</div><div class="row-sub" style="font-size:12px;margin-bottom:0;">Global news · 24/7 live</div></div><div class="row-play"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
+        <div class="sh"><h2>Beyond The Headlines</h2></div>
+        <div class="row" onclick="toast('▶ Playing','Newscast')"><div class="row-art" style="background:linear-gradient(135deg,#0a2a2a,#1a4a4a);">📣</div><div class="row-info"><div class="row-title">Newscast</div><div class="row-sub">The Morgan McSweeney Evidence</div><div class="row-dur">36 mins</div></div><div class="row-play"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
+      </div>
+
+      <!-- Children's -->
+      <div id="ep5" class="ep" style="display:none;">
+        <div class="sh"><h2>Children's Picks</h2></div>
+        <div class="hscroll">
+          <div class="pl-card" onclick="toast('▶ Playing','CBeebies Bedtime Stories')"><div class="pl-art" style="background:linear-gradient(135deg,#1a2a4a,#2a4a8a);">🌙</div><div class="pl-ov"><div class="pl-count">7 Items</div><div class="pl-title">Bedtime Stories</div><div class="pl-desc">Calming stories to end the day</div><div class="pl-play"><svg viewBox="0 0 24 24" fill="white" width="14" height="14"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div></div>
+          <div class="pl-card" onclick="toast('▶ Playing','CBBC Favourites')"><div class="pl-art" style="background:linear-gradient(135deg,#2a1a0a,#5a3a1a);">🎒</div><div class="pl-ov"><div class="pl-count">10 Items</div><div class="pl-title">CBBC Favourites</div><div class="pl-desc">Podcasts and stories for older kids</div><div class="pl-play"><svg viewBox="0 0 24 24" fill="white" width="14" height="14"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div></div>
+        </div>
+        <div class="sh"><h2>New This Week</h2></div>
+        <div class="row" onclick="toast('▶ Playing','Horrible Histories Extra')"><div class="row-art" style="background:linear-gradient(135deg,#1a2a1a,#2a5a2a);">👑</div><div class="row-info"><div class="row-title">Horrible Histories Extra</div><div class="row-sub">Tudor special — with extra gore</div><div class="row-dur">22 mins</div></div><div class="row-play"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
+      </div>
+      <div class="scroll-end"></div>
+    </div>
+  </div>
+
+  <!-- ═══ SCREEN 2: LIVE HUB ════════════════════════════ -->
+  <div class="screen" id="s2">
+    <div style="padding-top:48px;">
+
+      <!-- ── LIVE VIDEO PLAYER ─────────────────────────────── -->
+      <div id="live-player" style="position:relative;height:320px;background:#000;overflow:hidden;">
+
+        <!-- Canvas video simulation -->
+        <canvas id="stageCanvas" style="position:absolute;inset:0;width:100%;height:100%;"></canvas>
+
+        <!-- Paused overlay -->
+        <div id="pause-overlay" style="position:absolute;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;">
+          <div style="width:64px;height:64px;border-radius:50%;background:rgba(255,107,0,.9);display:flex;align-items:center;justify-content:center;">
+            <svg viewBox="0 0 24 24" fill="white" width="28" height="28"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          </div>
+        </div>
+
+        <!-- Top chrome: back + save + share -->
+        <div style="position:absolute;top:48px;left:0;right:0;display:flex;align-items:center;justify-content:space-between;padding:10px 16px;z-index:10;pointer-events:all;">
+          <button class="bk-btn" onclick="goNav(0)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></button>
+          <div style="display:flex;gap:7px;">
+            <button class="ta" onclick="toast('🔖 Saved','Set saved to My Sounds')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg></button>
+            <button class="ta" onclick="toast('📤 Shared','Link copied to clipboard')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg></button>
+          </div>
+        </div>
+
+        <!-- Viewer count -->
+        <div class="viewers" style="top:58px;"><span class="vd"></span><span id="viewer-count">41,228</span> watching live</div>
+
+        <!-- Video/Audio toggle — top centre pill -->
+        <div style="position:absolute;top:104px;left:50%;transform:translateX(-50%);z-index:10;display:flex;background:rgba(0,0,0,.55);border:1px solid rgba(255,255,255,.18);border-radius:20px;padding:3px;backdrop-filter:blur(8px);">
+          <button id="va-video" onclick="setVA('video')" style="display:flex;align-items:center;gap:5px;padding:5px 14px;border-radius:16px;font-size:12px;font-weight:700;font-family:var(--font-b);background:var(--orange);color:#fff;transition:all .2s;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>Video
+          </button>
+          <button id="va-audio" onclick="setVA('audio')" style="display:flex;align-items:center;gap:5px;padding:5px 14px;border-radius:16px;font-size:12px;font-weight:700;font-family:var(--font-b);background:transparent;color:rgba(255,255,255,.65);transition:all .2s;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>Audio
+          </button>
+        </div>
+
+        <!-- Artist info + controls at bottom -->
+        <div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(to top,rgba(0,0,0,.92) 0%,transparent 100%);padding:14px 18px 16px;">
+          <div style="display:flex;align-items:center;gap:7px;margin-bottom:5px;">
+            <span class="lp"><span class="d"></span>Live</span>
+            <span style="font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:rgba(255,255,255,.5);" id="stage-label">Glastonbury 2027 · Pyramid Stage</span>
+          </div>
+          <div style="font-family:var(--font-d);font-size:26px;font-weight:700;color:#fff;letter-spacing:-.4px;line-height:1;margin-bottom:2px;" id="artist-name">Billie Eilish</div>
+          <div style="font-size:12px;color:rgba(255,255,255,.55);margin-bottom:12px;" id="track-detail">Bad Guy · Radio 2 · 21:45–23:15</div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <button onclick="togglePlay()" style="width:44px;height:44px;border-radius:50%;background:var(--orange);display:flex;align-items:center;justify-content:center;flex-shrink:0;border:none;cursor:pointer;transition:opacity .15s;">
+              <svg id="play-icon" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" width="18" height="18"><line x1="10" y1="15" x2="10" y2="9"/><line x1="14" y1="15" x2="14" y2="9"/></svg>
+            </button>
+            <div style="flex:1;">
+              <div style="height:3px;background:rgba(255,255,255,.18);border-radius:2px;margin-bottom:5px;"><div style="height:100%;background:var(--orange);border-radius:2px;width:24%;"></div></div>
+              <div style="display:flex;justify-content:space-between;font-size:10px;"><span style="color:var(--orange);font-weight:800;">● LIVE</span><span style="color:rgba(255,255,255,.4);" id="player-stn">BBC Radio 2</span></div>
+            </div>
+            <button onclick="toast('🔔 Set','Billie encore alert enabled')" style="width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;border:none;cursor:pointer;color:rgba(255,255,255,.55);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9m-5.73 13a2 2 0 01-3.46 0"/></svg></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stage thumbnail switcher -->
+      <div style="background:var(--ink);border-bottom:1px solid var(--border);">
+        <div style="display:flex;gap:0;padding:10px 14px;overflow-x:auto;scrollbar-width:none;gap:8px;" id="stage-thumbs">
+
+          <div class="stg-thumb on" id="stg-0" onclick="switchStage(0)" data-artist="Billie Eilish" data-label="Glastonbury 2027 · Pyramid Stage" data-track="Bad Guy · Radio 2 · 21:45–23:15" data-stn="BBC Radio 2" data-hue="30,21,8">
+            <div class="stg-art" style="background:linear-gradient(135deg,#1c1506,#2e1a08);">⭐</div>
+            <div class="stg-meta"><div class="stg-name">Billie Eilish</div><div class="stg-stage">Pyramid</div></div>
+            <span class="stg-lv"><span style="width:4px;height:4px;border-radius:50%;background:var(--live);display:inline-block;animation:blink 1.1s infinite;"></span></span>
+          </div>
+
+          <div class="stg-thumb" id="stg-1" onclick="switchStage(1)" data-artist="Olivia Rodrigo" data-label="Glastonbury 2027 · Other Stage" data-track="drivers license · Radio 6 · 21:30–23:00" data-stn="BBC Radio 6" data-hue="10,21,32">
+            <div class="stg-art" style="background:linear-gradient(135deg,#0a1520,#1a2a40);">🎸</div>
+            <div class="stg-meta"><div class="stg-name">Olivia Rodrigo</div><div class="stg-stage">Other Stage</div></div>
+            <span class="stg-lv"><span style="width:4px;height:4px;border-radius:50%;background:var(--live);display:inline-block;animation:blink 1.1s infinite;"></span></span>
+          </div>
+
+          <div class="stg-thumb" id="stg-2" onclick="switchStage(2)" data-artist="Jungle" data-label="Glastonbury 2027 · Park Stage" data-track="Casio · Radio 6 · 21:00–22:30" data-stn="BBC Radio 6" data-hue="10,26,10">
+            <div class="stg-art" style="background:linear-gradient(135deg,#0a1a0a,#1a3a1a);">🌿</div>
+            <div class="stg-meta"><div class="stg-name">Jungle</div><div class="stg-stage">Park Stage</div></div>
+            <span class="stg-lv"><span style="width:4px;height:4px;border-radius:50%;background:var(--live);display:inline-block;animation:blink 1.1s infinite;"></span></span>
+          </div>
+
+          <div class="stg-thumb" id="stg-3" onclick="switchStage(3)" data-artist="Lauren Laverne — Backstage" data-label="Glastonbury 2027 · Green Fields" data-track="Exclusive access · 6 Music" data-stn="BBC 6 Music" data-hue="26,10,42">
+            <div class="stg-art" style="background:linear-gradient(135deg,#1a0a2e,#3a1a5a);">🎤</div>
+            <div class="stg-meta"><div class="stg-name">Lauren Laverne</div><div class="stg-stage">Backstage</div></div>
+            <span class="stg-lv" style="background:rgba(232,163,42,.2);"><span style="width:4px;height:4px;border-radius:50%;background:var(--amber);display:inline-block;animation:blink 1.1s infinite;"></span></span>
+          </div>
+
+          <div class="stg-thumb" id="stg-4" onclick="switchStage(4)" data-artist="Glass Animals" data-label="Glastonbury 2027 · Woodsie Stage" data-track="Starts 22:30 · Radio 6" data-stn="BBC Radio 6" data-hue="26,10,40">
+            <div class="stg-art" style="background:linear-gradient(135deg,#1a0a1a,#2a1a2a);opacity:.55;">🌲</div>
+            <div class="stg-meta"><div class="stg-name" style="color:var(--dim);">Glass Animals</div><div class="stg-stage" style="color:var(--muted);">Woodsie · 22:30</div></div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Setlist so far -->
+      <div class="setlist-card">
+        <div class="slc-hd"><span class="slc-lbl">Setlist So Far</span><span class="slc-ct">Song 3 of ~18 · 21:47</span></div>
+        <div class="sl-item" onclick="toast('⏩ Jumping to','Bad Guy — playing now')">
+          <div class="sl-n"><div class="eq-wrap"><div class="bar bar1"></div><div class="bar bar2"></div><div class="bar bar3"></div><div class="bar bar4"></div></div></div>
+          <div class="sl-inf"><div class="sl-song" style="color:var(--orange);">Bad Guy</div><div class="sl-note" style="color:var(--orange);opacity:.7;">Playing now · 0:47 in</div></div>
+          <span class="sl-ts">0:47</span>
+        </div>
+        <div class="sl-item" onclick="toast('⏩ Jump to','Ocean Eyes — from start')">
+          <div class="sl-n" style="color:var(--muted);">2</div>
+          <div class="sl-inf"><div class="sl-song">Ocean Eyes</div><div class="sl-note">Epic crowd singalong · 4 min 10s</div></div>
+          <span class="sl-ts">21:43</span>
+        </div>
+        <div class="sl-item" onclick="toast('⏩ Jump to','Getting Older — from start')">
+          <div class="sl-n" style="color:var(--muted);">1</div>
+          <div class="sl-inf"><div class="sl-song">Getting Older</div><div class="sl-note">Opener · 3 min 22s</div></div>
+          <span class="sl-ts">21:45</span>
+        </div>
+      </div>
+
+      <!-- Joined halfway? -->
+      <div class="catchup" onclick="toast('▶ Catch up','Playing from the start of the set')">
+        <div class="cu-ey">Joined halfway?</div>
+        <div class="cu-title">Here's what you've missed so far</div>
+        <div class="cu-sub">Billie opened with Getting Older, then gave the crowd Ocean Eyes — 41,000 people singing together. Now into Bad Guy with a surprise extended intro.</div>
+        <div class="cu-cta">Catch up from the start <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></div>
+      </div>
+
+      <!-- More from Billie — story cards -->
+      <div class="story-lbl">More from Billie</div>
+      <div class="hscroll" style="padding-bottom:2px;">
+        <div class="clip-card" onclick="toast('▶ Playing','Ocean Eyes singalong — 2 min clip')"><div class="cc-thumb" style="background:linear-gradient(135deg,#1c1506,#2e1a08);">🔥<div class="cc-po"><div class="cc-pc"><svg viewBox="0 0 24 24" fill="white" width="12" height="12"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div><div class="cc-dur">2:04</div><div class="cc-bdg">Clip</div></div><div class="cc-meta"><div class="cc-title">The Ocean Eyes singalong</div><div class="cc-sub">Just now · Pyramid Stage</div></div></div>
+        <div class="about-card" onclick="toast('📖 Opening','Billie Eilish — her story')"><div class="ac-ey">Her Story</div><div class="ac-title">How Billie got here</div><div class="ac-body">First bedroom recording at 13. Now headlining Glastonbury at 22. In five years she's become one of the most influential artists of a generation.</div><a class="ac-more">Read more →</a></div>
+        <div class="trivia-card" onclick="toast('✦ Did you know','Glastonbury history facts')"><div class="tc-ey">Did you know</div><div class="tc-body">Billie is the youngest solo artist ever to headline Glastonbury's Pyramid Stage — she first played here on the Other Stage in 2019.</div></div>
+        <div class="clip-card" onclick="toast('▶ Playing','Billie on making her new album — Radio 1')"><div class="cc-thumb" style="background:linear-gradient(135deg,#1a0a2e,#3a1a5a);">🎙️<div class="cc-po"><div class="cc-pc"><svg viewBox="0 0 24 24" fill="white" width="12" height="12"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div><div class="cc-dur">18:32</div><div class="cc-bdg">In Conversation</div></div><div class="cc-meta"><div class="cc-title">Billie on making her new album</div><div class="cc-sub">Radio 1 · 2025</div></div></div>
+        <div class="clip-card" onclick="toast('▶ Playing','Hit Me Hard and Soft — documentary')"><div class="cc-thumb" style="background:linear-gradient(135deg,#0a1520,#1a2a40);">🎬<div class="cc-po"><div class="cc-pc"><svg viewBox="0 0 24 24" fill="white" width="12" height="12"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div><div class="cc-dur">44:10</div><div class="cc-bdg">The Film</div></div><div class="cc-meta"><div class="cc-title">Hit Me Hard and Soft: behind the album</div><div class="cc-sub">BBC · Documentary</div></div></div>
+      </div>
+
+      <!-- ── ALSO LIVE NOW — categorised by intent, not station ── -->
+      <div style="margin-top:18px;padding:0 18px 10px;">
+        <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:12px;">
+          <span style="font-size:20px;font-weight:800;color:var(--white);letter-spacing:-.3px;">Also Live Now</span>
+        </div>
+
+        <!-- ─ SPORT category ─ -->
+        <div class="cat-row" id="cat-sport">
+          <button class="cat-hd" onclick="toggleCat('sport')">
+            <span class="cat-icon">🏆</span>
+            <span class="cat-label">Sport</span>
+            <span class="cat-count">3 streams</span>
+            <span class="cat-chevron" id="chv-sport">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="14" height="14"><polyline points="6 9 12 15 18 9"/></svg>
+            </span>
+          </button>
+          <div class="cat-body" id="cb-sport">
+            <div class="cat-stream-card" onclick="toast('▶ Playing','The Ashes — Radio 5 Live · Day 3')">
+              <div class="csc-left">
+                <div class="csc-art" style="background:linear-gradient(135deg,#1a2a1a,#2a5a2a);">🏏</div>
+              </div>
+              <div class="csc-mid">
+                <div class="csc-name">The Ashes</div>
+                <div class="csc-show">England vs Australia · Day 3</div>
+                <div class="csc-stn">Radio 5 Live</div>
+              </div>
+              <div class="csc-right">
+                <span class="csc-live"><span class="d"></span>LIVE</span>
+                <div class="csc-count">22.4k</div>
+              </div>
+            </div>
+            <div class="cat-stream-card" onclick="toast('▶ Playing','F1 British GP — Sports Extra')">
+              <div class="csc-left"><div class="csc-art" style="background:linear-gradient(135deg,#2a1a0a,#5a3a1a);">🏎️</div></div>
+              <div class="csc-mid">
+                <div class="csc-name">F1 British Grand Prix</div>
+                <div class="csc-show">Qualifying session live</div>
+                <div class="csc-stn">Sports Extra</div>
+              </div>
+              <div class="csc-right">
+                <span class="csc-live"><span class="d"></span>LIVE</span>
+                <div class="csc-count">14.1k</div>
+              </div>
+            </div>
+            <div class="cat-stream-card" style="opacity:.65;" onclick="toast('⏰ Later','Wimbledon Centre Court — starts 13:00')">
+              <div class="csc-left"><div class="csc-art" style="background:linear-gradient(135deg,#1a2a1a,#3a5a3a);">🎾</div></div>
+              <div class="csc-mid">
+                <div class="csc-name">Wimbledon</div>
+                <div class="csc-show">Centre Court — starts 13:00</div>
+                <div class="csc-stn">Radio 5 Live</div>
+              </div>
+              <div class="csc-right">
+                <span class="csc-soon">in 2h</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ─ NEWS category ─ -->
+        <div class="cat-row" id="cat-news">
+          <button class="cat-hd" onclick="toggleCat('news')">
+            <span class="cat-icon">📰</span>
+            <span class="cat-label">News</span>
+            <span class="cat-count">3 streams</span>
+            <span class="cat-chevron" id="chv-news">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="14" height="14"><polyline points="6 9 12 15 18 9"/></svg>
+            </span>
+          </button>
+          <div class="cat-body" id="cb-news">
+            <div class="cat-stream-card" onclick="toast('▶ Playing','BBC Radio 4 — Today Programme')">
+              <div class="csc-left"><div class="csc-art" style="background:linear-gradient(135deg,#2a1a40,#4a2a70);">📻</div></div>
+              <div class="csc-mid">
+                <div class="csc-name">BBC Radio 4</div>
+                <div class="csc-show">Today Programme</div>
+                <div class="csc-stn">Radio 4 · News &amp; Talk</div>
+              </div>
+              <div class="csc-right">
+                <span class="csc-live"><span class="d"></span>LIVE</span>
+              </div>
+            </div>
+            <div class="cat-stream-card" onclick="toast('▶ Playing','BBC World Service — global news')">
+              <div class="csc-left"><div class="csc-art" style="background:linear-gradient(135deg,#0a1a2a,#1a3a5a);">🌍</div></div>
+              <div class="csc-mid">
+                <div class="csc-name">BBC World Service</div>
+                <div class="csc-show">Global news · always on</div>
+                <div class="csc-stn">World Service · 24/7</div>
+              </div>
+              <div class="csc-right">
+                <span class="csc-live"><span class="d"></span>LIVE</span>
+              </div>
+            </div>
+            <div class="cat-stream-card" onclick="toast('📡 Newsroom','BBC News Millbank — as it breaks')">
+              <div class="csc-left"><div class="csc-art" style="background:linear-gradient(135deg,#1a0808,#3a1010);">⚡</div></div>
+              <div class="csc-mid">
+                <div class="csc-name">Newsroom Live</div>
+                <div class="csc-show">Millbank studios — unfiltered</div>
+                <div class="csc-stn">Raw feed · BBC News</div>
+              </div>
+              <div class="csc-right">
+                <span class="csc-live" style="background:rgba(229,53,53,.25);"><span class="d"></span>RAW</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ─ RADIO category ─ -->
+        <div class="cat-row" id="cat-radio">
+          <button class="cat-hd" onclick="toggleCat('radio')">
+            <span class="cat-icon">📡</span>
+            <span class="cat-label">Radio</span>
+            <span class="cat-count">7 stations live</span>
+            <span class="cat-chevron" id="chv-radio">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="14" height="14"><polyline points="6 9 12 15 18 9"/></svg>
+            </span>
+          </button>
+          <div class="cat-body collapsed" id="cb-radio">
+            <div class="cat-stream-card" onclick="toast('▶ Playing','Radio 1 — Greg James')">
+              <div class="csc-left"><div class="csc-art" style="background:linear-gradient(135deg,#1a0a2e,#3a0a5e);font-size:14px;font-weight:900;color:white;letter-spacing:-.5px;">R1</div></div>
+              <div class="csc-mid"><div class="csc-name">BBC Radio 1</div><div class="csc-show">Greg James</div><div class="csc-stn">Radio 1 · Pop &amp; Music</div></div>
+              <div class="csc-right"><span class="csc-live"><span class="d"></span>LIVE</span></div>
+            </div>
+            <div class="cat-stream-card" onclick="toast('▶ Playing','Radio 2 — Glastonbury live')">
+              <div class="csc-left"><div class="csc-art" style="background:linear-gradient(135deg,#1a1206,#3a2a08);box-shadow:0 0 0 1.5px var(--orange);font-size:14px;font-weight:900;color:white;">R2</div></div>
+              <div class="csc-mid"><div class="csc-name">BBC Radio 2</div><div class="csc-show" style="color:var(--orange);">Glastonbury 2027 — live</div><div class="csc-stn">Radio 2 · Music &amp; Events</div></div>
+              <div class="csc-right"><span class="csc-live" style="background:rgba(232,163,42,.2);color:var(--amber);"><span class="d" style="background:var(--amber);"></span>GLASTO</span></div>
+            </div>
+            <div class="cat-stream-card" onclick="toast('▶ Playing','Radio 3 — In Concert')">
+              <div class="csc-left"><div class="csc-art" style="background:linear-gradient(135deg,#0a1a2e,#1a2a5e);font-size:14px;font-weight:900;color:white;">R3</div></div>
+              <div class="csc-mid"><div class="csc-name">BBC Radio 3</div><div class="csc-show">In Concert</div><div class="csc-stn">Radio 3 · Classical</div></div>
+              <div class="csc-right"><span class="csc-live"><span class="d"></span>LIVE</span></div>
+            </div>
+            <div class="cat-stream-card" onclick="toast('▶ Playing','Radio 4 — Today Programme')">
+              <div class="csc-left"><div class="csc-art" style="background:linear-gradient(135deg,#2a1a40,#4a2a70);font-size:14px;font-weight:900;color:white;">R4</div></div>
+              <div class="csc-mid"><div class="csc-name">BBC Radio 4</div><div class="csc-show">Today Programme</div><div class="csc-stn">Radio 4 · News &amp; Drama</div></div>
+              <div class="csc-right"><span class="csc-live"><span class="d"></span>LIVE</span></div>
+            </div>
+            <div class="cat-stream-card" onclick="toast('▶ Playing','Radio 5 Live — The Ashes')">
+              <div class="csc-left"><div class="csc-art" style="background:linear-gradient(135deg,#1a2a1a,#2a5a2a);font-size:13px;font-weight:900;color:white;">5L</div></div>
+              <div class="csc-mid"><div class="csc-name">BBC Radio 5 Live</div><div class="csc-show">The Ashes — Day 3</div><div class="csc-stn">Radio 5 · Sport &amp; News</div></div>
+              <div class="csc-right"><span class="csc-live"><span class="d"></span>LIVE</span></div>
+            </div>
+            <div class="cat-stream-card" onclick="toast('▶ Playing','6 Music — Lauren Laverne')">
+              <div class="csc-left"><div class="csc-art" style="background:linear-gradient(135deg,#1a0a2e,#4a0a6e);font-size:14px;font-weight:900;color:white;">6M</div></div>
+              <div class="csc-mid"><div class="csc-name">BBC 6 Music</div><div class="csc-show">Lauren Laverne</div><div class="csc-stn">6 Music · Alternative</div></div>
+              <div class="csc-right"><span class="csc-live"><span class="d"></span>LIVE</span></div>
+            </div>
+            <div class="cat-stream-card" onclick="toast('▶ Playing','Asian Network — Breakfast')">
+              <div class="csc-left"><div class="csc-art" style="background:linear-gradient(135deg,#2a0a1a,#5a1a3a);font-size:11px;font-weight:900;color:white;letter-spacing:-.5px;">Asian</div></div>
+              <div class="csc-mid"><div class="csc-name">Asian Network</div><div class="csc-show">Breakfast Show</div><div class="csc-stn">Asian Network · Desi Music</div></div>
+              <div class="csc-right"><span class="csc-live"><span class="d"></span>LIVE</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ─ RAW & UNFILTERED category ─ -->
+        <div class="cat-row" id="cat-raw">
+          <button class="cat-hd" onclick="toggleCat('raw')">
+            <span class="cat-icon">📡</span>
+            <span class="cat-label">Raw &amp; Unfiltered</span>
+            <span class="cat-count">5 feeds</span>
+            <span class="cat-chevron" id="chv-raw">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="14" height="14"><polyline points="6 9 12 15 18 9"/></svg>
+            </span>
+          </button>
+          <div class="cat-body collapsed" id="cb-raw">
+            <div style="padding:0 0 10px;font-size:12px;color:var(--dim);line-height:1.5;font-family:var(--font-b);">Behind-the-scenes from BBC studios — unedited, live as it happens.</div>
+            <!-- Scrollable raw video feed cards -->
+            <div style="display:flex;gap:10px;overflow-x:auto;scrollbar-width:none;padding-bottom:8px;margin:0 -14px;padding-left:14px;padding-right:14px;">
+              <!-- Each card has a canvas animation -->
+              <div class="raw-feed-card" onclick="toast('📡 Opened','Glastonbury Backstage — Lauren Laverne · full screen')">
+                <canvas class="raw-canvas" id="rc0" data-hue="30" data-label="Backstage · Glasto"></canvas>
+                <div class="rfc-overlay">
+                  <div class="rfc-top"><span class="rfc-live"><span class="d"></span>RAW</span><span class="rfc-viewers">6.1k</span></div>
+                  <div class="rfc-bottom">
+                    <div class="rfc-name">Lauren Laverne — Green Fields</div>
+                    <div class="rfc-sub">Backstage · Unedited · 6 Music</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="raw-feed-card" onclick="toast('📡 Opened','Radio 1 Studio — Greg James pre-show')">
+                <canvas class="raw-canvas" id="rc1" data-hue="260" data-label="Studio · Radio 1"></canvas>
+                <div class="rfc-overlay">
+                  <div class="rfc-top"><span class="rfc-live"><span class="d"></span>RAW</span><span class="rfc-viewers">3.4k</span></div>
+                  <div class="rfc-bottom">
+                    <div class="rfc-name">Greg James — pre-show prep</div>
+                    <div class="rfc-sub">Studio cam · Unfiltered · R1</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="raw-feed-card" onclick="toast('📡 Opened','BBC Newsroom — Millbank live')">
+                <canvas class="raw-canvas" id="rc2" data-hue="0" data-label="Newsroom · BBC"></canvas>
+                <div class="rfc-overlay">
+                  <div class="rfc-top"><span class="rfc-live" style="background:rgba(229,53,53,.35)"><span class="d"></span>BREAKING</span><span class="rfc-viewers">28.7k</span></div>
+                  <div class="rfc-bottom">
+                    <div class="rfc-name">BBC Newsroom — Millbank</div>
+                    <div class="rfc-sub">As it breaks · BBC News</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="raw-feed-card" onclick="toast('📡 Opened','TMS Commentary box — off air chat')">
+                <canvas class="raw-canvas" id="rc3" data-hue="120" data-label="TMS · The Ashes"></canvas>
+                <div class="rfc-overlay">
+                  <div class="rfc-top"><span class="rfc-live"><span class="d"></span>RAW</span><span class="rfc-viewers">9.2k</span></div>
+                  <div class="rfc-bottom">
+                    <div class="rfc-name">TMS — Commentary Box</div>
+                    <div class="rfc-sub">Off-air chat · The Ashes · R5</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="raw-feed-card" onclick="toast('📡 Opened','BBC Weather Centre — forecast production')">
+                <canvas class="raw-canvas" id="rc4" data-hue="200" data-label="Weather · BBC Studios"></canvas>
+                <div class="rfc-overlay">
+                  <div class="rfc-top"><span class="rfc-live"><span class="d"></span>RAW</span><span class="rfc-viewers">1.8k</span></div>
+                  <div class="rfc-bottom">
+                    <div class="rfc-name">BBC Weather Centre</div>
+                    <div class="rfc-sub">Forecast production live</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tonight's schedule -->
+      <div class="sh" style="margin-top:8px;"><h2>Tonight's Schedule</h2><a class="ao" onclick="toast('📅 Full schedule','Opening complete schedule')">All events</a></div>
+      <div class="si" onclick="goNav(2)"><div class="si-time">21:45</div><div class="si-line"><div class="si-dot lv"></div><div class="si-tail"></div></div><div class="si-body"><div class="si-act">Billie Eilish</div><div class="si-stage"><span class="sdot" style="background:#E8A32A;"></span>Pyramid · Glastonbury · Radio 2</div><div class="si-chips"><span class="chip lv">🔴 Live</span><span class="chip">🎧 Audio</span><span class="chip">💬 Chat</span></div></div><div class="si-save"><button class="remind saved">Saved ✓</button></div></div>
+      <div class="si" onclick="toast('▶ Playing','Olivia Rodrigo — Other Stage')"><div class="si-time">21:30</div><div class="si-line"><div class="si-dot lv"></div><div class="si-tail"></div></div><div class="si-body"><div class="si-act">Olivia Rodrigo</div><div class="si-stage"><span class="sdot" style="background:#4a7a9a;"></span>Other Stage · Radio 6</div><div class="si-chips"><span class="chip lv">🔴 Live</span><span class="chip">🎧 Audio</span></div></div><div class="si-save"><button class="remind" onclick="event.stopPropagation();toast('🔔 Saved','Olivia Rodrigo alert set')">Remind</button></div></div>
+      <div class="si" onclick="toast('⏰ 22:30','Glass Animals — Woodsie Stage')"><div class="si-time">22:30</div><div class="si-line"><div class="si-dot" style="background:var(--orange);"></div><div class="si-tail"></div></div><div class="si-body"><div class="si-act">Glass Animals</div><div class="si-stage"><span class="sdot" style="background:#8a4a9a;"></span>Woodsie · Radio 6</div><div class="si-chips"><span class="up">in 43 min</span><span class="chip">🎧 Audio</span></div></div><div class="si-save"><button class="remind" id="sv3" onclick="event.stopPropagation();toggleSave('sv3','Glass Animals')">Remind</button></div></div>
+      <div class="si" onclick="toast('📅 Tomorrow','The 1975 — Pyramid Stage 20:30')"><div class="si-time">20:30</div><div class="si-line"><div class="si-dot"></div></div><div class="si-body"><div class="si-act">The 1975 <span style="font-size:11px;color:var(--dim);">· Tomorrow</span></div><div class="si-stage"><span class="sdot" style="background:#E8A32A;"></span>Pyramid · Radio 2</div><div class="si-chips"><span class="chip">🎧 Audio</span><span class="chip">🎬 Video</span><span class="chip">💬 Chat</span></div></div><div class="si-save"><button class="remind saved">Saved ✓</button></div></div>
+
+      <!-- Reactions -->
+      <div class="react-pulse"><div class="rp on" onclick="toggleR(this)"><span class="rp-em">🔥</span><span class="rp-n">74k</span></div><div class="rp-sep"></div><div class="rp" onclick="toggleR(this)"><span class="rp-em">❤️</span><span class="rp-n">51k</span></div><div class="rp-sep"></div><div class="rp" onclick="toggleR(this)"><span class="rp-em">⚡</span><span class="rp-n">22k</span></div><div class="rp-sep"></div><div class="rp" onclick="toggleR(this)"><span class="rp-em">😭</span><span class="rp-n">11k</span></div><div class="rp-sep"></div><div class="rp" onclick="toggleR(this)"><span class="rp-em">🎸</span><span class="rp-n">8.9k</span></div></div>
+
+      <!-- Crowd — collapsible peek/expand -->
+      <div class="crowd-zone">
+        <div class="crowd-hd">
+          <span class="crowd-title">The Crowd</span>
+          <span class="crowd-lv"><span style="width:5px;height:5px;border-radius:50%;background:var(--live);display:inline-block;animation:blink 1.1s infinite;"></span>Live</span>
+        </div>
+        <div class="crowd-ct">41,228 people here with you right now</div>
+
+        <!-- Peek state — shows 2 comments, fades, tap to expand -->
+        <div id="crowd-peek" onclick="expandCrowd()" style="cursor:pointer;position:relative;">
+          <div class="comment"><div class="c-av" style="background:#3a2a8a;">T</div><div><div class="c-hd"><span class="c-name">TaraB</span><span class="c-badge">BBC</span><span class="c-time">just now</span></div><div class="c-text">📍 <strong>Bad Guy has started</strong> — Billie opened with a surprise extended intro. The crowd are off their feet right now.</div></div></div>
+          <div class="comment" style="margin-bottom:0;"><div class="c-av" style="background:#c04a2a;">S</div><div><div class="c-hd"><span class="c-name">SophieG</span><span class="c-time">1 min ago</span></div><div class="c-text">ocean eyes literally just broke me 😭 the WHOLE crowd singing. Watching from Edinburgh and I'm crying</div></div></div>
+          <!-- Fade + expand prompt -->
+          <div style="position:absolute;bottom:0;left:0;right:0;height:72px;background:linear-gradient(to bottom,transparent,var(--black));display:flex;align-items:flex-end;justify-content:center;padding-bottom:8px;">
+            <div style="display:flex;align-items:center;gap:6px;background:var(--s2);border:1px solid var(--border);border-radius:20px;padding:6px 14px;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="var(--orange)" stroke-width="2" width="14" height="14"><polyline points="6 9 12 15 18 9"/></svg>
+              <span style="font-size:12px;font-weight:700;color:var(--orange);">Read all comments</span>
+              <span style="font-size:12px;color:var(--dim);">41.2k</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Full expanded state — hidden by default -->
+        <div id="crowd-full" style="display:none;">
+          <div id="comments">
+            <div class="comment"><div class="c-av" style="background:#3a2a8a;">T</div><div><div class="c-hd"><span class="c-name">TaraB</span><span class="c-badge">BBC</span><span class="c-time">just now</span></div><div class="c-text">📍 <strong>Bad Guy has started</strong> — Billie opened with a surprise extended intro. The crowd are off their feet right now.</div></div></div>
+            <div class="comment"><div class="c-av" style="background:#c04a2a;">S</div><div><div class="c-hd"><span class="c-name">SophieG</span><span class="c-time">1 min ago</span></div><div class="c-text">ocean eyes literally just broke me 😭 the WHOLE crowd singing. Watching from Edinburgh and I'm crying</div></div></div>
+            <div class="comment"><div class="c-av" style="background:#2a6a4a;">M</div><div><div class="c-hd"><span class="c-name">MarcusL</span><span class="c-time">2 min ago</span></div><div class="c-text">first glastonbury and ocean eyes was the first song. genuinely in tears 🔥</div></div></div>
+            <div class="comment"><div class="c-av" style="background:#6a2a4a;">R</div><div><div class="c-hd"><span class="c-name">RachK</span><span class="c-time">3 min ago</span></div><div class="c-text">Watching from Inverness 🏴󠁧󠁢󠁳󠁣󠁴󠁿 feels like being in the crowd. This is why Sounds exists</div></div></div>
+          </div>
+          <!-- Collapse button -->
+          <button onclick="collapseCrowd()" style="display:flex;align-items:center;gap:6px;background:var(--s2);border:1px solid var(--border);border-radius:20px;padding:6px 14px;margin:6px auto 0;font-size:12px;font-weight:700;color:var(--dim);cursor:pointer;font-family:var(--font-b);">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><polyline points="18 15 12 9 6 15"/></svg>
+            Collapse
+          </button>
+        </div>
+      </div>
+      <div class="scroll-end"></div>
+
+      <!-- Comment input -->
+      <div class="ci-wrap-outer">
+        <div class="ci-inner"><input class="ci-input" placeholder="Say something about the set…" id="ci"><span class="ci-emoji" onclick="toast('😊','Emoji picker')">😊</span></div>
+        <button class="ci-send" onclick="sendComment()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══ SCREEN 3: MY SOUNDS ══════════════════════════ -->
+  <div class="screen" id="s3">
+    <div style="padding-top:48px;">
+      <div class="page-title">My Sounds</div>
+      <div class="sh"><h2>Saved Events</h2></div>
+      <div class="row" style="align-items:center;" onclick="goNav(2)"><div class="row-art sm" style="background:linear-gradient(135deg,#1c1506,#2e1a08);">⭐</div><div class="row-info"><div style="margin-bottom:3px;"><span class="lp" style="font-size:9px;padding:2px 6px;"><span class="d"></span>Live Now</span></div><div class="row-title" style="font-size:15px;">Glastonbury 2027</div><div class="row-sub" style="font-size:12px;margin-bottom:0;">Billie Eilish · 5 streams · Radio 2</div></div><div class="row-play"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
+      <div class="div"></div>
+      <div class="row" style="align-items:center;" onclick="toast('⏰ Tomorrow','The 1975 — 20:30')"><div class="row-art sm" style="background:linear-gradient(135deg,#0a1a0a,#1a4a1a);">🎵</div><div class="row-info"><div style="margin-bottom:3px;"><span class="up">Tomorrow · 20:30</span></div><div class="row-title" style="font-size:15px;">The 1975</div><div class="row-sub" style="font-size:12px;margin-bottom:0;">Pyramid Stage · Radio 2</div></div><button class="remind saved">Saved ✓</button></div>
+      <div class="sh" style="margin-top:8px;"><h2>Continue Listening</h2></div>
+      <div class="row" onclick="toast('▶ Playing','Glastonbury Daily — resuming')"><div class="row-art" style="background:linear-gradient(135deg,#1c1506,#2e1a08);">🎪</div><div class="row-info"><div class="row-title">Glastonbury Daily 2026</div><div class="row-sub">Best of Day 2 — Lauren's picks and backstage</div><div class="prog-track"><div class="prog-fill" style="width:62%"></div></div><div class="prog-lbl">14 mins left</div></div><div class="row-play"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
+      <div class="div"></div>
+      <div class="row" onclick="toast('▶ Playing','The Traitors: Uncloaked')"><div class="row-art" style="background:linear-gradient(135deg,#0a1a2a,#1a2a4a);">🎭</div><div class="row-info"><div class="row-title">The Traitors: Uncloaked</div><div class="row-sub">Celebrity Traitors Series 1: Episode 2 BONUS</div><div class="prog-track"><div class="prog-fill" style="width:82%"></div></div><div class="prog-lbl">8 mins left</div></div><div class="row-play"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
+      <div class="sh"><h2>Subscriptions</h2></div>
+      <div class="row" style="align-items:center;" onclick="toast('▶ Playing','Newscast — latest')"><div class="row-art sm" style="background:linear-gradient(135deg,#0a2a2a,#1a4a4a);">📣</div><div class="row-info"><div class="row-title" style="font-size:15px;">Newscast</div><div class="row-sub" style="font-size:12px;margin-bottom:0;">New episode · 36 mins</div></div><div class="row-play"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
+      <div class="div"></div>
+      <div class="row" style="align-items:center;" onclick="toast('▶ Playing','Football Daily — latest')"><div class="row-art sm" style="background:linear-gradient(135deg,#0a2a0a,#1a5a1a);">⚽</div><div class="row-info"><div class="row-title" style="font-size:15px;">Football Daily</div><div class="row-sub" style="font-size:12px;margin-bottom:0;">New episode · 34 mins</div></div><div class="row-play"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
+      <div class="scroll-end"></div>
+    </div>
+  </div>
+
+  <!-- ═══ SCREEN 4: SEARCH ═════════════════════════════ -->
+  <div class="screen" id="s4">
+    <div style="padding-top:56px;">
+      <div class="search-bar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><input placeholder="Find something to play" id="si"></div>
+      <div class="sh" style="padding-top:14px;"><h2>Live Now</h2><a class="ao" onclick="goNav(2)">All streams</a></div>
+      <div class="hscroll">
+        <div class="ls-card" onclick="goNav(2)"><div class="ls-art" style="background:linear-gradient(135deg,#1c1506,#2e1a08);">⭐<div class="ls-badge"><span class="d"></span>Live</div></div><div class="ls-info"><div class="ls-stage" style="color:#E8A32A;">Glastonbury</div><div class="ls-act">Billie Eilish</div><div class="ls-stn">Radio 2</div></div></div>
+        <div class="ls-card" onclick="toast('▶ Playing','The Ashes — Radio 5 Live')"><div class="ls-art" style="background:linear-gradient(135deg,#0a1a0a,#1a4a1a);">🏏<div class="ls-badge"><span class="d"></span>Live</div></div><div class="ls-info"><div class="ls-stage">The Ashes</div><div class="ls-act">Eng vs Australia</div><div class="ls-stn">Radio 5</div></div></div>
+        <div class="ls-card" onclick="toast('▶ Playing','Radio 4 — live now')"><div class="ls-art" style="background:linear-gradient(135deg,#2a1a40,#4a2a70);">📻<div class="ls-badge"><span class="d"></span>Live</div></div><div class="ls-info"><div class="ls-stage">Radio 4</div><div class="ls-act">Today Programme</div><div class="ls-stn">Radio 4</div></div></div>
+      </div>
+      <div class="sh"><h2>Browse all Music</h2></div>
+      <div class="bg">
+        <div class="bg-tile" onclick="toast('Browse','Blues')"><div class="bgi">🎸</div><div style="position:absolute;inset:0;background:rgba(0,0,0,.45);border-radius:6px;"></div><span class="bgl">Blues</span></div>
+        <div class="bg-tile" onclick="toast('Browse','Classical')"><div class="bgi">🎻</div><div style="position:absolute;inset:0;background:rgba(0,0,0,.45);border-radius:6px;"></div><span class="bgl">Classical</span></div>
+        <div class="bg-tile" onclick="toast('Browse','Classic Pop & Rock')"><div class="bgi">🎤</div><div style="position:absolute;inset:0;background:rgba(0,0,0,.45);border-radius:6px;"></div><span class="bgl">Classic Pop & Rock</span></div>
+        <div class="bg-tile" onclick="toast('Browse','Country')"><div class="bgi">🤠</div><div style="position:absolute;inset:0;background:rgba(0,0,0,.45);border-radius:6px;"></div><span class="bgl">Country</span></div>
+        <div class="bg-tile" onclick="toast('Browse','Dance & Electronica')"><div class="bgi">🎧</div><div style="position:absolute;inset:0;background:rgba(0,0,0,.45);border-radius:6px;"></div><span class="bgl">Dance & Electronica</span></div>
+        <div class="bg-tile" onclick="toast('Browse','Easy Listening')"><div class="bgi">🎵</div><div style="position:absolute;inset:0;background:rgba(0,0,0,.45);border-radius:6px;"></div><span class="bgl">Easy Listening</span></div>
+        <div class="bg-tile" onclick="toast('Browse','Folk')"><div class="bgi">🪕</div><div style="position:absolute;inset:0;background:rgba(0,0,0,.45);border-radius:6px;"></div><span class="bgl">Folk</span></div>
+        <div class="bg-tile" onclick="toast('Browse','Hip Hop & RnB')"><div class="bgi">🎙️</div><div style="position:absolute;inset:0;background:rgba(0,0,0,.45);border-radius:6px;"></div><span class="bgl">Hip Hop & RnB</span></div>
+        <div class="bg-tile" onclick="toast('Browse','Jazz')"><div class="bgi">🎺</div><div style="position:absolute;inset:0;background:rgba(0,0,0,.45);border-radius:6px;"></div><span class="bgl">Jazz</span></div>
+        <div class="bg-tile" onclick="toast('Browse','Mixes')"><div class="bgi">🎚️</div><div style="position:absolute;inset:0;background:rgba(0,0,0,.45);border-radius:6px;"></div><span class="bgl">Mixes</span></div>
+      </div>
+      <div class="scroll-end"></div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="tst"><div class="t-i" id="ti">✓</div><div><div class="t-t" id="tt">Done</div><div class="t-s" id="ts"></div></div></div>
+
+  <!-- Bottom nav -->
+  <div class="bnav">
+    <button class="bn on" id="bn0" onclick="goNav(0)"><div id="bp0" class="bn-pill"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg><span>Home</span></div></button>
+    <button class="bn" id="bn1" onclick="goNav(1)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg><span>Explore</span></button>
+    <button class="bn" id="bn2" onclick="goNav(2)" style="position:relative;"><div id="bp2" style="display:flex;flex-direction:column;align-items:center;gap:3px;padding:3px 0;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="24" height="24"><circle cx="12" cy="12" r="3"/><path d="M6.3 6.3a8 8 0 000 11.4M17.7 6.3a8 8 0 010 11.4"/><path d="M3.5 3.5a13 13 0 000 17M20.5 3.5a13 13 0 010 17"/></svg><span>Live</span></div><span class="live-dot-nav"></span></button>
+    <button class="bn" id="bn3" onclick="goNav(3)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg><span>My Sounds</span></button>
+    <button class="bn" id="bn4" onclick="goNav(4)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><span>Search</span></button>
+  </div>
+
+</div><!-- /device -->
+</div><!-- /device-wrap -->
+
+<script>
+/* ── STATE ──────────────────────────────────────────────── */
+let cur=0, tTm, expTab=0, aIdx=0;
+let stageCanvas, stageCtx, stageAnimId;
+let isPlaying=true, currentStage=0, vaMode='video', frameCount=0;
+
+const autoComments=[
+  {name:'EllaP', bg:'#4a2a6a', text:'bad guy live is something else entirely 🤯'},
+  {name:'DanF',  bg:'#2a4a2a', text:"switched to Radio 2 just for this. best decision I've made today"},
+  {name:'NaomiT',bg:'#6a4a2a', text:'watching with my mum who saw Billie here in 2019. full circle 💛'},
+  {name:'ChrisJ',bg:'#2a2a6a', text:'BBC Sounds sound quality is unreal for a live stream right now'},
+  {name:'AmiS',  bg:'#6a2a2a', text:"three songs in and I've already cried twice. CINEMA 🎬"},
+];
+
+/* ── NAV ────────────────────────────────────────────────── */
+function goNav(n){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));
+  document.querySelectorAll('.bn').forEach(b=>b.classList.remove('on'));
+  const bp0=document.getElementById('bp0');
+  bp0.className='';
+  bp0.style.cssText='display:flex;flex-direction:column;align-items:center;gap:3px;padding:3px 0;';
+  const sc=document.getElementById('s'+n);
+  if(sc){sc.classList.add('on');sc.scrollTop=0;}
+  const bn=document.getElementById('bn'+n);
+  if(bn) bn.classList.add('on');
+  if(n===0) bp0.className='bn-pill';
+  document.getElementById('appbar').classList.toggle('solid',n!==0);
+  cur=n;
+  // canvas lifecycle
+  if(n===2){
+    setTimeout(()=>{ initStageCanvas(); initRawCanvases(); }, 60);
+  } else {
+    cancelAnimationFrame(stageAnimId);
+    stageAnimId=null;
+  }
+}
+
+function handleScroll(el){
+  if(cur!==0)return;
+  document.getElementById('appbar').classList.toggle('solid',el.scrollTop>260);
+}
+
+/* ── EXPLORE TABS ───────────────────────────────────────── */
+function setExpTab(n){
+  expTab=n;
+  document.querySelectorAll('#exp-tabs .ti').forEach((t,i)=>t.classList.toggle('on',i===n));
+  document.querySelectorAll('.ep').forEach((p,i)=>p.style.display=i===n?'block':'none');
+}
+
+/* ── TOAST ──────────────────────────────────────────────── */
+function toast(t,s){
+  const el=document.getElementById('tst');
+  document.getElementById('tt').textContent=t;
+  document.getElementById('ts').textContent=s;
+  el.classList.add('show');
+  clearTimeout(tTm);
+  tTm=setTimeout(()=>el.classList.remove('show'),2700);
+}
+
+/* ── HELPERS ────────────────────────────────────────────── */
+function toggleSave(id,name){
+  const b=document.getElementById(id);
+  if(!b)return;
+  if(b.classList.contains('saved')){
+    b.classList.remove('saved');b.textContent='Remind me';
+    toast('Reminder removed',name+' removed');
+  } else {
+    b.classList.add('saved');b.textContent='Saved ✓';
+    toast('🔔 Saved',name+' — alert 15 mins before');
+  }
+}
+
+function votePoll(el,p){
+  const bar=el.querySelector('.po-bar');
+  if(bar) bar.style.width=p+'%';
+  el.style.borderColor='var(--orange)';
+  toast('✅ Voted',p+'% also chose this');
+}
+
+function toggleR(el){
+  el.classList.toggle('on');
+  const em=el.querySelector('.rp-em');
+  toast((em?em.textContent:'')+' reaction', el.classList.contains('on')?'Added to the crowd':'Removed');
+}
+
+/* ── COMMENTS ───────────────────────────────────────────── */
+function expandCrowd(){
+  const peek=document.getElementById('crowd-peek');
+  const full=document.getElementById('crowd-full');
+  if(peek) peek.style.display='none';
+  if(full) full.style.display='block';
+}
+function collapseCrowd(){
+  const peek=document.getElementById('crowd-peek');
+  const full=document.getElementById('crowd-full');
+  if(full) full.style.display='none';
+  if(peek) peek.style.display='block';
+}
+
+function sendComment(){
+  const inp=document.getElementById('ci');
+  if(!inp)return;
+  const txt=inp.value.trim();
+  if(!txt)return;
+  expandCrowd();
+  const list=document.getElementById('comments');
+  if(!list)return;
+  const div=document.createElement('div');
+  div.className='comment';
+  div.innerHTML=`<div class="c-av" style="background:var(--orange);">A</div><div><div class="c-hd"><span class="c-name">You</span><span class="c-time">just now</span></div><div class="c-text">${txt}</div></div>`;
+  list.insertBefore(div,list.firstChild);
+  inp.value='';
+  toast('💬 Your message is live','Shared with 41,228 people listening now');
+}
+
+setInterval(()=>{
+  if(aIdx>=autoComments.length)return;
+  const c=autoComments[aIdx++];
+  const list=document.getElementById('comments');
+  if(!list)return;
+  const div=document.createElement('div');
+  div.className='comment';
+  div.innerHTML=`<div class="c-av" style="background:${c.bg};">${c.name[0]}</div><div><div class="c-hd"><span class="c-name">${c.name}</span><span class="c-time">just now</span></div><div class="c-text">${c.text}</div></div>`;
+  list.insertBefore(div,list.children[1]||null);
+},7000);
+
+/* ── CATEGORY ROWS ──────────────────────────────────────── */
+const catState={sport:true,news:true,radio:false,raw:false};
+function toggleCat(id){
+  catState[id]=!catState[id];
+  const body=document.getElementById('cb-'+id);
+  const chv=document.getElementById('chv-'+id);
+  if(body) body.classList.toggle('collapsed',!catState[id]);
+  if(chv)  chv.classList.toggle('open',catState[id]);
+}
+
+/* ── CANVAS: MAIN STAGE ─────────────────────────────────── */
+const SC=[
+  {bg1:'#1e1604',bg2:'#0f1c08',bm:'rgba(232,163,42,',cr:true},
+  {bg1:'#0a1020',bg2:'#0a1828',bm:'rgba(120,160,220,',cr:true},
+  {bg1:'#081408',bg2:'#0c200c',bm:'rgba(80,180,100,', cr:true},
+  {bg1:'#14082a',bg2:'#1a0a3a',bm:'rgba(180,100,220,',cr:false},
+  {bg1:'#140814',bg2:'#1a0a1a',bm:'rgba(160,80,180,', cr:true},
+];
+const BEAMS=[
+  {x:.18,h:220,ph:0,   sp:.012},
+  {x:.38,h:270,ph:1.2, sp:.009},
+  {x:.58,h:200,ph:2.4, sp:.011},
+  {x:.74,h:250,ph:3.6, sp:.008},
+  {x:.88,h:175,ph:4.8, sp:.013},
+  {x:.28,h:195,ph:.7,  sp:.010},
+];
+
+/* rounded rect that works everywhere */
+function rRect(ctx,x,y,w,h,r){
+  r=Math.min(r,w/2,h/2);
+  ctx.beginPath();
+  ctx.moveTo(x+r,y);
+  ctx.arcTo(x+w,y,   x+w,y+h, r);
+  ctx.arcTo(x+w,y+h, x,  y+h, r);
+  ctx.arcTo(x,  y+h, x,  y,   r);
+  ctx.arcTo(x,  y,   x+w,y,   r);
+  ctx.closePath();
+}
+
+function initStageCanvas(){
+  stageCanvas=document.getElementById('stageCanvas');
+  if(!stageCanvas)return;
+  stageCtx=stageCanvas.getContext('2d');
+  stageCanvas.width=390;
+  stageCanvas.height=320;
+  cancelAnimationFrame(stageAnimId);
+  isPlaying=true;
+  // restore pause overlay
+  const ov=document.getElementById('pause-overlay');
+  if(ov) ov.style.display='none';
+  // restore play icon
+  const ic=document.getElementById('play-icon');
+  if(ic) ic.innerHTML='<line x1="10" y1="15" x2="10" y2="9" stroke="white" stroke-width="2.5"/><line x1="14" y1="15" x2="14" y2="9" stroke="white" stroke-width="2.5"/>';
+  drawStageFrame();
+}
+
+function drawStageFrame(){
+  if(!stageCtx||!isPlaying)return;
+  frameCount++;
+  const c=SC[currentStage], w=390, h=320, ctx=stageCtx;
+
+  /* background */
+  const g=ctx.createLinearGradient(0,0,w,h);
+  g.addColorStop(0,c.bg1); g.addColorStop(1,c.bg2);
+  ctx.fillStyle=g; ctx.fillRect(0,0,w,h);
+
+  /* film grain */
+  const imgd=ctx.getImageData(0,0,w,h), d=imgd.data;
+  for(let i=0;i<d.length;i+=4){
+    const n=(Math.random()-.5)*14;
+    d[i]  =Math.max(0,Math.min(255,d[i]  +n));
+    d[i+1]=Math.max(0,Math.min(255,d[i+1]+n));
+    d[i+2]=Math.max(0,Math.min(255,d[i+2]+n));
+  }
+  ctx.putImageData(imgd,0,0);
+
+  /* light beams */
+  BEAMS.forEach(b=>{
+    const ang=Math.sin(frameCount*b.sp+b.ph)*.22;
+    ctx.save();
+    ctx.translate(b.x*w,h); ctx.rotate(ang);
+    const bg=ctx.createLinearGradient(0,0,0,-b.h);
+    bg.addColorStop(0,c.bm+'.52)');
+    bg.addColorStop(1,c.bm+'0)');
+    ctx.fillStyle=bg; ctx.fillRect(-1.5,-b.h,3,b.h);
+    ctx.restore();
+  });
+
+  /* pyramid (stages 0-2) */
+  if(currentStage<=2){
+    ctx.save(); ctx.globalAlpha=.50;
+    ctx.strokeStyle='rgba(232,163,42,.58)'; ctx.lineWidth=1.5;
+    ctx.fillStyle='rgba(232,163,42,.04)';
+    ctx.beginPath();
+    ctx.moveTo(195,4); ctx.lineTo(362,h); ctx.lineTo(28,h);
+    ctx.closePath(); ctx.fill(); ctx.stroke();
+    const ap=ctx.createRadialGradient(195,4,0,195,4,20);
+    ap.addColorStop(0,'rgba(232,163,42,.88)');
+    ap.addColorStop(1,'rgba(232,163,42,0)');
+    ctx.fillStyle=ap; ctx.fillRect(175,0,40,24);
+    ctx.restore();
+  }
+
+  /* crowd wave */
+  if(c.cr){
+    ctx.save();
+    ctx.globalAlpha=.36+Math.sin(frameCount*.05)*.06;
+    ctx.fillStyle='rgba(0,0,0,.72)';
+    ctx.beginPath();
+    let first=true;
+    for(let x=0;x<=w;x+=8){
+      const y=h-38+Math.sin(x*.06+frameCount*.04)*6+Math.sin(x*.12+frameCount*.06)*4;
+      if(first){ctx.moveTo(x,y);first=false;}else ctx.lineTo(x,y);
+    }
+    ctx.lineTo(w,h); ctx.lineTo(0,h); ctx.closePath(); ctx.fill();
+    ctx.restore();
+  }
+
+  /* audio-only equaliser */
+  if(vaMode==='audio'){
+    ctx.fillStyle='rgba(0,0,0,.82)'; ctx.fillRect(0,0,w,h);
+    const bars=28, bw=6, gap=4, total=bars*(bw+gap), sx=(w-total)/2;
+    for(let i=0;i<bars;i++){
+      const bh=(Math.sin(frameCount*.07+i*.35)*.5+.5)*72+8;
+      const x=sx+i*(bw+gap);
+      const bgrad=ctx.createLinearGradient(0,h/2+bh/2,0,h/2-bh/2);
+      bgrad.addColorStop(0,'rgba(255,107,0,.28)');
+      bgrad.addColorStop(1,'rgba(255,107,0,.94)');
+      ctx.fillStyle=bgrad;
+      rRect(ctx, x, h/2-bh/2, bw, bh, 3);
+      ctx.fill();
+    }
+  }
+
+  stageAnimId=requestAnimationFrame(drawStageFrame);
+}
+
+function switchStage(idx){
+  currentStage=idx;
+  document.querySelectorAll('.stg-thumb').forEach((t,i)=>t.classList.toggle('on',i===idx));
+  const el=document.getElementById('stg-'+idx);
+  if(!el)return;
+  const data=el.dataset;
+  const an=document.getElementById('artist-name');
+  const sl=document.getElementById('stage-label');
+  const td=document.getElementById('track-detail');
+  const ps=document.getElementById('player-stn');
+  if(an) an.textContent=data.artist||'';
+  if(sl) sl.textContent=data.label||'';
+  if(td) td.textContent=data.track||'';
+  if(ps) ps.textContent=data.stn||'';
+  const ov=document.getElementById('pause-overlay');
+  if(ov){ov.style.display='flex'; setTimeout(()=>{if(isPlaying)ov.style.display='none';},380);}
+}
+
+function togglePlay(){
+  isPlaying=!isPlaying;
+  const ov=document.getElementById('pause-overlay');
+  const ic=document.getElementById('play-icon');
+  if(isPlaying){
+    if(ov) ov.style.display='none';
+    if(ic) ic.innerHTML='<line x1="10" y1="15" x2="10" y2="9" stroke="white" stroke-width="2.5"/><line x1="14" y1="15" x2="14" y2="9" stroke="white" stroke-width="2.5"/>';
+    drawStageFrame();
+  } else {
+    cancelAnimationFrame(stageAnimId);
+    if(ov) ov.style.display='flex';
+    if(ic) ic.innerHTML='<polygon points="5 3 19 12 5 21 5 3" fill="white"/>';
+  }
+}
+
+function setVA(mode){
+  vaMode=mode;
+  const v=document.getElementById('va-video');
+  const a=document.getElementById('va-audio');
+  if(!v||!a)return;
+  if(mode==='video'){
+    v.style.background='var(--orange)'; v.style.color='#fff';
+    a.style.background='transparent';   a.style.color='rgba(255,255,255,.65)';
+    toast('📺 Video','Switched to live stage camera');
+  } else {
+    a.style.background='var(--orange)'; a.style.color='#fff';
+    v.style.background='transparent';   v.style.color='rgba(255,255,255,.65)';
+    toast('🎧 Audio only','Saving data · sound continues');
+  }
+}
+
+/* ── CANVAS: RAW FEEDS ──────────────────────────────────── */
+function initRawCanvases(){
+  document.querySelectorAll('.raw-canvas').forEach((cv,idx)=>{
+    if(cv.dataset.init)return;
+    cv.dataset.init='1';
+    cv.width=160; cv.height=130;
+    const hue=parseInt(cv.dataset.hue)||30;
+    let f=idx*23;
+    const ctx=cv.getContext('2d');
+    function draw(){
+      f++;
+      const w=cv.width, h=cv.height;
+      ctx.fillStyle=`hsl(${hue},35%,5%)`; ctx.fillRect(0,0,w,h);
+      const imgd=ctx.getImageData(0,0,w,h), d=imgd.data;
+      for(let i=0;i<d.length;i+=4){
+        const n=(Math.random()-.5)*22;
+        d[i]  =Math.max(0,Math.min(255,d[i]  +n));
+        d[i+1]=Math.max(0,Math.min(255,d[i+1]+n));
+        d[i+2]=Math.max(0,Math.min(255,d[i+2]+n));
+      }
+      ctx.putImageData(imgd,0,0);
+      const bx=w*.5+Math.sin(f*.018+idx)*w*.22;
+      const by=h*.4+Math.cos(f*.022+idx)*h*.22;
+      const blob=ctx.createRadialGradient(bx,by,0,bx,by,55);
+      blob.addColorStop(0,`hsla(${hue},55%,32%,.30)`);
+      blob.addColorStop(1,'transparent');
+      ctx.fillStyle=blob; ctx.fillRect(0,0,w,h);
+      if(f%55<2){
+        ctx.fillStyle='rgba(255,255,255,.032)';
+        ctx.fillRect(0,(f*2.8)%h,w,1);
+      }
+      requestAnimationFrame(draw);
+    }
+    draw();
+  });
+}
+
+/* ── VIEWER COUNT FLUCTUATION ───────────────────────────── */
+setInterval(()=>{
+  const el=document.getElementById('viewer-count');
+  if(el) el.textContent=(41000+Math.floor(Math.random()*900-450)).toLocaleString();
+},3000);
+
+/* ── INIT ───────────────────────────────────────────────── */
+document.addEventListener('DOMContentLoaded',()=>{
+  // open sport + news categories
+  ['sport','news'].forEach(id=>{
+    const chv=document.getElementById('chv-'+id);
+    if(chv) chv.classList.add('open');
+  });
+  goNav(0);
+  setExpTab(0);
+});
+</script>
+</body>
+</html>
