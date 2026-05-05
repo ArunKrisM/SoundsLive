@@ -202,7 +202,7 @@ body{background:#060606;min-height:100vh;margin:0;padding:0;font-family:var(--fo
    HOME SCREEN
    ═══════════════════════════════════════════════ */
 .live-hero{position:relative;height:340px;overflow:hidden;cursor:pointer;margin-top:48px;}
-.lh-bg{position:absolute;inset:0;background:linear-gradient(165deg,#1e1604 0%,#0f1c08 50%,#080808 100%);}
+.lh-bg{position:absolute;inset:0;background:linear-gradient(165deg,#1a0828 0%,#0e0818 50%,#080808 100%);}
 .beams{position:absolute;inset:0;overflow:hidden;pointer-events:none;}
 .beam{position:absolute;bottom:0;width:1.5px;background:linear-gradient(to top,rgba(232,163,42,.58),transparent);transform-origin:bottom;animation:sw 4s ease-in-out infinite;}
 .b1{left:18%;height:230px;animation-delay:0s;}.b2{left:35%;height:280px;animation-delay:.7s;}
@@ -398,14 +398,36 @@ body{background:#060606;min-height:100vh;margin:0;padding:0;font-family:var(--fo
 .si-save{padding-top:13px;flex-shrink:0;}
 
 .scroll-end{height:40px;}
-/* ── Stage thumbnail switcher ─── */
+/* ── BBC Predict ─── */
+.predict-opt{position:relative;overflow:hidden;display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;background:rgba(255,255,255,.05);border:1px solid rgba(160,80,220,.2);cursor:pointer;margin-bottom:7px;transition:border-color .15s;}
+.predict-opt:hover{border-color:rgba(160,80,220,.5);}
+.predict-bar{position:absolute;left:0;top:0;bottom:0;width:var(--pct);background:rgba(160,80,220,.18);transition:width .5s var(--ease);}
+.predict-name{font-size:13px;font-weight:600;color:var(--white);position:relative;z-index:1;flex:1;}
+.predict-pct{font-size:12px;font-weight:800;color:#c87aff;position:relative;z-index:1;}
+/* ── Key Moments ─── */
+.moment-row{display:flex;align-items:center;gap:12px;padding:11px 14px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .12s;}
+.moment-row:hover{background:var(--s2);}
+.mr-time{font-size:11px;font-weight:700;color:rgba(160,80,220,.8);width:32px;flex-shrink:0;}
+.mr-info{flex:1;min-width:0;}
+.mr-title{font-size:13px;font-weight:700;color:var(--white);margin-bottom:2px;}
+.mr-sub{font-size:11px;color:var(--dim);}
+.mr-badge{font-size:9.5px;font-weight:800;padding:3px 8px;border-radius:4px;white-space:nowrap;flex-shrink:0;}
+/* ── Creator cards ─── */
+.creator-card{flex-shrink:0;width:172px;cursor:pointer;transition:opacity .15s;}
+.creator-card:hover{opacity:.85;}
+.cr-thumb{width:172px;height:100px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:28px;position:relative;overflow:hidden;margin-bottom:8px;}
+.cr-meta{}
+.cr-handle{font-size:10px;font-weight:700;color:rgba(160,80,220,.8);margin-bottom:3px;letter-spacing:.3px;}
+.cr-title{font-size:12px;font-weight:600;color:var(--white);line-height:1.35;margin-bottom:3px;}
+.cr-stats{font-size:10px;color:var(--dim);}
+
 .stg-thumb{flex-shrink:0;display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:10px;cursor:pointer;transition:background .15s;border:1.5px solid transparent;background:transparent;min-width:130px;}
 .stg-thumb:hover{background:var(--s2);}
 .stg-thumb.on{background:var(--s2);border-color:var(--orange);}
 .stg-art{width:44px;height:44px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;background:var(--s2);}
 .stg-meta{flex:1;min-width:0;}
-.stg-name{font-size:12px;font-weight:700;color:var(--white);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-family:var(--font-b);}
-.stg-stage{font-size:10px;color:var(--dim);font-family:var(--font-b);}
+.stg-name{font-size:12px;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-family:var(--font-b);}
+.stg-stage{font-size:10px;color:#888;font-family:var(--font-b);}
 .stg-lv{flex-shrink:0;display:flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;background:var(--ldim);}
 
 /* ── Raw feed cards (canvas-animated) ─── */
@@ -481,9 +503,9 @@ body{background:#060606;min-height:100vh;margin:0;padding:0;font-family:var(--fo
       </div>
       <div class="lh-grad"></div>
       <div class="lh-content">
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;"><span class="lp"><span class="d"></span>Live Now</span><span style="font-size:11px;color:rgba(255,255,255,.45);">Pyramid Stage · Glastonbury</span></div>
-        <div class="lh-title">Billie Eilish</div>
-        <div class="lh-act">Bad Guy · Radio 2 · 21:45 – 23:15</div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;"><span class="lp"><span class="d"></span>Live Now</span><span style="font-size:11px;color:rgba(255,255,255,.45);">Series 2 · Episode 4</span></div>
+        <div class="lh-title">Celebrity<br>Traitors</div>
+        <div class="lh-act">S2 Ep4 · The Banishment · BBC One · Live now</div>
         <div class="lh-btns">
           <button class="btn-p" onclick="event.stopPropagation();goNav(2)">Listen Live</button>
           <button class="btn-g saved" onclick="event.stopPropagation()">Following ✓</button>
@@ -495,18 +517,18 @@ body{background:#060606;min-height:100vh;margin:0;padding:0;font-family:var(--fo
     <!-- Live Now strip -->
     <div class="sh" style="padding-bottom:8px;padding-top:14px;"><h2>Live Now</h2><a class="ao" onclick="goNav(2)">See all</a></div>
     <div class="hscroll">
-      <div class="ls-card" onclick="goNav(2)"><div class="ls-art" style="background:linear-gradient(135deg,#1c1506,#2e1a08);">⭐<div class="ls-badge"><span class="d"></span>Live</div><div class="ls-count">41.2k</div></div><div class="ls-info"><div class="ls-stage" style="color:#E8A32A;">Glastonbury</div><div class="ls-act">Billie Eilish</div><div class="ls-stn">Radio 2 · Audio</div></div></div>
-      <div class="ls-card" onclick="toast('▶ Switching','Olivia Rodrigo — Other Stage')"><div class="ls-art" style="background:linear-gradient(135deg,#0a1520,#1a2a40);">🎸<div class="ls-badge"><span class="d"></span>Live</div><div class="ls-count">18.7k</div></div><div class="ls-info"><div class="ls-stage">Other Stage</div><div class="ls-act">Olivia Rodrigo</div><div class="ls-stn">Radio 6 · Audio</div></div></div>
-      <div class="ls-card" onclick="toast('▶ Playing','Radio 5 Live — The Ashes')"><div class="ls-art" style="background:linear-gradient(135deg,#0a1a0a,#1a4a1a);">🏏<div class="ls-badge"><span class="d"></span>Live</div><div class="ls-count">22.4k</div></div><div class="ls-info"><div class="ls-stage">The Ashes</div><div class="ls-act">Eng vs Australia</div><div class="ls-stn">Radio 5</div></div></div>
-      <div class="ls-card" onclick="toast('⏰ Coming soon','Glass Animals — 22:30')"><div class="ls-art dim" style="background:var(--s2);opacity:.65;">🌲<div class="ls-count" style="background:var(--odim);color:var(--orange);">43 min</div></div><div class="ls-info"><div class="ls-stage" style="color:#8a4a9a;">Woodsie Stage</div><div class="ls-act">Glass Animals</div><div class="ls-stn">Radio 6 · 22:30</div></div></div>
+      <div class="ls-card" onclick="goNav(2)"><div class="ls-art" style="background:linear-gradient(135deg,#1a0828,#2e1050);">🏰<div class="ls-badge"><span class="d"></span>Live</div><div class="ls-count">62.4k</div></div><div class="ls-info"><div class="ls-stage" style="color:#c87aff;">Main Show</div><div class="ls-act">Celebrity Traitors</div><div class="ls-stn">BBC One · Video</div></div></div>
+      <div class="ls-card" onclick="toast('▶ Switching','Roundtable — uncut feed')"><div class="ls-art" style="background:linear-gradient(135deg,#200808,#3a1010);">🕯️<div class="ls-badge"><span class="d"></span>Live</div><div class="ls-count">18.2k</div></div><div class="ls-info"><div class="ls-stage">Roundtable</div><div class="ls-act">Uncut feed</div><div class="ls-stn">Sounds Exclusive</div></div></div>
+      <div class="ls-card" onclick="toast('▶ Switching','Traitors Lair — secret cam')"><div class="ls-art" style="background:linear-gradient(135deg,#080c1a,#101830);">🗡️<div class="ls-badge"><span class="d"></span>Live</div><div class="ls-count">9.1k</div></div><div class="ls-info"><div class="ls-stage" style="color:#78a8ff;">Traitors Lair</div><div class="ls-act">Secret cam</div><div class="ls-stn">Sounds Exclusive</div></div></div>
+      <div class="ls-card" onclick="toast('⏰ Starts 22:00','Post-show debrief with Rylan')"><div class="ls-art dim" style="background:var(--s2);opacity:.65;">📺<div class="ls-count" style="background:var(--odim);color:var(--orange);">22:00</div></div><div class="ls-info"><div class="ls-stage" style="color:var(--dim);">Post-Show</div><div class="ls-act">With Rylan</div><div class="ls-stn">BBC Sounds · 22:00</div></div></div>
     </div>
 
     <!-- Notification -->
-    <div class="notif" style="margin-top:8px;" onclick="toast('🔔 Reminder set','Glass Animals — alert at 22:15')"><div class="nb-icon">🔔</div><div class="nb-b"><div class="nb-t">Glass Animals go live in 43 minutes</div><div class="nb-s">Woodsie Stage · Radio 6 Music</div></div><div class="nb-cta">Remind →</div></div>
+    <div class="notif" style="margin-top:8px;" onclick="toast('🔔 Reminder set','Post-Show with Rylan — alert set for 22:00')"><div class="nb-icon">🔔</div><div class="nb-b"><div class="nb-t">Post-show with Rylan starts at 22:00</div><div class="nb-s">React, predict, get the insider story</div></div><div class="nb-cta">Remind →</div></div>
 
     <!-- Continue Listening — non-live content prominent -->
     <div class="sh" style="margin-top:10px;"><h2>Continue Listening</h2><a class="a">Manage list</a></div>
-    <div class="row" onclick="toast('▶ Playing','Glastonbury Daily — resuming')"><div class="row-art" style="background:linear-gradient(135deg,#1c1506,#2e1a08);">🎪</div><div class="row-info"><div class="row-title">Glastonbury Daily 2026</div><div class="row-sub">Best of Day 2 — Lauren Laverne's picks and backstage access</div><div class="prog-track"><div class="prog-fill" style="width:62%"></div></div><div class="prog-lbl">14 mins left</div></div><div class="row-play"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
+    <div class="row" onclick="toast('▶ Playing','Celebrity Traitors Daily — resuming')"><div class="row-art" style="background:linear-gradient(135deg,#1c1506,#2e1a08);">🎪</div><div class="row-info"><div class="row-title">Celebrity Traitors: The Debrief</div><div class="row-sub">Ep 4 post-show: Rylan's verdict, predictions & fan reactions</div><div class="prog-track"><div class="prog-fill" style="width:62%"></div></div><div class="prog-lbl">14 mins left</div></div><div class="row-play"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
     <div class="div"></div>
     <div class="row" onclick="toast('▶ Playing','The Wayne Rooney Show')"><div class="row-art" style="background:linear-gradient(135deg,#1a1a2e,#2a1a4e);">🎙️</div><div class="row-info"><div class="row-title">The Wayne Rooney Show</div><div class="row-sub">Wayne's Chat With Van Dijk, McFly Duets & Gary Neville Tribute</div><div class="prog-track"><div class="prog-fill" style="width:40%"></div></div><div class="prog-lbl">30 mins left</div></div><div class="row-play"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
     <div class="div"></div>
@@ -521,12 +543,12 @@ body{background:#060606;min-height:100vh;margin:0;padding:0;font-family:var(--fo
 
     <!-- Coming up -->
     <div class="sh"><h2>Coming Up</h2><a class="ao" onclick="goNav(2)">Full schedule</a></div>
-    <div class="row" style="align-items:center;" onclick="goNav(2)"><div class="row-art xs" style="background:linear-gradient(135deg,#1a0a1a,#2a1a2a);">🌲</div><div class="row-info"><div style="margin-bottom:3px;"><span class="up">Tonight 22:30 · in 43 min</span></div><div class="row-title" style="font-size:14px;">Glass Animals</div><div class="row-sub" style="font-size:12px;margin-bottom:0;">Woodsie Stage · Radio 6</div></div><button class="remind" id="sv1" onclick="event.stopPropagation();toggleSave('sv1','Glass Animals')">Remind me</button></div>
-    <div class="row" style="align-items:center;" onclick="goNav(2)"><div class="row-art xs" style="background:linear-gradient(135deg,#0a1a0a,#1a4a1a);">🎵</div><div class="row-info"><div style="margin-bottom:3px;"><span class="up">Tomorrow · 20:30</span></div><div class="row-title" style="font-size:14px;">The 1975</div><div class="row-sub" style="font-size:12px;margin-bottom:0;">Pyramid Stage · Radio 2</div></div><button class="remind saved" id="sv2" onclick="event.stopPropagation();toggleSave('sv2','The 1975')">Saved ✓</button></div>
+    <div class="row" style="align-items:center;" onclick="goNav(2)"><div class="row-art xs" style="background:linear-gradient(135deg,#1a0a1a,#2a1a2a);">📺</div><div class="row-info"><div style="margin-bottom:3px;"><span class="up">Tonight 22:00 · in 13 min</span></div><div class="row-title" style="font-size:14px;">Post-Show with Rylan</div><div class="row-sub" style="font-size:12px;margin-bottom:0;">Reactions & reveals · BBC Sounds</div></div><button class="remind" id="sv1" onclick="event.stopPropagation();toggleSave('sv1','Post-Show with Rylan')">Remind me</button></div>
+    <div class="row" style="align-items:center;" onclick="goNav(2)"><div class="row-art xs" style="background:linear-gradient(135deg,#0a1a0a,#1a4a1a);">🎵</div><div class="row-info"><div style="margin-bottom:3px;"><span class="up">Tomorrow · 20:30</span></div><div class="row-title" style="font-size:14px;">The Traitors: Uncloaked S2</div><div class="row-sub" style="font-size:12px;margin-bottom:0;">Post-show special · BBC Sounds</div></div><button class="remind saved" id="sv2" onclick="event.stopPropagation();toggleSave('sv2','The Traitors: Uncloaked S2')">Saved ✓</button></div>
 
     <!-- Fan Zone -->
     <div class="sh"><h2>Fan Zone</h2></div>
-    <div class="poll-card"><div class="poll-t">🎸 Best headliner so far?</div><div class="po" onclick="votePoll(this,52)"><div class="po-bar" style="width:52%"></div><span class="po-t">Billie Eilish</span><span class="po-p">52%</span></div><div class="po" onclick="votePoll(this,30)"><div class="po-bar" style="width:30%"></div><span class="po-t">Olivia Rodrigo</span><span class="po-p">30%</span></div><div class="po" onclick="votePoll(this,18)"><div class="po-bar" style="width:18%"></div><span class="po-t">The 1975 (Fri)</span><span class="po-p">18%</span></div><div class="poll-foot">28,441 votes · Live</div></div>
+    <div class="poll-card"><div class="poll-t">🔪 Who do you think will be murdered tonight?</div><div class="po" onclick="votePoll(this,41)"><div class="po-bar" style="width:41%"></div><span class="po-t">Romesh Ranganathan</span><span class="po-p">41%</span></div><div class="po" onclick="votePoll(this,34)"><div class="po-bar" style="width:34%"></div><span class="po-t">Rob Beckett</span><span class="po-p">34%</span></div><div class="po" onclick="votePoll(this,25)"><div class="po-bar" style="width:25%"></div><span class="po-t">Bella Ramsey</span><span class="po-p">25%</span></div><div class="poll-foot">62,441 votes · Live · Updates as show plays</div></div>
     <div class="scroll-end"></div>
   </div>
 
@@ -544,32 +566,90 @@ body{background:#060606;min-height:100vh;margin:0;padding:0;font-family:var(--fo
       </div>
 
       <!-- Podcasts -->
+      <!-- ══ PODCASTS TAB ══ -->
       <div id="ep0" class="ep">
-        <div class="sh"><h2>Playlists</h2></div>
+        <div class="sh"><h2>Trending Now</h2></div>
         <div class="hscroll">
-          <div class="pl-card" onclick="toast('▶ Playing','The History Playlist')"><div class="pl-art" style="background:linear-gradient(135deg,#1a1a2e,#2a3a6e);">📚</div><div class="pl-ov"><div class="pl-count">10 Items</div><div class="pl-title">The History Playlist</div><div class="pl-desc">Dive into the best history podcasts on Sounds & explore the…</div><div class="pl-play"><svg viewBox="0 0 24 24" fill="white" width="14" height="14"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div></div>
-          <div class="pl-card" onclick="toast('▶ Playing','Latest News Playlist')"><div class="pl-art" style="background:linear-gradient(135deg,#2a0a0a,#6e1a1a);">📰</div><div class="pl-ov"><div class="pl-count">10 Items</div><div class="pl-title">Latest News Playlist</div><div class="pl-desc">Stay up to date with today's top headlines</div><div class="pl-play"><svg viewBox="0 0 24 24" fill="white" width="14" height="14"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div></div>
-          <div class="pl-card" onclick="toast('▶ Playing','True Crime Essentials')"><div class="pl-art" style="background:linear-gradient(135deg,#1a0a2e,#3a1a5a);">🔍</div><div class="pl-ov"><div class="pl-count">8 Items</div><div class="pl-title">True Crime Essentials</div><div class="pl-desc">The best investigative podcasts on BBC Sounds</div><div class="pl-play"><svg viewBox="0 0 24 24" fill="white" width="14" height="14"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div></div>
+          <div class="pl-card" onclick="toast('▶ Playing','The Traitors: Uncloaked')">
+            <div class="pl-art" style="background:linear-gradient(135deg,#1a0828,#2e1050);">🏰</div>
+            <div class="pl-ov"><div class="pl-count">6 Episodes</div><div class="pl-title">The Traitors: Uncloaked</div><div class="pl-desc">Behind the castle — what the cameras didn't show</div><div class="pl-play"><svg viewBox="0 0 24 24" fill="white" width="14" height="14"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
+          </div>
+          <div class="pl-card" onclick="toast('▶ Playing','True Crime Essentials')">
+            <div class="pl-art" style="background:linear-gradient(135deg,#1a0a2e,#3a1a5a);">🔍</div>
+            <div class="pl-ov"><div class="pl-count">8 Items</div><div class="pl-title">True Crime Essentials</div><div class="pl-desc">The best investigative podcasts on BBC Sounds</div><div class="pl-play"><svg viewBox="0 0 24 24" fill="white" width="14" height="14"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
+          </div>
+          <div class="pl-card" onclick="toast('▶ Playing','The History Playlist')">
+            <div class="pl-art" style="background:linear-gradient(135deg,#1a1a2e,#2a3a6e);">📚</div>
+            <div class="pl-ov"><div class="pl-count">10 Items</div><div class="pl-title">The History Playlist</div><div class="pl-desc">Dive into the best history podcasts on Sounds</div><div class="pl-play"><svg viewBox="0 0 24 24" fill="white" width="14" height="14"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
+          </div>
         </div>
+
         <div class="sh"><h2>New Releases</h2></div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:0 18px;">
+          <div style="border-radius:6px;overflow:hidden;cursor:pointer;height:160px;background:linear-gradient(160deg,#1a0828,#0e0818);display:flex;align-items:flex-end;padding:12px;" onclick="toast('▶ Playing','Celebrity Traitors: Uncloaked S2')"><span style="font-size:16px;font-weight:900;color:#fff;line-height:1.2;">Celebrity<br>Traitors:<br>Uncloaked</span></div>
           <div style="border-radius:6px;overflow:hidden;cursor:pointer;height:160px;background:linear-gradient(160deg,#0e0e1e,#0a0a12);display:flex;align-items:flex-end;padding:12px;" onclick="toast('▶ Playing','Crime Next Door')"><span style="font-size:18px;font-weight:900;color:#fff;line-height:1.2;">Crime<br>Next Door</span></div>
-          <div style="border-radius:6px;overflow:hidden;cursor:pointer;height:160px;background:linear-gradient(160deg,#0a2010,#1a3a1a);display:flex;align-items:flex-end;padding:12px;" onclick="toast('▶ Playing','Race Across the World')"><span style="font-size:16px;font-weight:900;color:#fff;line-height:1.2;">Race Across<br>the World</span></div>
         </div>
-        <div class="sh"><h2>Beyond The Headlines</h2></div>
-        <div class="row" onclick="toast('▶ Playing','Newscast — 36 mins')"><div class="row-art" style="background:linear-gradient(135deg,#0a2a2a,#1a4a4a);">📣</div><div class="row-info"><div class="row-title">Newscast</div><div class="row-sub">The Morgan McSweeney Evidence</div><div class="row-dur">36 mins</div></div><div class="row-play"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
+
+        <div class="sh"><h2>Because You Watched The Traitors</h2></div>
+        <div class="row" onclick="toast('▶ Playing','Newscast — 36 mins')">
+          <div class="row-art" style="background:linear-gradient(135deg,#0a2a2a,#1a4a4a);">📣</div>
+          <div class="row-info"><div class="row-title">Newscast</div><div class="row-sub">The Morgan McSweeney Evidence</div><div class="row-dur">36 mins</div></div>
+          <div class="row-play"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+        </div>
         <div class="div"></div>
-        <div class="row" onclick="toast('▶ Playing','The Explanation')"><div class="row-art" style="background:linear-gradient(135deg,#1a1a0a,#3a3a1a);">📱</div><div class="row-info"><div class="row-title">The Explanation</div><div class="row-sub">The Media Show: Investigating Sam Altman</div><div class="row-dur">28 mins</div></div><div class="row-play"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
+        <div class="row" onclick="toast('▶ Playing','Desert Island Discs — Michael Sheen')">
+          <div class="row-art" style="background:linear-gradient(135deg,#1a0a2a,#2a1a4a);">🏝️</div>
+          <div class="row-info"><div class="row-title">Desert Island Discs</div><div class="row-sub">Michael Sheen — the records that shaped him</div><div class="row-dur">42 mins</div></div>
+          <div class="row-play"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+        </div>
+        <div class="div"></div>
+        <div class="row" onclick="toast('▶ Playing','Louis Theroux Podcast — latest')">
+          <div class="row-art" style="background:linear-gradient(135deg,#0a1a2a,#1a3a5a);">🎙️</div>
+          <div class="row-info"><div class="row-title">The Louis Theroux Podcast</div><div class="row-sub">My Favourite Weirdos — Season 3</div><div class="row-dur">58 mins</div></div>
+          <div class="row-play"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+        </div>
+        <div class="div"></div>
+        <div class="row" onclick="toast('▶ Playing','Romesh vs — latest episode')">
+          <div class="row-art" style="background:linear-gradient(135deg,#1a1a0a,#3a3a1a);">😄</div>
+          <div class="row-info"><div class="row-title">Romesh vs</div><div class="row-sub">Romesh Ranganathan takes on the world</div><div class="row-dur">31 mins</div></div>
+          <div class="row-play"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+        </div>
       </div>
 
-      <!-- Music -->
+      <!-- ══ MUSIC TAB ══ -->
       <div id="ep1" class="ep" style="display:none;">
         <div class="sh"><h2>Live Music Now</h2><a class="ao" onclick="goNav(2)">All streams</a></div>
         <div class="hscroll">
-          <div class="ls-card" onclick="goNav(2)"><div class="ls-art" style="background:linear-gradient(135deg,#1c1506,#2e1a08);">⭐<div class="ls-badge"><span class="d"></span>Live</div></div><div class="ls-info"><div class="ls-stage" style="color:#E8A32A;">Glastonbury</div><div class="ls-act">Billie Eilish</div><div class="ls-stn">Radio 2</div></div></div>
-          <div class="ls-card" onclick="toast('▶ Playing','6 Music — Lauren Laverne')"><div class="ls-art" style="background:linear-gradient(135deg,#1a0a2e,#4a0a6e);">6<div class="ls-badge"><span class="d"></span>Live</div></div><div class="ls-info"><div class="ls-stage">6 Music</div><div class="ls-act">Lauren Laverne</div><div class="ls-stn">Radio 6</div></div></div>
-          <div class="ls-card" onclick="toast('▶ Playing','Radio 1 — Greg James')"><div class="ls-art" style="background:linear-gradient(135deg,#1a1a2e,#2a2a6e);">1<div class="ls-badge"><span class="d"></span>Live</div></div><div class="ls-info"><div class="ls-stage">Radio 1</div><div class="ls-act">Greg James</div><div class="ls-stn">Radio 1</div></div></div>
+          <div class="ls-card" onclick="toast('▶ Playing','Radio 1 — Greg James')">
+            <div class="ls-art" style="background:linear-gradient(135deg,#1a0a2e,#3a0a5e);">1<div class="ls-badge"><span class="d"></span>Live</div><div class="ls-count">41k</div></div>
+            <div class="ls-info"><div class="ls-stage">Radio 1</div><div class="ls-act">Greg James</div><div class="ls-stn">Radio 1</div></div>
+          </div>
+          <div class="ls-card" onclick="toast('▶ Playing','6 Music — Mary Anne Hobbs')">
+            <div class="ls-art" style="background:linear-gradient(135deg,#1a0a2e,#4a0a6e);">6<div class="ls-badge"><span class="d"></span>Live</div><div class="ls-count">18k</div></div>
+            <div class="ls-info"><div class="ls-stage">6 Music</div><div class="ls-act">Mary Anne Hobbs</div><div class="ls-stn">Radio 6</div></div>
+          </div>
+          <div class="ls-card" onclick="toast('▶ Playing','Radio 2 — Zoe Ball')">
+            <div class="ls-art" style="background:linear-gradient(135deg,#1a1206,#3a2a08);">2<div class="ls-badge"><span class="d"></span>Live</div><div class="ls-count">22k</div></div>
+            <div class="ls-info"><div class="ls-stage">Radio 2</div><div class="ls-act">Zoe Ball</div><div class="ls-stn">Radio 2</div></div>
+          </div>
         </div>
+
+        <div class="sh"><h2>Featured Playlists</h2></div>
+        <div class="hscroll">
+          <div class="pl-card" onclick="toast('▶ Playing','Songs from the Traitors — the playlist')">
+            <div class="pl-art" style="background:linear-gradient(135deg,#1a0828,#2e1050);">🗡️</div>
+            <div class="pl-ov"><div class="pl-count">24 Tracks</div><div class="pl-title">Songs from the Castle</div><div class="pl-desc">Music from the Celebrity Traitors soundtrack</div><div class="pl-play"><svg viewBox="0 0 24 24" fill="white" width="14" height="14"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
+          </div>
+          <div class="pl-card" onclick="toast('▶ Playing','Late Night Vibes playlist')">
+            <div class="pl-art" style="background:linear-gradient(135deg,#0a1020,#1a2a40);">🌙</div>
+            <div class="pl-ov"><div class="pl-count">18 Tracks</div><div class="pl-title">Late Night Vibes</div><div class="pl-desc">Atmospheric music for dark evenings</div><div class="pl-play"><svg viewBox="0 0 24 24" fill="white" width="14" height="14"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
+          </div>
+          <div class="pl-card" onclick="toast('▶ Playing','Cinematic Scores playlist')">
+            <div class="pl-art" style="background:linear-gradient(135deg,#1a1a0a,#2a2a1a);">🎬</div>
+            <div class="pl-ov"><div class="pl-count">32 Tracks</div><div class="pl-title">Cinematic Scores</div><div class="pl-desc">Dramatic orchestral music for tense moments</div><div class="pl-play"><svg viewBox="0 0 24 24" fill="white" width="14" height="14"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
+          </div>
+        </div>
+
         <div class="sh"><h2>Browse all Music</h2></div>
         <div class="bg">
           <div class="bg-tile" onclick="toast('Browse','Blues')"><div class="bgi">🎸</div><div style="position:absolute;inset:0;background:rgba(0,0,0,.45);border-radius:6px;"></div><span class="bgl">Blues</span></div>
@@ -585,58 +665,184 @@ body{background:#060606;min-height:100vh;margin:0;padding:0;font-family:var(--fo
         </div>
       </div>
 
-      <!-- Audiobooks -->
+      <!-- ══ AUDIOBOOKS TAB ══ -->
       <div id="ep2" class="ep" style="display:none;">
         <div class="sh"><h2>Featured</h2></div>
         <div class="hscroll">
-          <div class="pl-card" onclick="toast('▶ Playing','Summer Reading playlist')"><div class="pl-art" style="background:linear-gradient(135deg,#1a2a1a,#2a4a2a);">📖</div><div class="pl-ov"><div class="pl-count">8 Items</div><div class="pl-title">Summer Reading</div><div class="pl-desc">Bestselling audiobooks to enjoy this summer</div><div class="pl-play"><svg viewBox="0 0 24 24" fill="white" width="14" height="14"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div></div>
-          <div class="pl-card" onclick="toast('▶ Playing','Thrillers & Crime')"><div class="pl-art" style="background:linear-gradient(135deg,#2a0a0a,#4a1a1a);">🔍</div><div class="pl-ov"><div class="pl-count">12 Items</div><div class="pl-title">Thrillers & Crime</div><div class="pl-desc">From cosy crime to dark psychological thrillers</div><div class="pl-play"><svg viewBox="0 0 24 24" fill="white" width="14" height="14"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div></div>
+          <div class="pl-card" onclick="toast('▶ Playing','Traitors & Liars — true deception stories')">
+            <div class="pl-art" style="background:linear-gradient(135deg,#1a0828,#2e1050);">🕯️</div>
+            <div class="pl-ov"><div class="pl-count">5 Books</div><div class="pl-title">Traitors &amp; Liars</div><div class="pl-desc">True stories of deception, betrayal and double agents</div><div class="pl-play"><svg viewBox="0 0 24 24" fill="white" width="14" height="14"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
+          </div>
+          <div class="pl-card" onclick="toast('▶ Playing','Thrillers & Crime collection')">
+            <div class="pl-art" style="background:linear-gradient(135deg,#2a0a0a,#4a1a1a);">🔍</div>
+            <div class="pl-ov"><div class="pl-count">12 Items</div><div class="pl-title">Thrillers &amp; Crime</div><div class="pl-desc">From cosy crime to dark psychological thrillers</div><div class="pl-play"><svg viewBox="0 0 24 24" fill="white" width="14" height="14"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
+          </div>
+          <div class="pl-card" onclick="toast('▶ Playing','Summer Reading playlist')">
+            <div class="pl-art" style="background:linear-gradient(135deg,#1a2a1a,#2a4a2a);">📖</div>
+            <div class="pl-ov"><div class="pl-count">8 Items</div><div class="pl-title">Summer Reading</div><div class="pl-desc">Bestselling audiobooks to enjoy this summer</div><div class="pl-play"><svg viewBox="0 0 24 24" fill="white" width="14" height="14"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
+          </div>
         </div>
+
         <div class="sh"><h2>New Releases</h2></div>
-        <div class="row" onclick="toast('▶ Playing','The Traitors: Uncloaked')"><div class="row-art" style="background:linear-gradient(135deg,#0a1a2a,#1a2a4a);">🎭</div><div class="row-info"><div class="row-title">The Traitors: Uncloaked</div><div class="row-sub">Celebrity Traitors Series 1: Episode 2 BONUS</div><div class="row-dur">45 mins</div></div><div class="row-play"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
+        <div class="row" onclick="toast('▶ Playing','The Spy Who Came in from the Cold')">
+          <div class="row-art" style="background:linear-gradient(135deg,#0a1020,#1a2a40);">🕵️</div>
+          <div class="row-info"><div class="row-title">The Spy Who Came in from the Cold</div><div class="row-sub">John le Carré — narrated by Tom Hollander</div><div class="row-dur">7 hrs 22 mins</div></div>
+          <div class="row-play"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+        </div>
         <div class="div"></div>
-        <div class="row" onclick="toast('▶ Playing','Crime Next Door')"><div class="row-art" style="background:linear-gradient(135deg,#0e0e1e,#1a1a2e);">🚪</div><div class="row-info"><div class="row-title">Crime Next Door</div><div class="row-sub">Episode 3 — The Investigation Deepens</div><div class="row-dur">38 mins</div></div><div class="row-play"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
+        <div class="row" onclick="toast('▶ Playing','The Woman in the Window')">
+          <div class="row-art" style="background:linear-gradient(135deg,#1a0a0a,#3a1a1a);">🪟</div>
+          <div class="row-info"><div class="row-title">The Woman in the Window</div><div class="row-sub">A J Finn — psychological thriller</div><div class="row-dur">11 hrs 4 mins</div></div>
+          <div class="row-play"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+        </div>
+        <div class="div"></div>
+        <div class="row" onclick="toast('▶ Playing','Succession — the unauthorised oral history')">
+          <div class="row-art" style="background:linear-gradient(135deg,#1a1a1a,#2a2a2a);">👔</div>
+          <div class="row-info"><div class="row-title">Succession: The Oral History</div><div class="row-sub">Behind the scenes of TV's greatest drama</div><div class="row-dur">9 hrs 18 mins</div></div>
+          <div class="row-play"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+        </div>
+        <div class="div"></div>
+        <div class="row" onclick="toast('▶ Playing','Hannah Fry — Hello World')">
+          <div class="row-art" style="background:linear-gradient(135deg,#0a1a2a,#1a3a5a);">🤖</div>
+          <div class="row-info"><div class="row-title">Hello World</div><div class="row-sub">Hannah Fry — Being Human in the Age of Algorithms</div><div class="row-dur">6 hrs 12 mins</div></div>
+          <div class="row-play"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+        </div>
+
+        <div class="sh"><h2>Narrated by Traitors Cast</h2></div>
+        <div class="row" onclick="toast('▶ Playing','Michael Sheen narrates — Under Milk Wood')">
+          <div class="row-art" style="background:linear-gradient(135deg,#1a0a2e,#2e1050);">🎭</div>
+          <div class="row-info"><div class="row-title">Under Milk Wood</div><div class="row-sub">Dylan Thomas · narrated by Michael Sheen</div><div class="row-dur">1 hr 45 mins</div></div>
+          <div class="row-play"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+        </div>
+        <div class="div"></div>
+        <div class="row" onclick="toast('▶ Playing','Ross Kemp narrates — War Stories')">
+          <div class="row-art" style="background:linear-gradient(135deg,#1a0808,#3a1010);">🪖</div>
+          <div class="row-info"><div class="row-title">War Stories</div><div class="row-sub">Extraordinary accounts · narrated by Ross Kemp</div><div class="row-dur">8 hrs 33 mins</div></div>
+          <div class="row-play"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+        </div>
       </div>
 
-      <!-- Sport -->
+      <!-- ══ SPORT TAB ══ -->
       <div id="ep3" class="ep" style="display:none;">
         <div class="sh"><h2>Live Sport Now</h2><a class="ao" onclick="goNav(2)">All streams</a></div>
         <div class="hscroll">
-          <div class="ls-card" onclick="toast('▶ Playing','The Ashes — Radio 5 Live')"><div class="ls-art" style="background:linear-gradient(135deg,#1a2a1a,#2a5a2a);">🏏<div class="ls-badge"><span class="d"></span>Live</div><div class="ls-count">22.4k</div></div><div class="ls-info"><div class="ls-stage">The Ashes</div><div class="ls-act">Eng vs Australia</div><div class="ls-stn">Radio 5 · Day 3</div></div></div>
-          <div class="ls-card" onclick="toast('▶ Playing','F1 British GP — Sports Extra')"><div class="ls-art" style="background:linear-gradient(135deg,#2a1a0a,#5a3a1a);">🏎️<div class="ls-badge"><span class="d"></span>Live</div><div class="ls-count">14.1k</div></div><div class="ls-info"><div class="ls-stage">F1 British GP</div><div class="ls-act">Qualifying</div><div class="ls-stn">Sports Extra</div></div></div>
-          <div class="ls-card" onclick="toast('⏰ Later','Wimbledon — starts 13:00')"><div class="ls-art dim" style="background:var(--s2);opacity:.7;">🎾<div class="ls-count" style="background:var(--odim);color:var(--orange);">2h</div></div><div class="ls-info"><div class="ls-stage">Wimbledon</div><div class="ls-act">Centre Court</div><div class="ls-stn">Radio 5 · 13:00</div></div></div>
+          <div class="ls-card" onclick="toast('▶ Playing','The Ashes — Radio 5 Live · Day 3')">
+            <div class="ls-art" style="background:linear-gradient(135deg,#1a2a1a,#2a5a2a);">🏏<div class="ls-badge"><span class="d"></span>Live</div><div class="ls-count">22.4k</div></div>
+            <div class="ls-info"><div class="ls-stage">The Ashes</div><div class="ls-act">Eng vs Australia</div><div class="ls-stn">Radio 5 · Day 3</div></div>
+          </div>
+          <div class="ls-card" onclick="toast('▶ Playing','F1 British GP — Sports Extra')">
+            <div class="ls-art" style="background:linear-gradient(135deg,#2a1a0a,#5a3a1a);">🏎️<div class="ls-badge"><span class="d"></span>Live</div><div class="ls-count">14.1k</div></div>
+            <div class="ls-info"><div class="ls-stage">F1 British GP</div><div class="ls-act">Qualifying</div><div class="ls-stn">Sports Extra</div></div>
+          </div>
+          <div class="ls-card" onclick="toast('⏰ Later','Wimbledon — starts 13:00')">
+            <div class="ls-art dim" style="background:var(--s2);opacity:.65;">🎾<div class="ls-count" style="background:var(--odim);color:var(--orange);">2h</div></div>
+            <div class="ls-info"><div class="ls-stage">Wimbledon</div><div class="ls-act">Centre Court</div><div class="ls-stn">Radio 5 · 13:00</div></div>
+          </div>
         </div>
-        <div class="sh"><h2>Sport Podcasts</h2></div>
-        <div class="row" onclick="toast('▶ Playing','Football Daily')"><div class="row-art" style="background:linear-gradient(135deg,#0a2a0a,#1a5a1a);">⚽</div><div class="row-info"><div class="row-title">Football Daily</div><div class="row-sub">Premier League: The Big Summer Preview</div><div class="row-dur">34 mins</div></div><div class="row-play"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
+
+        <div class="sh"><h2>Top Sport Podcasts</h2></div>
+        <div class="row" onclick="toast('▶ Playing','Football Daily — Premier League preview')">
+          <div class="row-art" style="background:linear-gradient(135deg,#0a2a0a,#1a5a1a);">⚽</div>
+          <div class="row-info"><div class="row-title">Football Daily</div><div class="row-sub">Premier League: The Big Summer Preview</div><div class="row-dur">34 mins</div></div>
+          <div class="row-play"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+        </div>
         <div class="div"></div>
-        <div class="row" onclick="toast('▶ Playing','The Wayne Rooney Show')"><div class="row-art" style="background:linear-gradient(135deg,#1a1a2e,#2a1a4e);">🎙️</div><div class="row-info"><div class="row-title">The Wayne Rooney Show</div><div class="row-sub">Wayne's Chat With Van Dijk & McFly Duets</div><div class="row-dur">62 mins</div></div><div class="row-play"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
+        <div class="row" onclick="toast('▶ Playing','Test Match Special — The Ashes Day 2 review')">
+          <div class="row-art" style="background:linear-gradient(135deg,#1a2a1a,#2a5a2a);">🏏</div>
+          <div class="row-info"><div class="row-title">Test Match Special</div><div class="row-sub">The Ashes — Day 2 close of play review</div><div class="row-dur">48 mins</div></div>
+          <div class="row-play"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+        </div>
+        <div class="div"></div>
+        <div class="row" onclick="toast('▶ Playing','5 Live Sport — F1 debrief')">
+          <div class="row-art" style="background:linear-gradient(135deg,#2a1a0a,#5a3a1a);">🏎️</div>
+          <div class="row-info"><div class="row-title">5 Live Sport</div><div class="row-sub">F1 British GP — Friday debrief</div><div class="row-dur">27 mins</div></div>
+          <div class="row-play"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+        </div>
+        <div class="div"></div>
+        <div class="row" onclick="toast('▶ Playing','Romesh & Rob: The Sport Pod')">
+          <div class="row-art" style="background:linear-gradient(135deg,#1a0828,#2e1050);">😄</div>
+          <div class="row-info"><div class="row-title">Romesh &amp; Rob: The Sport Pod</div><div class="row-sub">Romesh Ranganathan &amp; Rob Beckett on sport, life &amp; nonsense</div><div class="row-dur">52 mins</div></div>
+          <div class="row-play"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+        </div>
+        <div class="div"></div>
+        <div class="row" onclick="toast('▶ Playing','Wimbledon Daily — day 3 highlights')">
+          <div class="row-art" style="background:linear-gradient(135deg,#1a2a1a,#2a4a2a);">🎾</div>
+          <div class="row-info"><div class="row-title">Wimbledon Daily</div><div class="row-sub">Day 3 highlights, shocks &amp; talking points</div><div class="row-dur">22 mins</div></div>
+          <div class="row-play"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+        </div>
       </div>
 
-      <!-- News -->
+      <!-- ══ NEWS TAB ══ -->
       <div id="ep4" class="ep" style="display:none;">
         <div class="sh"><h2>Latest News Playlist</h2></div>
         <div class="hscroll">
           <div class="nc" onclick="toast('▶ Playing','08:00 Headlines — 4 mins')"><div class="nc-art" style="background:linear-gradient(135deg,#2a0a0a,#6e1a1a);">📺<div class="nc-bdg">NEWS</div><div class="nc-play"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div><div class="nc-meta"><div class="nc-title">08:00 King in US, cancers, London zoo</div><div class="nc-dur">4 mins</div></div></div>
-          <div class="nc" onclick="toast('▶ Playing','Cancer study — 2 mins')"><div class="nc-art" style="background:linear-gradient(135deg,#0a1a2a,#1a3a5a);">🔬<div class="nc-bdg">NEWS</div><div class="nc-play"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div><div class="nc-meta"><div class="nc-title">Some cancers more common in people aged under 50 — study</div><div class="nc-dur">2 mins</div></div></div>
+          <div class="nc" onclick="toast('▶ Playing','Cancer study — 2 mins')"><div class="nc-art" style="background:linear-gradient(135deg,#0a1a2a,#1a3a5a);">🔬<div class="nc-bdg">NEWS</div><div class="nc-play"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div><div class="nc-meta"><div class="nc-title">Some cancers more common in people aged under 50</div><div class="nc-dur">2 mins</div></div></div>
           <div class="nc" onclick="toast('▶ Playing','King speaks at banquet — 5 mins')"><div class="nc-art" style="background:linear-gradient(135deg,#1a1a0a,#3a3a1a);">👑<div class="nc-bdg">NEWS</div><div class="nc-play"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div><div class="nc-meta"><div class="nc-title">King Charles speaks at banquet with Donald Trump</div><div class="nc-dur">5 mins</div></div></div>
         </div>
         <div class="sh"><h2>Live News</h2></div>
-        <div class="row" style="align-items:center;" onclick="toast('▶ Playing','Radio 4 — live now')"><div class="row-art sm" style="background:linear-gradient(135deg,#1a0a0a,#3a1a1a);">📻</div><div class="row-info"><div style="margin-bottom:3px;"><span class="lp" style="font-size:9px;padding:2px 6px;"><span class="d"></span>LIVE</span></div><div class="row-title" style="font-size:14px;">BBC Radio 4</div><div class="row-sub" style="font-size:12px;margin-bottom:0;">Today Programme · News & Talk</div></div><div class="row-play"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
+        <div class="row" style="align-items:center;" onclick="toast('▶ Playing','Radio 4 — live now')">
+          <div class="row-art sm" style="background:linear-gradient(135deg,#1a0a0a,#3a1a1a);">📻</div>
+          <div class="row-info"><div style="margin-bottom:3px;"><span class="lp" style="font-size:9px;padding:2px 6px;"><span class="d"></span>LIVE</span></div><div class="row-title" style="font-size:14px;">BBC Radio 4</div><div class="row-sub" style="font-size:12px;margin-bottom:0;">Today Programme · News &amp; Talk</div></div>
+          <div class="row-play"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+        </div>
         <div class="div"></div>
-        <div class="row" style="align-items:center;" onclick="toast('▶ Playing','BBC World Service')"><div class="row-art sm" style="background:linear-gradient(135deg,#0a1a2a,#1a3a5a);">🌍</div><div class="row-info"><div style="margin-bottom:3px;"><span class="lp" style="font-size:9px;padding:2px 6px;"><span class="d"></span>LIVE</span></div><div class="row-title" style="font-size:14px;">BBC World Service</div><div class="row-sub" style="font-size:12px;margin-bottom:0;">Global news · 24/7 live</div></div><div class="row-play"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
+        <div class="row" style="align-items:center;" onclick="toast('▶ Playing','BBC World Service')">
+          <div class="row-art sm" style="background:linear-gradient(135deg,#0a1a2a,#1a3a5a);">🌍</div>
+          <div class="row-info"><div style="margin-bottom:3px;"><span class="lp" style="font-size:9px;padding:2px 6px;"><span class="d"></span>LIVE</span></div><div class="row-title" style="font-size:14px;">BBC World Service</div><div class="row-sub" style="font-size:12px;margin-bottom:0;">Global news · 24/7 live</div></div>
+          <div class="row-play"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+        </div>
         <div class="sh"><h2>Beyond The Headlines</h2></div>
-        <div class="row" onclick="toast('▶ Playing','Newscast')"><div class="row-art" style="background:linear-gradient(135deg,#0a2a2a,#1a4a4a);">📣</div><div class="row-info"><div class="row-title">Newscast</div><div class="row-sub">The Morgan McSweeney Evidence</div><div class="row-dur">36 mins</div></div><div class="row-play"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
+        <div class="row" onclick="toast('▶ Playing','Newscast — Morgan McSweeney Evidence')">
+          <div class="row-art" style="background:linear-gradient(135deg,#0a2a2a,#1a4a4a);">📣</div>
+          <div class="row-info"><div class="row-title">Newscast</div><div class="row-sub">The Morgan McSweeney Evidence</div><div class="row-dur">36 mins</div></div>
+          <div class="row-play"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+        </div>
+        <div class="div"></div>
+        <div class="row" onclick="toast('▶ Playing','The Media Show — Sam Altman investigation')">
+          <div class="row-art" style="background:linear-gradient(135deg,#1a1a0a,#3a3a1a);">📱</div>
+          <div class="row-info"><div class="row-title">The Explanation</div><div class="row-sub">The Media Show: Investigating Sam Altman</div><div class="row-dur">28 mins</div></div>
+          <div class="row-play"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+        </div>
+        <div class="div"></div>
+        <div class="row" onclick="toast('▶ Playing','Hannah Fry — The Mathematics of Crime')">
+          <div class="row-art" style="background:linear-gradient(135deg,#0a1a2a,#1a3a5a);">🔢</div>
+          <div class="row-info"><div class="row-title">Hannah Fry: The Mathematics of Crime</div><div class="row-sub">How data is changing the way we solve crimes</div><div class="row-dur">44 mins</div></div>
+          <div class="row-play"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+        </div>
       </div>
 
-      <!-- Children's -->
+      <!-- ══ CHILDREN'S TAB ══ -->
       <div id="ep5" class="ep" style="display:none;">
         <div class="sh"><h2>Children's Picks</h2></div>
         <div class="hscroll">
-          <div class="pl-card" onclick="toast('▶ Playing','CBeebies Bedtime Stories')"><div class="pl-art" style="background:linear-gradient(135deg,#1a2a4a,#2a4a8a);">🌙</div><div class="pl-ov"><div class="pl-count">7 Items</div><div class="pl-title">Bedtime Stories</div><div class="pl-desc">Calming stories to end the day</div><div class="pl-play"><svg viewBox="0 0 24 24" fill="white" width="14" height="14"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div></div>
-          <div class="pl-card" onclick="toast('▶ Playing','CBBC Favourites')"><div class="pl-art" style="background:linear-gradient(135deg,#2a1a0a,#5a3a1a);">🎒</div><div class="pl-ov"><div class="pl-count">10 Items</div><div class="pl-title">CBBC Favourites</div><div class="pl-desc">Podcasts and stories for older kids</div><div class="pl-play"><svg viewBox="0 0 24 24" fill="white" width="14" height="14"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div></div>
+          <div class="pl-card" onclick="toast('▶ Playing','CBeebies Bedtime Stories')">
+            <div class="pl-art" style="background:linear-gradient(135deg,#1a2a4a,#2a4a8a);">🌙</div>
+            <div class="pl-ov"><div class="pl-count">7 Items</div><div class="pl-title">Bedtime Stories</div><div class="pl-desc">Calming stories to end the day</div><div class="pl-play"><svg viewBox="0 0 24 24" fill="white" width="14" height="14"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
+          </div>
+          <div class="pl-card" onclick="toast('▶ Playing','CBBC Favourites')">
+            <div class="pl-art" style="background:linear-gradient(135deg,#2a1a0a,#5a3a1a);">🎒</div>
+            <div class="pl-ov"><div class="pl-count">10 Items</div><div class="pl-title">CBBC Favourites</div><div class="pl-desc">Podcasts and stories for older kids</div><div class="pl-play"><svg viewBox="0 0 24 24" fill="white" width="14" height="14"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
+          </div>
         </div>
         <div class="sh"><h2>New This Week</h2></div>
-        <div class="row" onclick="toast('▶ Playing','Horrible Histories Extra')"><div class="row-art" style="background:linear-gradient(135deg,#1a2a1a,#2a5a2a);">👑</div><div class="row-info"><div class="row-title">Horrible Histories Extra</div><div class="row-sub">Tudor special — with extra gore</div><div class="row-dur">22 mins</div></div><div class="row-play"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
+        <div class="row" onclick="toast('▶ Playing','Horrible Histories Extra — Tudor special')">
+          <div class="row-art" style="background:linear-gradient(135deg,#1a2a1a,#2a5a2a);">👑</div>
+          <div class="row-info"><div class="row-title">Horrible Histories Extra</div><div class="row-sub">Tudor special — with extra gore</div><div class="row-dur">22 mins</div></div>
+          <div class="row-play"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+        </div>
+        <div class="div"></div>
+        <div class="row" onclick="toast('▶ Playing','Doctor Who: The Audio Adventures')">
+          <div class="row-art" style="background:linear-gradient(135deg,#0a1020,#1a2a40);">🚀</div>
+          <div class="row-info"><div class="row-title">Doctor Who: Audio Adventures</div><div class="row-sub">Brand new stories — Series 3</div><div class="row-dur">35 mins</div></div>
+          <div class="row-play"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+        </div>
+        <div class="div"></div>
+        <div class="row" onclick="toast('▶ Playing','Shaun the Sheep: Baaad Day')">
+          <div class="row-art" style="background:linear-gradient(135deg,#1a2a1a,#2a4a2a);">🐑</div>
+          <div class="row-info"><div class="row-title">Shaun the Sheep</div><div class="row-sub">Baaad Day — a brand new story</div><div class="row-dur">14 mins</div></div>
+          <div class="row-play"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+        </div>
       </div>
       <div class="scroll-end"></div>
     </div>
@@ -685,95 +891,177 @@ body{background:#060606;min-height:100vh;margin:0;padding:0;font-family:var(--fo
         <div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(to top,rgba(0,0,0,.92) 0%,transparent 100%);padding:14px 18px 16px;">
           <div style="display:flex;align-items:center;gap:7px;margin-bottom:5px;">
             <span class="lp"><span class="d"></span>Live</span>
-            <span style="font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:rgba(255,255,255,.5);" id="stage-label">Glastonbury 2027 · Pyramid Stage</span>
+            <span style="font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:rgba(255,255,255,.5);" id="stage-label">Series 2 · Episode 4 · BBC One</span>
           </div>
-          <div style="font-family:var(--font-d);font-size:26px;font-weight:700;color:#fff;letter-spacing:-.4px;line-height:1;margin-bottom:2px;" id="artist-name">Billie Eilish</div>
-          <div style="font-size:12px;color:rgba(255,255,255,.55);margin-bottom:12px;" id="track-detail">Bad Guy · Radio 2 · 21:45–23:15</div>
+          <div style="font-family:var(--font-d);font-size:26px;font-weight:700;color:#fff;letter-spacing:-.4px;line-height:1;margin-bottom:2px;" id="artist-name">Celebrity Traitors S2</div>
+          <div style="font-size:12px;color:rgba(255,255,255,.55);margin-bottom:12px;" id="track-detail">The Banishment Ceremony · Now Playing</div>
           <div style="display:flex;align-items:center;gap:10px;">
             <button onclick="togglePlay()" style="width:44px;height:44px;border-radius:50%;background:var(--orange);display:flex;align-items:center;justify-content:center;flex-shrink:0;border:none;cursor:pointer;transition:opacity .15s;">
               <svg id="play-icon" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" width="18" height="18"><line x1="10" y1="15" x2="10" y2="9"/><line x1="14" y1="15" x2="14" y2="9"/></svg>
             </button>
             <div style="flex:1;">
-              <div style="height:3px;background:rgba(255,255,255,.18);border-radius:2px;margin-bottom:5px;"><div style="height:100%;background:var(--orange);border-radius:2px;width:24%;"></div></div>
-              <div style="display:flex;justify-content:space-between;font-size:10px;"><span style="color:var(--orange);font-weight:800;">● LIVE</span><span style="color:rgba(255,255,255,.4);" id="player-stn">BBC Radio 2</span></div>
+              <div style="position:relative;height:3px;background:rgba(255,255,255,.18);border-radius:2px;margin-bottom:6px;">
+                <div style="height:100%;background:var(--orange);border-radius:2px;width:47%;"></div>
+                <div onclick="toast('⏩ 0:04','Rob Beckett murdered — jumping to moment')" title="Murder" style="position:absolute;top:-4px;left:6%;width:2px;height:10px;background:#ff4444;border-radius:1px;cursor:pointer;"></div>
+                <div onclick="toast('⏩ 0:18','Joe Lycett confronted — jumping to moment')" title="Confrontation" style="position:absolute;top:-4px;left:25%;width:2px;height:10px;background:var(--orange);border-radius:1px;cursor:pointer;"></div>
+                <div onclick="toast('⏩ 0:31','Bella Ramsey breaks down — jumping to moment')" title="Breakdown" style="position:absolute;top:-4px;left:41%;width:2px;height:10px;background:#78a8ff;border-radius:1px;cursor:pointer;"></div>
+                <div title="You are here" style="position:absolute;top:-4px;left:47%;width:2px;height:10px;background:#fff;border-radius:1px;animation:blink 1.1s infinite;"></div>
+              </div>
+              <div style="display:flex;justify-content:space-between;font-size:9px;color:rgba(255,255,255,.5);margin-bottom:3px;">
+                <span style="color:#ff6666;">● Murder 0:04</span>
+                <span style="color:var(--orange);">● Confrontation 0:18</span>
+                <span style="color:#78a8ff;">● Breakdown 0:31</span>
+                <span style="color:rgba(255,255,255,.6);">● Now</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;font-size:10px;"><span style="color:var(--orange);font-weight:800;">● LIVE</span><span style="color:rgba(255,255,255,.4);" id="player-stn">BBC One / BBC Sounds</span></div>
             </div>
-            <button onclick="toast('🔔 Set','Billie encore alert enabled')" style="width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;border:none;cursor:pointer;color:rgba(255,255,255,.55);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9m-5.73 13a2 2 0 01-3.46 0"/></svg></button>
+            <button onclick="toast('🔔 Set','Episode 5 reminder set')" style="width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;border:none;cursor:pointer;color:rgba(255,255,255,.55);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9m-5.73 13a2 2 0 01-3.46 0"/></svg></button>
           </div>
         </div>
       </div>
 
-      <!-- Stage thumbnail switcher -->
+      <!-- Stage thumbnail switcher — Traitors perspectives -->
       <div style="background:var(--ink);border-bottom:1px solid var(--border);">
         <div style="display:flex;gap:0;padding:10px 14px;overflow-x:auto;scrollbar-width:none;gap:8px;" id="stage-thumbs">
 
-          <div class="stg-thumb on" id="stg-0" onclick="switchStage(0)" data-artist="Billie Eilish" data-label="Glastonbury 2027 · Pyramid Stage" data-track="Bad Guy · Radio 2 · 21:45–23:15" data-stn="BBC Radio 2" data-hue="30,21,8">
-            <div class="stg-art" style="background:linear-gradient(135deg,#1c1506,#2e1a08);">⭐</div>
-            <div class="stg-meta"><div class="stg-name">Billie Eilish</div><div class="stg-stage">Pyramid</div></div>
+          <div class="stg-thumb on" id="stg-0" onclick="switchStage(0)"
+            data-artist="Celebrity Traitors" data-label="S2 Ep4 · Live now · BBC One"
+            data-track="The Banishment · 21:00 – 22:00" data-stn="BBC One / BBC Sounds">
+            <div class="stg-art" style="background:linear-gradient(135deg,#1a0820,#2e1040);">🏰</div>
+            <div class="stg-meta"><div class="stg-name">Main Show</div><div class="stg-stage">BBC One · Live</div></div>
             <span class="stg-lv"><span style="width:4px;height:4px;border-radius:50%;background:var(--live);display:inline-block;animation:blink 1.1s infinite;"></span></span>
           </div>
 
-          <div class="stg-thumb" id="stg-1" onclick="switchStage(1)" data-artist="Olivia Rodrigo" data-label="Glastonbury 2027 · Other Stage" data-track="drivers license · Radio 6 · 21:30–23:00" data-stn="BBC Radio 6" data-hue="10,21,32">
-            <div class="stg-art" style="background:linear-gradient(135deg,#0a1520,#1a2a40);">🎸</div>
-            <div class="stg-meta"><div class="stg-name">Olivia Rodrigo</div><div class="stg-stage">Other Stage</div></div>
+          <div class="stg-thumb" id="stg-1" onclick="switchStage(1)"
+            data-artist="The Roundtable" data-label="Live feed · The Great Hall"
+            data-track="Banishment ceremony · uncut" data-stn="BBC Sounds Exclusive">
+            <div class="stg-art" style="background:linear-gradient(135deg,#200808,#3a1010);">🕯️</div>
+            <div class="stg-meta"><div class="stg-name">Roundtable</div><div class="stg-stage">Uncut · Exclusive</div></div>
             <span class="stg-lv"><span style="width:4px;height:4px;border-radius:50%;background:var(--live);display:inline-block;animation:blink 1.1s infinite;"></span></span>
           </div>
 
-          <div class="stg-thumb" id="stg-2" onclick="switchStage(2)" data-artist="Jungle" data-label="Glastonbury 2027 · Park Stage" data-track="Casio · Radio 6 · 21:00–22:30" data-stn="BBC Radio 6" data-hue="10,26,10">
-            <div class="stg-art" style="background:linear-gradient(135deg,#0a1a0a,#1a3a1a);">🌿</div>
-            <div class="stg-meta"><div class="stg-name">Jungle</div><div class="stg-stage">Park Stage</div></div>
+          <div class="stg-thumb" id="stg-2" onclick="switchStage(2)"
+            data-artist="Traitors' Lair" data-label="Secret cam · After dark"
+            data-track="The Traitors plot their next move" data-stn="BBC Sounds Exclusive">
+            <div class="stg-art" style="background:linear-gradient(135deg,#080c1a,#101830);">🗡️</div>
+            <div class="stg-meta"><div class="stg-name">Traitors' Lair</div><div class="stg-stage">Secret cam</div></div>
+            <span class="stg-lv" style="background:rgba(229,53,53,.2);"><span style="width:4px;height:4px;border-radius:50%;background:var(--live);display:inline-block;animation:blink 1.1s infinite;"></span></span>
+          </div>
+
+          <div class="stg-thumb" id="stg-3" onclick="switchStage(3)"
+            data-artist="Claudia Winkleman" data-label="Host cam · Behind the scenes"
+            data-track="Post-banishment reaction · unfiltered" data-stn="BBC Sounds">
+            <div class="stg-art" style="background:linear-gradient(135deg,#1a100a,#301e10);">🎬</div>
+            <div class="stg-meta"><div class="stg-name">Claudia's Cam</div><div class="stg-stage">Host · Exclusive</div></div>
             <span class="stg-lv"><span style="width:4px;height:4px;border-radius:50%;background:var(--live);display:inline-block;animation:blink 1.1s infinite;"></span></span>
           </div>
 
-          <div class="stg-thumb" id="stg-3" onclick="switchStage(3)" data-artist="Lauren Laverne — Backstage" data-label="Glastonbury 2027 · Green Fields" data-track="Exclusive access · 6 Music" data-stn="BBC 6 Music" data-hue="26,10,42">
-            <div class="stg-art" style="background:linear-gradient(135deg,#1a0a2e,#3a1a5a);">🎤</div>
-            <div class="stg-meta"><div class="stg-name">Lauren Laverne</div><div class="stg-stage">Backstage</div></div>
-            <span class="stg-lv" style="background:rgba(232,163,42,.2);"><span style="width:4px;height:4px;border-radius:50%;background:var(--amber);display:inline-block;animation:blink 1.1s infinite;"></span></span>
-          </div>
-
-          <div class="stg-thumb" id="stg-4" onclick="switchStage(4)" data-artist="Glass Animals" data-label="Glastonbury 2027 · Woodsie Stage" data-track="Starts 22:30 · Radio 6" data-stn="BBC Radio 6" data-hue="26,10,40">
-            <div class="stg-art" style="background:linear-gradient(135deg,#1a0a1a,#2a1a2a);opacity:.55;">🌲</div>
-            <div class="stg-meta"><div class="stg-name" style="color:var(--dim);">Glass Animals</div><div class="stg-stage" style="color:var(--muted);">Woodsie · 22:30</div></div>
+          <div class="stg-thumb" id="stg-4" onclick="switchStage(4)"
+            data-artist="Post-Show Debrief" data-label="Starts 22:00 · with Rylan"
+            data-track="Reactions, reveals & what's next" data-stn="BBC Sounds">
+            <div class="stg-art" style="background:linear-gradient(135deg,#140e04,#241808);opacity:.6;">📺</div>
+            <div class="stg-meta"><div class="stg-name" style="color:var(--dim);">Post-Show</div><div class="stg-stage" style="color:var(--muted);">Starts 22:00</div></div>
           </div>
 
         </div>
       </div>
 
-      <!-- Setlist so far -->
-      <div class="setlist-card">
-        <div class="slc-hd"><span class="slc-lbl">Setlist So Far</span><span class="slc-ct">Song 3 of ~18 · 21:47</span></div>
-        <div class="sl-item" onclick="toast('⏩ Jumping to','Bad Guy — playing now')">
-          <div class="sl-n"><div class="eq-wrap"><div class="bar bar1"></div><div class="bar bar2"></div><div class="bar bar3"></div><div class="bar bar4"></div></div></div>
-          <div class="sl-inf"><div class="sl-song" style="color:var(--orange);">Bad Guy</div><div class="sl-note" style="color:var(--orange);opacity:.7;">Playing now · 0:47 in</div></div>
-          <span class="sl-ts">0:47</span>
+      <!-- Traitors content injected above -->
+
+      <!-- ── BBC PREDICT: PLAY ALONG ───────────────────── -->
+      <div style="margin:14px 18px 0;background:linear-gradient(135deg,#1a0828,#0e0818);border:1px solid rgba(160,80,220,.3);border-radius:14px;overflow:hidden;">
+        <div style="background:rgba(160,80,220,.15);padding:10px 14px;display:flex;align-items:center;gap:8px;border-bottom:1px solid rgba(160,80,220,.2);">
+          <span style="font-size:16px;">🎮</span>
+          <span style="font-size:12px;font-weight:800;color:#c87aff;letter-spacing:.8px;text-transform:uppercase;">BBC Predict · Play Along Live</span>
+          <span style="margin-left:auto;font-size:10px;font-weight:700;color:rgba(200,122,255,.6);">Updates as show plays</span>
         </div>
-        <div class="sl-item" onclick="toast('⏩ Jump to','Ocean Eyes — from start')">
-          <div class="sl-n" style="color:var(--muted);">2</div>
-          <div class="sl-inf"><div class="sl-song">Ocean Eyes</div><div class="sl-note">Epic crowd singalong · 4 min 10s</div></div>
-          <span class="sl-ts">21:43</span>
-        </div>
-        <div class="sl-item" onclick="toast('⏩ Jump to','Getting Older — from start')">
-          <div class="sl-n" style="color:var(--muted);">1</div>
-          <div class="sl-inf"><div class="sl-song">Getting Older</div><div class="sl-note">Opener · 3 min 22s</div></div>
-          <span class="sl-ts">21:45</span>
+        <div style="padding:14px;">
+          <div style="font-size:15px;font-weight:700;color:var(--white);margin-bottom:12px;">🗡️ Who do you think is the Secret Traitor?</div>
+          <div id="predict-opts">
+            <div class="predict-opt" onclick="castVote(this,44)" style="--pct:44%"><div class="predict-bar"></div><span class="predict-name">Joe Lycett</span><span class="predict-pct">44%</span></div>
+            <div class="predict-opt" onclick="castVote(this,33)" style="--pct:33%"><div class="predict-bar"></div><span class="predict-name">Maya Jama</span><span class="predict-pct">33%</span></div>
+            <div class="predict-opt" onclick="castVote(this,23)" style="--pct:23%"><div class="predict-bar"></div><span class="predict-name">Michael Sheen</span><span class="predict-pct">23%</span></div>
+          </div>
+          <div style="font-size:11px;color:var(--dim);text-align:right;margin-top:6px;">62,441 playing along · live</div>
         </div>
       </div>
 
-      <!-- Joined halfway? -->
-      <div class="catchup" onclick="toast('▶ Catch up','Playing from the start of the set')">
-        <div class="cu-ey">Joined halfway?</div>
-        <div class="cu-title">Here's what you've missed so far</div>
-        <div class="cu-sub">Billie opened with Getting Older, then gave the crowd Ocean Eyes — 41,000 people singing together. Now into Bad Guy with a surprise extended intro.</div>
-        <div class="cu-cta">Catch up from the start <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></div>
+      <!-- ── JOINED MIDWAY? ──────────────────────────────── -->
+      <div style="margin:14px 18px 0;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+          <span style="font-size:16px;font-weight:800;color:var(--white);">Catch Up</span>
+          <div style="display:flex;align-items:center;gap:7px;cursor:pointer;" onclick="toggleSpoilers()">
+            <span style="font-size:11px;color:var(--dim);" id="spoiler-lbl">Spoilers: ON</span>
+            <div id="spoiler-toggle" style="width:36px;height:20px;border-radius:10px;background:rgba(160,80,220,.7);position:relative;transition:background .2s;flex-shrink:0;">
+              <div id="spoiler-knob" style="width:16px;height:16px;border-radius:50%;background:#fff;position:absolute;top:2px;right:2px;transition:right .2s;"></div>
+            </div>
+          </div>
+        </div>
+        <div class="catchup" onclick="toast('▶ Catch up','Playing Ep 4 from the start')">
+          <div class="cu-ey">Joined midway?</div>
+          <div class="cu-title">Here's what's happened so far</div>
+          <div class="cu-sub" id="spoiler-text">Ep 4 opened with a murder — Rob Beckett was killed overnight by the Traitors. Suspicion at the Roundtable is falling on Joe Lycett and Maya Jama. The banishment vote is live now.</div>
+          <div class="cu-cta">Watch from the start of Ep 4 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="12" height="12"><polyline points="9 18 15 12 9 6"/></svg></div>
+        </div>
       </div>
 
-      <!-- More from Billie — story cards -->
-      <div class="story-lbl">More from Billie</div>
-      <div class="hscroll" style="padding-bottom:2px;">
-        <div class="clip-card" onclick="toast('▶ Playing','Ocean Eyes singalong — 2 min clip')"><div class="cc-thumb" style="background:linear-gradient(135deg,#1c1506,#2e1a08);">🔥<div class="cc-po"><div class="cc-pc"><svg viewBox="0 0 24 24" fill="white" width="12" height="12"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div><div class="cc-dur">2:04</div><div class="cc-bdg">Clip</div></div><div class="cc-meta"><div class="cc-title">The Ocean Eyes singalong</div><div class="cc-sub">Just now · Pyramid Stage</div></div></div>
-        <div class="about-card" onclick="toast('📖 Opening','Billie Eilish — her story')"><div class="ac-ey">Her Story</div><div class="ac-title">How Billie got here</div><div class="ac-body">First bedroom recording at 13. Now headlining Glastonbury at 22. In five years she's become one of the most influential artists of a generation.</div><a class="ac-more">Read more →</a></div>
-        <div class="trivia-card" onclick="toast('✦ Did you know','Glastonbury history facts')"><div class="tc-ey">Did you know</div><div class="tc-body">Billie is the youngest solo artist ever to headline Glastonbury's Pyramid Stage — she first played here on the Other Stage in 2019.</div></div>
-        <div class="clip-card" onclick="toast('▶ Playing','Billie on making her new album — Radio 1')"><div class="cc-thumb" style="background:linear-gradient(135deg,#1a0a2e,#3a1a5a);">🎙️<div class="cc-po"><div class="cc-pc"><svg viewBox="0 0 24 24" fill="white" width="12" height="12"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div><div class="cc-dur">18:32</div><div class="cc-bdg">In Conversation</div></div><div class="cc-meta"><div class="cc-title">Billie on making her new album</div><div class="cc-sub">Radio 1 · 2025</div></div></div>
-        <div class="clip-card" onclick="toast('▶ Playing','Hit Me Hard and Soft — documentary')"><div class="cc-thumb" style="background:linear-gradient(135deg,#0a1520,#1a2a40);">🎬<div class="cc-po"><div class="cc-pc"><svg viewBox="0 0 24 24" fill="white" width="12" height="12"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div><div class="cc-dur">44:10</div><div class="cc-bdg">The Film</div></div><div class="cc-meta"><div class="cc-title">Hit Me Hard and Soft: behind the album</div><div class="cc-sub">BBC · Documentary</div></div></div>
+      <!-- ── KEY MOMENTS ────────────────────────────────── -->
+      <div style="padding:18px 18px 0;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+          <div style="font-size:20px;font-weight:800;color:var(--white);letter-spacing:-.3px;">Key Moments</div>
+          <div style="display:flex;align-items:center;gap:7px;">
+            <span style="font-size:11px;color:var(--dim);">Spoilers</span>
+            <label style="display:inline-flex;align-items:center;cursor:pointer;position:relative;">
+              <input type="checkbox" id="moments-spoiler-cb" onchange="toggleMomentSpoilers(this)" style="position:absolute;opacity:0;width:0;height:0;">
+              <div id="moments-toggle-track" style="width:36px;height:20px;border-radius:10px;background:var(--border);position:relative;transition:background .2s;"><div id="moments-toggle-knob" style="width:16px;height:16px;border-radius:50%;background:#fff;position:absolute;top:2px;left:2px;transition:left .2s;"></div></div>
+            </label>
+          </div>
+        </div>
+        <div id="moments-card" style="background:var(--s1);border-radius:12px;overflow:hidden;border:1px solid var(--border);">
+          <div class="moment-row" style="filter:blur(5px);pointer-events:none;" onclick="toast('⏩ 0:04','The murder reveal — Jake eliminated overnight')">
+            <div class="mr-time">0:04</div>
+            <div class="mr-info"><div class="mr-title">Rob Beckett murdered 😱</div><div class="mr-sub">Rob Beckett was murdered overnight by the Traitors</div></div>
+            <div class="mr-badge" style="background:var(--ldim);color:var(--live);">🔪 Murder</div>
+          </div>
+          <div class="moment-row" style="filter:blur(5px);pointer-events:none;" onclick="toast('⏩ 0:18','Amanda confrontation at the Roundtable')">
+            <div class="mr-time">0:18</div>
+            <div class="mr-info"><div class="mr-title">Joe Lycett confronted 🔥</div><div class="mr-sub">Romesh Ranganathan challenges Joe Lycett's alibi — the table goes silent</div></div>
+            <div class="mr-badge" style="background:rgba(255,107,0,.15);color:var(--orange);">⚡ Viral</div>
+          </div>
+          <div class="moment-row" style="filter:blur(5px);pointer-events:none;" onclick="toast('⏩ 0:31','Louis Theroux emotional speech')">
+            <div class="mr-time">0:31</div>
+            <div class="mr-info"><div class="mr-title">Bella Ramsey breaks down 😭</div><div class="mr-sub">Bella Ramsey: 'I just want to trust someone'</div></div>
+            <div class="mr-badge" style="background:rgba(60,120,200,.15);color:#78a8ff;">💬 Moment</div>
+          </div>
+          <div class="moment-row" style="border-bottom:none;opacity:.65;" onclick="toast('⏳ Happening now','The banishment vote — live in the episode')">
+            <div class="mr-time" style="color:var(--dim);">Now</div>
+            <div class="mr-info"><div class="mr-title" style="color:var(--dim);">The banishment vote…</div><div class="mr-sub">Happening right now — scroll carefully if avoiding spoilers</div></div>
+            <div class="mr-badge" style="background:var(--ldim);color:var(--live);"><span style="width:5px;height:5px;border-radius:50%;background:var(--live);animation:blink 1.1s infinite;display:inline-block;margin-right:3px;"></span>Live</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── MORE FROM THE SHOW ─────────────────────────── -->
+      <div style="padding:18px 18px 0;">
+        <div style="font-size:20px;font-weight:800;color:var(--white);letter-spacing:-.3px;margin-bottom:12px;">More from The Traitors</div>
+        <div style="display:flex;gap:10px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px;">
+          <div class="clip-card" onclick="toast('▶ Playing','Joe Lycett confronted — 90 sec clip')"><div class="cc-thumb" style="background:linear-gradient(135deg,#200810,#380818);">😱<div class="cc-po"><div class="cc-pc"><svg viewBox="0 0 24 24" fill="white" width="12" height="12"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div><div class="cc-dur">1:32</div><div class="cc-bdg">Clip</div></div><div class="cc-meta"><div class="cc-title">That Joe Lycett moment</div><div class="cc-sub">Going viral right now</div></div></div>
+          <div class="about-card" onclick="toast('📖 Opening','Suspect guide — who could be a Traitor?')"><div class="ac-ey">Suspects Guide</div><div class="ac-title">Who could be a Traitor?</div><div class="ac-body">Our breakdown of all 12 remaining players — their tells, alliances, and why Joe Lycett has been acting very suspiciously around Maya Jama.</div><a class="ac-more">Read more →</a></div>
+          <div class="trivia-card" style="background:linear-gradient(135deg,#1a0820,#2a1040);border-color:rgba(160,80,220,.2);" onclick="toast('✦ Did you know','Celebrity Traitors facts')"><div class="tc-ey" style="color:#c87aff;">Did you know</div><div class="tc-body">Celebrity Traitors S2 is the most-watched BBC One show of 2027 so far — 12.4 million viewers for the Ep 1 premiere.</div></div>
+          <div class="clip-card" onclick="toast('▶ Playing','Louis Theroux — In Conversation with Claudia')"><div class="cc-thumb" style="background:linear-gradient(135deg,#080c20,#101830);">🎙️<div class="cc-po"><div class="cc-pc"><svg viewBox="0 0 24 24" fill="white" width="12" height="12"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div><div class="cc-dur">12:44</div><div class="cc-bdg">In Conversation</div></div><div class="cc-meta"><div class="cc-title">Louis on joining the show</div><div class="cc-sub">Pre-show interview · BBC Sounds</div></div></div>
+          <div class="clip-card" onclick="toast('▶ Playing','Behind the Castle — full documentary')"><div class="cc-thumb" style="background:linear-gradient(135deg,#1a0820,#2e1040);">🏰<div class="cc-po"><div class="cc-pc"><svg viewBox="0 0 24 24" fill="white" width="12" height="12"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div><div class="cc-dur">38:20</div><div class="cc-bdg">The Film</div></div><div class="cc-meta"><div class="cc-title">Behind the Castle</div><div class="cc-sub">Making of · Series 2</div></div></div>
+        </div>
+      </div>
+
+      <!-- ── CREATORS & SOCIALS ─────────────────────────── -->
+      <div style="padding:18px 18px 0;">
+        <div style="font-size:20px;font-weight:800;color:var(--white);letter-spacing:-.3px;margin-bottom:3px;">What the Internet is Saying</div>
+        <div style="font-size:12px;color:var(--dim);margin-bottom:12px;">Creators, fans and social media — right now</div>
+        <div style="display:flex;gap:10px;overflow-x:auto;scrollbar-width:none;padding-bottom:14px;">
+          <div class="creator-card" onclick="toast('▶ Playing','Grace — Amanda theory TikTok · 2.1M views')"><div class="cr-thumb" style="background:linear-gradient(135deg,#1a0a2e,#2e1050);"><div style="position:absolute;top:8px;left:8px;background:rgba(0,0,0,.55);border-radius:4px;padding:2px 7px;font-size:9px;font-weight:800;color:#ff6b9d;letter-spacing:.5px;">TIKTOK</div><div style="position:absolute;bottom:8px;right:8px;background:rgba(0,0,0,.5);border-radius:3px;padding:2px 5px;font-size:10px;font-weight:700;color:rgba(255,255,255,.8);">0:58</div><span style="font-size:28px;">📱</span></div><div class="cr-meta"><div class="cr-handle">@gracewatchestv</div><div class="cr-title">"Amanda is DEFINITELY a traitor — here's why 🧵"</div><div class="cr-stats">2.1M views · 4h ago</div></div></div>
+          <div class="creator-card" onclick="toast('▶ Playing','Mark — live reaction YouTube · 8.4k watching')"><div class="cr-thumb" style="background:linear-gradient(135deg,#1a0808,#300e0e);"><div style="position:absolute;top:8px;left:8px;background:rgba(0,0,0,.55);border-radius:4px;padding:2px 7px;font-size:9px;font-weight:800;color:#ff4444;letter-spacing:.5px;">YOUTUBE</div><div style="position:absolute;bottom:8px;right:8px;background:rgba(0,0,0,.5);border-radius:3px;padding:2px 5px;font-size:10px;font-weight:700;color:rgba(255,255,255,.8);">LIVE</div><span style="font-size:28px;">🎥</span></div><div class="cr-meta"><div class="cr-handle">MarkWatchesEverything</div><div class="cr-title">LIVE reaction — Traitors Ep4</div><div class="cr-stats">8.4k watching now</div></div></div>
+          <div class="creator-card" onclick="toast('▶ Playing','The Traitors Podcast — emergency episode · 22 mins')"><div class="cr-thumb" style="background:linear-gradient(135deg,#0a1020,#141830);"><div style="position:absolute;top:8px;left:8px;background:rgba(0,0,0,.55);border-radius:4px;padding:2px 7px;font-size:9px;font-weight:800;color:#c87aff;letter-spacing:.5px;">PODCAST</div><div style="position:absolute;bottom:8px;right:8px;background:rgba(0,0,0,.5);border-radius:3px;padding:2px 5px;font-size:10px;font-weight:700;color:rgba(255,255,255,.8);">22 min</div><span style="font-size:28px;">🎙️</span></div><div class="cr-meta"><div class="cr-handle">The Traitors Pod</div><div class="cr-title">Emergency ep — reacting to THAT scene</div><div class="cr-stats">Released 20 min ago</div></div></div>
+        </div>
       </div>
 
       <!-- ── ALSO LIVE NOW — categorised by intent, not station ── -->
@@ -896,10 +1184,10 @@ body{background:#060606;min-height:100vh;margin:0;padding:0;font-family:var(--fo
               <div class="csc-mid"><div class="csc-name">BBC Radio 1</div><div class="csc-show">Greg James</div><div class="csc-stn">Radio 1 · Pop &amp; Music</div></div>
               <div class="csc-right"><span class="csc-live"><span class="d"></span>LIVE</span></div>
             </div>
-            <div class="cat-stream-card" onclick="toast('▶ Playing','Radio 2 — Glastonbury live')">
+            <div class="cat-stream-card" onclick="toast('▶ Playing','Radio 2 — Celebrity Traitors live')">
               <div class="csc-left"><div class="csc-art" style="background:linear-gradient(135deg,#1a1206,#3a2a08);box-shadow:0 0 0 1.5px var(--orange);font-size:14px;font-weight:900;color:white;">R2</div></div>
-              <div class="csc-mid"><div class="csc-name">BBC Radio 2</div><div class="csc-show" style="color:var(--orange);">Glastonbury 2027 — live</div><div class="csc-stn">Radio 2 · Music &amp; Events</div></div>
-              <div class="csc-right"><span class="csc-live" style="background:rgba(232,163,42,.2);color:var(--amber);"><span class="d" style="background:var(--amber);"></span>GLASTO</span></div>
+              <div class="csc-mid"><div class="csc-name">BBC One / BBC Sounds</div><div class="csc-show" style="color:var(--orange);">Celebrity Traitors — live</div><div class="csc-stn">Radio 2 · Music &amp; Events</div></div>
+              <div class="csc-right"><span class="csc-live" style="background:rgba(160,80,220,.2);color:#c87aff;"><span class="d" style="background:#c87aff;animation:blink 1.1s infinite;"></span>TRAITORS</span></div>
             </div>
             <div class="cat-stream-card" onclick="toast('▶ Playing','Radio 3 — In Concert')">
               <div class="csc-left"><div class="csc-art" style="background:linear-gradient(135deg,#0a1a2e,#1a2a5e);font-size:14px;font-weight:900;color:white;">R3</div></div>
@@ -916,9 +1204,9 @@ body{background:#060606;min-height:100vh;margin:0;padding:0;font-family:var(--fo
               <div class="csc-mid"><div class="csc-name">BBC Radio 5 Live</div><div class="csc-show">The Ashes — Day 3</div><div class="csc-stn">Radio 5 · Sport &amp; News</div></div>
               <div class="csc-right"><span class="csc-live"><span class="d"></span>LIVE</span></div>
             </div>
-            <div class="cat-stream-card" onclick="toast('▶ Playing','6 Music — Lauren Laverne')">
+            <div class="cat-stream-card" onclick="toast('▶ Playing','BBC Radio 5 Live — The Ashes')">
               <div class="csc-left"><div class="csc-art" style="background:linear-gradient(135deg,#1a0a2e,#4a0a6e);font-size:14px;font-weight:900;color:white;">6M</div></div>
-              <div class="csc-mid"><div class="csc-name">BBC 6 Music</div><div class="csc-show">Lauren Laverne</div><div class="csc-stn">6 Music · Alternative</div></div>
+              <div class="csc-mid"><div class="csc-name">BBC Radio 5 Live</div><div class="csc-show">The Ashes Day 3</div><div class="csc-stn">Radio 5 · Sport & News</div></div>
               <div class="csc-right"><span class="csc-live"><span class="d"></span>LIVE</span></div>
             </div>
             <div class="cat-stream-card" onclick="toast('▶ Playing','Asian Network — Breakfast')">
@@ -944,13 +1232,13 @@ body{background:#060606;min-height:100vh;margin:0;padding:0;font-family:var(--fo
             <!-- Scrollable raw video feed cards -->
             <div style="display:flex;gap:10px;overflow-x:auto;scrollbar-width:none;padding-bottom:8px;margin:0 -14px;padding-left:14px;padding-right:14px;">
               <!-- Each card has a canvas animation -->
-              <div class="raw-feed-card" onclick="toast('📡 Opened','Glastonbury Backstage — Lauren Laverne · full screen')">
-                <canvas class="raw-canvas" id="rc0" data-hue="30" data-label="Backstage · Glasto"></canvas>
+              <div class="raw-feed-card" onclick="toast('📡 Opened','Traitors Lair secret cam — full screen')">
+                <canvas class="raw-canvas" id="rc0" data-hue="30" data-label="Traitors Lair · BBC Sounds"></canvas>
                 <div class="rfc-overlay">
                   <div class="rfc-top"><span class="rfc-live"><span class="d"></span>RAW</span><span class="rfc-viewers">6.1k</span></div>
                   <div class="rfc-bottom">
-                    <div class="rfc-name">Lauren Laverne — Green Fields</div>
-                    <div class="rfc-sub">Backstage · Unedited · 6 Music</div>
+                    <div class="rfc-name">Traitors Lair — secret cam</div>
+                    <div class="rfc-sub">Unedited · BBC Sounds Exclusive</div>
                   </div>
                 </div>
               </div>
@@ -1004,46 +1292,36 @@ body{background:#060606;min-height:100vh;margin:0;padding:0;font-family:var(--fo
       </div>
 
       <!-- Tonight's schedule -->
-      <div class="sh" style="margin-top:8px;"><h2>Tonight's Schedule</h2><a class="ao" onclick="toast('📅 Full schedule','Opening complete schedule')">All events</a></div>
-      <div class="si" onclick="goNav(2)"><div class="si-time">21:45</div><div class="si-line"><div class="si-dot lv"></div><div class="si-tail"></div></div><div class="si-body"><div class="si-act">Billie Eilish</div><div class="si-stage"><span class="sdot" style="background:#E8A32A;"></span>Pyramid · Glastonbury · Radio 2</div><div class="si-chips"><span class="chip lv">🔴 Live</span><span class="chip">🎧 Audio</span><span class="chip">💬 Chat</span></div></div><div class="si-save"><button class="remind saved">Saved ✓</button></div></div>
-      <div class="si" onclick="toast('▶ Playing','Olivia Rodrigo — Other Stage')"><div class="si-time">21:30</div><div class="si-line"><div class="si-dot lv"></div><div class="si-tail"></div></div><div class="si-body"><div class="si-act">Olivia Rodrigo</div><div class="si-stage"><span class="sdot" style="background:#4a7a9a;"></span>Other Stage · Radio 6</div><div class="si-chips"><span class="chip lv">🔴 Live</span><span class="chip">🎧 Audio</span></div></div><div class="si-save"><button class="remind" onclick="event.stopPropagation();toast('🔔 Saved','Olivia Rodrigo alert set')">Remind</button></div></div>
-      <div class="si" onclick="toast('⏰ 22:30','Glass Animals — Woodsie Stage')"><div class="si-time">22:30</div><div class="si-line"><div class="si-dot" style="background:var(--orange);"></div><div class="si-tail"></div></div><div class="si-body"><div class="si-act">Glass Animals</div><div class="si-stage"><span class="sdot" style="background:#8a4a9a;"></span>Woodsie · Radio 6</div><div class="si-chips"><span class="up">in 43 min</span><span class="chip">🎧 Audio</span></div></div><div class="si-save"><button class="remind" id="sv3" onclick="event.stopPropagation();toggleSave('sv3','Glass Animals')">Remind</button></div></div>
-      <div class="si" onclick="toast('📅 Tomorrow','The 1975 — Pyramid Stage 20:30')"><div class="si-time">20:30</div><div class="si-line"><div class="si-dot"></div></div><div class="si-body"><div class="si-act">The 1975 <span style="font-size:11px;color:var(--dim);">· Tomorrow</span></div><div class="si-stage"><span class="sdot" style="background:#E8A32A;"></span>Pyramid · Radio 2</div><div class="si-chips"><span class="chip">🎧 Audio</span><span class="chip">🎬 Video</span><span class="chip">💬 Chat</span></div></div><div class="si-save"><button class="remind saved">Saved ✓</button></div></div>
+      <div class="react-pulse"><div class="rp on" onclick="toggleR(this)"><span class="rp-em">😱</span><span class="rp-n">89k</span></div><div class="rp-sep"></div><div class="rp" onclick="toggleR(this)"><span class="rp-em">🗡️</span><span class="rp-n">62k</span></div><div class="rp-sep"></div><div class="rp" onclick="toggleR(this)"><span class="rp-em">😭</span><span class="rp-n">44k</span></div><div class="rp-sep"></div><div class="rp" onclick="toggleR(this)"><span class="rp-em">🤯</span><span class="rp-n">38k</span></div><div class="rp-sep"></div><div class="rp" onclick="toggleR(this)"><span class="rp-em">❤️</span><span class="rp-n">21k</span></div></div>
 
-      <!-- Reactions -->
-      <div class="react-pulse"><div class="rp on" onclick="toggleR(this)"><span class="rp-em">🔥</span><span class="rp-n">74k</span></div><div class="rp-sep"></div><div class="rp" onclick="toggleR(this)"><span class="rp-em">❤️</span><span class="rp-n">51k</span></div><div class="rp-sep"></div><div class="rp" onclick="toggleR(this)"><span class="rp-em">⚡</span><span class="rp-n">22k</span></div><div class="rp-sep"></div><div class="rp" onclick="toggleR(this)"><span class="rp-em">😭</span><span class="rp-n">11k</span></div><div class="rp-sep"></div><div class="rp" onclick="toggleR(this)"><span class="rp-em">🎸</span><span class="rp-n">8.9k</span></div></div>
-
-      <!-- Crowd — collapsible peek/expand -->
+      <!-- Crowd — social excerpts, collapsible -->
       <div class="crowd-zone">
         <div class="crowd-hd">
           <span class="crowd-title">The Crowd</span>
           <span class="crowd-lv"><span style="width:5px;height:5px;border-radius:50%;background:var(--live);display:inline-block;animation:blink 1.1s infinite;"></span>Live</span>
         </div>
-        <div class="crowd-ct">41,228 people here with you right now</div>
+        <div class="crowd-ct">What people are saying right now — 62,441 watching</div>
 
-        <!-- Peek state — shows 2 comments, fades, tap to expand -->
         <div id="crowd-peek" onclick="expandCrowd()" style="cursor:pointer;position:relative;">
-          <div class="comment"><div class="c-av" style="background:#3a2a8a;">T</div><div><div class="c-hd"><span class="c-name">TaraB</span><span class="c-badge">BBC</span><span class="c-time">just now</span></div><div class="c-text">📍 <strong>Bad Guy has started</strong> — Billie opened with a surprise extended intro. The crowd are off their feet right now.</div></div></div>
-          <div class="comment" style="margin-bottom:0;"><div class="c-av" style="background:#c04a2a;">S</div><div><div class="c-hd"><span class="c-name">SophieG</span><span class="c-time">1 min ago</span></div><div class="c-text">ocean eyes literally just broke me 😭 the WHOLE crowd singing. Watching from Edinburgh and I'm crying</div></div></div>
-          <!-- Fade + expand prompt -->
+          <div class="comment"><div class="c-av" style="background:#3a1a6a;font-size:10px;font-weight:900;">BBC</div><div><div class="c-hd"><span class="c-name">TaraB</span><span class="c-badge">BBC</span><span class="c-time">just now</span></div><div class="c-text">📍 <strong>Tiebreak happening NOW</strong> — it's Amanda vs Louis. The studio is completely silent.</div></div></div>
+          <div class="comment" style="margin-bottom:0;"><div class="c-av" style="background:#8b1a1a;font-size:10px;font-weight:900;">𝕏</div><div><div class="c-hd"><span class="c-name">@RomeshArmy_</span><span class="c-time">1 min ago</span></div><div class="c-text">Joe Lycett asking Maya if she's "enjoying herself" after the murder. Most suspicious thing I've ever seen 👀 #Traitors</div></div></div>
           <div style="position:absolute;bottom:0;left:0;right:0;height:72px;background:linear-gradient(to bottom,transparent,var(--black));display:flex;align-items:flex-end;justify-content:center;padding-bottom:8px;">
             <div style="display:flex;align-items:center;gap:6px;background:var(--s2);border:1px solid var(--border);border-radius:20px;padding:6px 14px;">
               <svg viewBox="0 0 24 24" fill="none" stroke="var(--orange)" stroke-width="2" width="14" height="14"><polyline points="6 9 12 15 18 9"/></svg>
               <span style="font-size:12px;font-weight:700;color:var(--orange);">Read all comments</span>
-              <span style="font-size:12px;color:var(--dim);">41.2k</span>
+              <span style="font-size:12px;color:var(--dim);">62.4k</span>
             </div>
           </div>
         </div>
 
-        <!-- Full expanded state — hidden by default -->
         <div id="crowd-full" style="display:none;">
           <div id="comments">
-            <div class="comment"><div class="c-av" style="background:#3a2a8a;">T</div><div><div class="c-hd"><span class="c-name">TaraB</span><span class="c-badge">BBC</span><span class="c-time">just now</span></div><div class="c-text">📍 <strong>Bad Guy has started</strong> — Billie opened with a surprise extended intro. The crowd are off their feet right now.</div></div></div>
-            <div class="comment"><div class="c-av" style="background:#c04a2a;">S</div><div><div class="c-hd"><span class="c-name">SophieG</span><span class="c-time">1 min ago</span></div><div class="c-text">ocean eyes literally just broke me 😭 the WHOLE crowd singing. Watching from Edinburgh and I'm crying</div></div></div>
-            <div class="comment"><div class="c-av" style="background:#2a6a4a;">M</div><div><div class="c-hd"><span class="c-name">MarcusL</span><span class="c-time">2 min ago</span></div><div class="c-text">first glastonbury and ocean eyes was the first song. genuinely in tears 🔥</div></div></div>
-            <div class="comment"><div class="c-av" style="background:#6a2a4a;">R</div><div><div class="c-hd"><span class="c-name">RachK</span><span class="c-time">3 min ago</span></div><div class="c-text">Watching from Inverness 🏴󠁧󠁢󠁳󠁣󠁴󠁿 feels like being in the crowd. This is why Sounds exists</div></div></div>
+            <div class="comment"><div class="c-av" style="background:#3a1a6a;font-size:10px;font-weight:900;">BBC</div><div><div class="c-hd"><span class="c-name">TaraB</span><span class="c-badge">BBC</span><span class="c-time">just now</span></div><div class="c-text">📍 <strong>Tiebreak happening NOW</strong> — Amanda vs Louis. The studio is completely silent.</div></div></div>
+            <div class="comment"><div class="c-av" style="background:#8b1a1a;font-size:10px;font-weight:900;">𝕏</div><div><div class="c-hd"><span class="c-name">@RomeshArmy_</span><span class="c-time">1 min ago</span></div><div class="c-text">Joe Lycett asking Maya if she's "enjoying herself" after the murder. Most suspicious thing I've ever seen 👀 #Traitors</div></div></div>
+            <div class="comment"><div class="c-av" style="background:#1a3a6a;font-size:10px;font-weight:900;">𝕏</div><div><div class="c-hd"><span class="c-name">@TellyDan_UK</span><span class="c-time">2 min ago</span></div><div class="c-text">Michael Sheen staring into the middle distance when Romesh spoke. He KNOWS. 😱 #Traitors</div></div></div>
+            <div class="comment"><div class="c-av" style="background:#2a1a6a;">S</div><div><div class="c-hd"><span class="c-name">RossKempFan</span><span class="c-time">3 min ago</span></div><div class="c-text">Watching on the Lair cam on Sounds. You can hear them scheming. Incredible TV 🏰</div></div></div>
+            <div class="comment"><div class="c-av" style="background:#6a1a1a;font-size:10px;font-weight:900;">𝕏</div><div><div class="c-hd"><span class="c-name">@graceontv_</span><span class="c-time">4 min ago</span></div><div class="c-text">Danny Dyer calling out Amanda then immediately looking guilty is the most chaotic thing on TV this year 😂 #Traitors</div></div></div>
           </div>
-          <!-- Collapse button -->
           <button onclick="collapseCrowd()" style="display:flex;align-items:center;gap:6px;background:var(--s2);border:1px solid var(--border);border-radius:20px;padding:6px 14px;margin:6px auto 0;font-size:12px;font-weight:700;color:var(--dim);cursor:pointer;font-family:var(--font-b);">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><polyline points="18 15 12 9 6 15"/></svg>
             Collapse
@@ -1054,7 +1332,7 @@ body{background:#060606;min-height:100vh;margin:0;padding:0;font-family:var(--fo
 
       <!-- Comment input -->
       <div class="ci-wrap-outer">
-        <div class="ci-inner"><input class="ci-input" placeholder="Say something about the set…" id="ci"><span class="ci-emoji" onclick="toast('😊','Emoji picker')">😊</span></div>
+        <div class="ci-inner"><input class="ci-input" placeholder="What do you think is happening?…" id="ci"><span class="ci-emoji" onclick="toast('😊','Emoji picker')">😊</span></div>
         <button class="ci-send" onclick="sendComment()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
       </div>
 
@@ -1066,11 +1344,11 @@ body{background:#060606;min-height:100vh;margin:0;padding:0;font-family:var(--fo
     <div style="padding-top:48px;">
       <div class="page-title">My Sounds</div>
       <div class="sh"><h2>Saved Events</h2></div>
-      <div class="row" style="align-items:center;" onclick="goNav(2)"><div class="row-art sm" style="background:linear-gradient(135deg,#1c1506,#2e1a08);">⭐</div><div class="row-info"><div style="margin-bottom:3px;"><span class="lp" style="font-size:9px;padding:2px 6px;"><span class="d"></span>Live Now</span></div><div class="row-title" style="font-size:15px;">Glastonbury 2027</div><div class="row-sub" style="font-size:12px;margin-bottom:0;">Billie Eilish · 5 streams · Radio 2</div></div><div class="row-play"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
+      <div class="row" style="align-items:center;" onclick="goNav(2)"><div class="row-art sm" style="background:linear-gradient(135deg,#1c1506,#2e1a08);">⭐</div><div class="row-info"><div style="margin-bottom:3px;"><span class="lp" style="font-size:9px;padding:2px 6px;"><span class="d"></span>Live Now</span></div><div class="row-title" style="font-size:15px;">Celebrity Traitors</div><div class="row-sub" style="font-size:12px;margin-bottom:0;">S2 Ep4 · Live now · BBC One</div></div><div class="row-play"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
       <div class="div"></div>
-      <div class="row" style="align-items:center;" onclick="toast('⏰ Tomorrow','The 1975 — 20:30')"><div class="row-art sm" style="background:linear-gradient(135deg,#0a1a0a,#1a4a1a);">🎵</div><div class="row-info"><div style="margin-bottom:3px;"><span class="up">Tomorrow · 20:30</span></div><div class="row-title" style="font-size:15px;">The 1975</div><div class="row-sub" style="font-size:12px;margin-bottom:0;">Pyramid Stage · Radio 2</div></div><button class="remind saved">Saved ✓</button></div>
+      <div class="row" style="align-items:center;" onclick="toast('⏰ Tomorrow','The Traitors: Uncloaked S2 — 20:30')"><div class="row-art sm" style="background:linear-gradient(135deg,#0a1a0a,#1a4a1a);">🎵</div><div class="row-info"><div style="margin-bottom:3px;"><span class="up">Tomorrow · 20:30</span></div><div class="row-title" style="font-size:15px;">The Traitors: Uncloaked S2</div><div class="row-sub" style="font-size:12px;margin-bottom:0;">Post-show special · BBC Sounds</div></div><button class="remind saved">Saved ✓</button></div>
       <div class="sh" style="margin-top:8px;"><h2>Continue Listening</h2></div>
-      <div class="row" onclick="toast('▶ Playing','Glastonbury Daily — resuming')"><div class="row-art" style="background:linear-gradient(135deg,#1c1506,#2e1a08);">🎪</div><div class="row-info"><div class="row-title">Glastonbury Daily 2026</div><div class="row-sub">Best of Day 2 — Lauren's picks and backstage</div><div class="prog-track"><div class="prog-fill" style="width:62%"></div></div><div class="prog-lbl">14 mins left</div></div><div class="row-play"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
+      <div class="row" onclick="toast('▶ Playing','Celebrity Traitors Daily — resuming')"><div class="row-art" style="background:linear-gradient(135deg,#1c1506,#2e1a08);">🎪</div><div class="row-info"><div class="row-title">Celebrity Traitors: The Debrief</div><div class="row-sub">Post-ep4 reactions, predictions & Rylan's verdict</div><div class="prog-track"><div class="prog-fill" style="width:62%"></div></div><div class="prog-lbl">14 mins left</div></div><div class="row-play"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
       <div class="div"></div>
       <div class="row" onclick="toast('▶ Playing','The Traitors: Uncloaked')"><div class="row-art" style="background:linear-gradient(135deg,#0a1a2a,#1a2a4a);">🎭</div><div class="row-info"><div class="row-title">The Traitors: Uncloaked</div><div class="row-sub">Celebrity Traitors Series 1: Episode 2 BONUS</div><div class="prog-track"><div class="prog-fill" style="width:82%"></div></div><div class="prog-lbl">8 mins left</div></div><div class="row-play"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
       <div class="sh"><h2>Subscriptions</h2></div>
@@ -1087,7 +1365,7 @@ body{background:#060606;min-height:100vh;margin:0;padding:0;font-family:var(--fo
       <div class="search-bar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><input placeholder="Find something to play" id="si"></div>
       <div class="sh" style="padding-top:14px;"><h2>Live Now</h2><a class="ao" onclick="goNav(2)">All streams</a></div>
       <div class="hscroll">
-        <div class="ls-card" onclick="goNav(2)"><div class="ls-art" style="background:linear-gradient(135deg,#1c1506,#2e1a08);">⭐<div class="ls-badge"><span class="d"></span>Live</div></div><div class="ls-info"><div class="ls-stage" style="color:#E8A32A;">Glastonbury</div><div class="ls-act">Billie Eilish</div><div class="ls-stn">Radio 2</div></div></div>
+        <div class="ls-card" onclick="goNav(2)"><div class="ls-art" style="background:linear-gradient(135deg,#1c1506,#2e1a08);">⭐<div class="ls-badge"><span class="d"></span>Live</div></div><div class="ls-info"><div class="ls-stage" style="color:#E8A32A;">Celebrity Traitors</div><div class="ls-act">Celebrity Traitors</div><div class="ls-stn">Radio 2</div></div></div>
         <div class="ls-card" onclick="toast('▶ Playing','The Ashes — Radio 5 Live')"><div class="ls-art" style="background:linear-gradient(135deg,#0a1a0a,#1a4a1a);">🏏<div class="ls-badge"><span class="d"></span>Live</div></div><div class="ls-info"><div class="ls-stage">The Ashes</div><div class="ls-act">Eng vs Australia</div><div class="ls-stn">Radio 5</div></div></div>
         <div class="ls-card" onclick="toast('▶ Playing','Radio 4 — live now')"><div class="ls-art" style="background:linear-gradient(135deg,#2a1a40,#4a2a70);">📻<div class="ls-badge"><span class="d"></span>Live</div></div><div class="ls-info"><div class="ls-stage">Radio 4</div><div class="ls-act">Today Programme</div><div class="ls-stn">Radio 4</div></div></div>
       </div>
@@ -1129,12 +1407,57 @@ let cur=0, tTm, expTab=0, aIdx=0;
 let stageCanvas, stageCtx, stageAnimId;
 let isPlaying=true, currentStage=0, vaMode='video', frameCount=0;
 
+/* ── PREDICT VOTE ──────────────────────────────────────── */
+function castVote(el, pct){
+  const bar = el.querySelector('.predict-bar');
+  if(bar) bar.style.width = pct+'%';
+  el.style.borderColor = 'rgba(160,80,220,.7)';
+  toast('🗡️ Vote counted', pct+'% of viewers also suspect this');
+}
+
+/* ── SPOILERS TOGGLE ────────────────────────────────────── */
+let spoilersOn = true;
+/* Moments spoiler toggle */
+function toggleMomentSpoilers(cb){
+  const card=document.getElementById('moments-card');
+  const track=document.getElementById('moments-toggle-track');
+  const knob=document.getElementById('moments-toggle-knob');
+  if(!card)return;
+  const rows=card.querySelectorAll('.moment-row');
+  if(cb.checked){
+    if(track)track.style.background='rgba(160,80,220,.7)';
+    if(knob)knob.style.left='18px';
+    rows.forEach(r=>{r.style.filter='none';r.style.pointerEvents='auto';});
+    toast('👁️ Spoilers on','Timestamps and moments revealed');
+  } else {
+    if(track)track.style.background='var(--border)';
+    if(knob)knob.style.left='2px';
+    rows.forEach(r=>{r.style.filter='blur(5px)';r.style.pointerEvents='none';});
+    toast('🙈 Spoilers hidden','Moments blurred — toggle to reveal');
+  }
+}
+
+function toggleSpoilers(){
+  spoilersOn = !spoilersOn;
+  const lbl = document.getElementById('spoiler-lbl');
+  const tog = document.getElementById('spoiler-toggle');
+  const knob = document.getElementById('spoiler-knob');
+  const txt = document.getElementById('spoiler-text');
+  if(lbl) lbl.textContent = 'Spoilers: ' + (spoilersOn ? 'ON' : 'OFF');
+  if(tog) tog.style.background = spoilersOn ? 'rgba(160,80,220,.7)' : 'var(--border)';
+  if(knob) knob.style.right = spoilersOn ? '2px' : '18px';
+  if(txt) txt.textContent = spoilersOn
+    ? 'Ep 4 opened with a murder — Rob Beckett was killed overnight. Suspicion is falling on Joe Lycett and Maya Jama. The banishment vote is live now.'
+    : 'Episode 4 is currently airing live. Tap play to watch from the start — no spoilers.';
+  toast(spoilersOn ? '👁️ Spoilers on' : '🙈 Spoilers hidden', spoilersOn ? 'Showing full episode summary' : 'Summary hidden — enjoy the suspense');
+}
+
 const autoComments=[
-  {name:'EllaP', bg:'#4a2a6a', text:'bad guy live is something else entirely 🤯'},
-  {name:'DanF',  bg:'#2a4a2a', text:"switched to Radio 2 just for this. best decision I've made today"},
-  {name:'NaomiT',bg:'#6a4a2a', text:'watching with my mum who saw Billie here in 2019. full circle 💛'},
-  {name:'ChrisJ',bg:'#2a2a6a', text:'BBC Sounds sound quality is unreal for a live stream right now'},
-  {name:'AmiS',  bg:'#6a2a2a', text:"three songs in and I've already cried twice. CINEMA 🎬"},
+  {name:'EllaP', bg:'#4a1a6a', text:'I KNEW it was Amanda the whole time. The way she looked at Danny in ep2 🧠'},
+  {name:'@CultureVulture', bg:'#8b1a1a', text:'Louis Theroux crying on a reality show is the most 2027 thing I\'ve ever seen 😭 #CelebrityTraitors'},
+  {name:'NaomiT', bg:'#1a2a6a', text:'watching on the Traitors Lair cam on BBC Sounds is a completely different experience. Highly recommend'},
+  {name:'@MarkTV', bg:'#6a1a2a', text:'62,000 people watching this on Sounds right now. This is massive'},
+  {name:'AmiS', bg:'#2a1a4a', text:'Claudia Winkleman is operating on a different level tonight. Queen. 👑 #Traitors'},
 ];
 
 /* ── NAV ────────────────────────────────────────────────── */
@@ -1261,11 +1584,11 @@ function toggleCat(id){
 
 /* ── CANVAS: MAIN STAGE ─────────────────────────────────── */
 const SC=[
-  {bg1:'#1e1604',bg2:'#0f1c08',bm:'rgba(232,163,42,',cr:true},
-  {bg1:'#0a1020',bg2:'#0a1828',bm:'rgba(120,160,220,',cr:true},
-  {bg1:'#081408',bg2:'#0c200c',bm:'rgba(80,180,100,', cr:true},
-  {bg1:'#14082a',bg2:'#1a0a3a',bm:'rgba(180,100,220,',cr:false},
-  {bg1:'#140814',bg2:'#1a0a1a',bm:'rgba(160,80,180,', cr:true},
+  {bg1:'#0e0810',bg2:'#1a0a1e',bm:'rgba(180,100,220,',cr:false},  // Main show — deep purple
+  {bg1:'#100808',bg2:'#1e0e0a',bm:'rgba(200,80,60,', cr:false},   // Roundtable — blood red
+  {bg1:'#080c10',bg2:'#0a1020',bm:'rgba(60,100,180,', cr:false},  // Traitors Lair — cold blue
+  {bg1:'#0e100a',bg2:'#1a1e08',bm:'rgba(160,180,60,', cr:false},  // Faithful — murky green
+  {bg1:'#100e08',bg2:'#1e1a0a',bm:'rgba(220,160,40,', cr:false},  // Post-show — warm gold
 ];
 const BEAMS=[
   {x:.18,h:220,ph:0,   sp:.012},
@@ -1337,35 +1660,38 @@ function drawStageFrame(){
     ctx.restore();
   });
 
-  /* pyramid (stages 0-2) */
-  if(currentStage<=2){
-    ctx.save(); ctx.globalAlpha=.50;
-    ctx.strokeStyle='rgba(232,163,42,.58)'; ctx.lineWidth=1.5;
-    ctx.fillStyle='rgba(232,163,42,.04)';
-    ctx.beginPath();
-    ctx.moveTo(195,4); ctx.lineTo(362,h); ctx.lineTo(28,h);
-    ctx.closePath(); ctx.fill(); ctx.stroke();
-    const ap=ctx.createRadialGradient(195,4,0,195,4,20);
-    ap.addColorStop(0,'rgba(232,163,42,.88)');
-    ap.addColorStop(1,'rgba(232,163,42,0)');
-    ctx.fillStyle=ap; ctx.fillRect(175,0,40,24);
-    ctx.restore();
+  /* Traitors castle visuals */
+  // Roundtable + candle glows (main show + roundtable views)
+  if(currentStage<=1){
+    ctx.save(); ctx.globalAlpha=.22;
+    ctx.strokeStyle='rgba(180,100,220,.7)'; ctx.lineWidth=1.5;
+    ctx.beginPath(); ctx.ellipse(195,h-15,110,28,0,0,Math.PI*2);
+    ctx.stroke(); ctx.restore();
+    [[95,h-65],[195,h-85],[295,h-65]].forEach(([cx,cy])=>{
+      const flk=0.7+Math.sin(frameCount*.18+cx*.01)*.3;
+      const cg=ctx.createRadialGradient(cx,cy,0,cx,cy,28*flk);
+      cg.addColorStop(0,'rgba(255,175,40,.38)');
+      cg.addColorStop(1,'rgba(255,120,20,0)');
+      ctx.fillStyle=cg; ctx.fillRect(cx-30,cy-30,60,60);
+    });
   }
-
-  /* crowd wave */
-  if(c.cr){
-    ctx.save();
-    ctx.globalAlpha=.36+Math.sin(frameCount*.05)*.06;
-    ctx.fillStyle='rgba(0,0,0,.72)';
+  // Gothic arch for Traitors Lair
+  if(currentStage===2){
+    ctx.save(); ctx.globalAlpha=.42;
+    ctx.strokeStyle='rgba(60,110,200,.65)'; ctx.lineWidth=1.5;
     ctx.beginPath();
-    let first=true;
-    for(let x=0;x<=w;x+=8){
-      const y=h-38+Math.sin(x*.06+frameCount*.04)*6+Math.sin(x*.12+frameCount*.06)*4;
-      if(first){ctx.moveTo(x,y);first=false;}else ctx.lineTo(x,y);
-    }
-    ctx.lineTo(w,h); ctx.lineTo(0,h); ctx.closePath(); ctx.fill();
-    ctx.restore();
+    ctx.moveTo(150,h); ctx.lineTo(150,h-110);
+    ctx.arc(195,h-110,45,Math.PI,0,false);
+    ctx.lineTo(240,h);
+    ctx.stroke(); ctx.restore();
   }
+  // Misty atmosphere — drifting fog
+  ctx.save(); ctx.globalAlpha=0.06+Math.sin(frameCount*.008)*.03;
+  const fog=ctx.createLinearGradient(0,h-60,0,h);
+  fog.addColorStop(0,'transparent');
+  fog.addColorStop(1,'rgba(180,140,220,.4)');
+  ctx.fillStyle=fog; ctx.fillRect(0,h-60,w,60);
+  ctx.restore();
 
   /* audio-only equaliser */
   if(vaMode==='audio'){
